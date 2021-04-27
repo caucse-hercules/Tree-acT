@@ -35,9 +35,15 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
+    "compile": "npm-run-all compile:*",
+    "watch": "npm-run-all -p watch:*",
+    "compile:extension": "tsc -p ./",
+    "compile:views": "webpack --mode development",
+    "watch:extension": "tsc -watch -p ./",
+    "watch:views": "webpack --watch --mode development",
     "lint": "eslint . --ext .ts,.tsx",
-    "watch": "tsc -w -p ./"
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
     "@types/node": "^15.0.0",
