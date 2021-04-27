@@ -3,15 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.activate = void 0;
 const vscode = require("vscode");
 const cats = {
-    'Coding Cat': 'https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif',
-    'Compiling Cat': 'https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif',
-    'Testing Cat': 'https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif'
+    "Coding Cat": "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif",
+    "Compiling Cat": "https://media.giphy.com/media/mlvseq9yvZhba/giphy.gif",
+    "Testing Cat": "https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif",
 };
 function activate(context) {
-    context.subscriptions.push(vscode.commands.registerCommand('catCoding.start', () => {
+    context.subscriptions.push(vscode.commands.registerCommand("catCoding.start", () => {
         CatCodingPanel.createOrShow(context.extensionUri);
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('catCoding.doRefactor', () => {
+    context.subscriptions.push(vscode.commands.registerCommand("catCoding.doRefactor", () => {
         if (CatCodingPanel.currentPanel) {
             CatCodingPanel.currentPanel.doRefactor();
         }
@@ -24,7 +24,7 @@ function activate(context) {
                 // Reset the webview options so we use latest uri for `localResourceRoots`.
                 webviewPanel.webview.options = getWebviewOptions(context.extensionUri);
                 CatCodingPanel.revive(webviewPanel, context.extensionUri);
-            }
+            },
         });
     }
 }
@@ -33,8 +33,8 @@ function getWebviewOptions(extensionUri) {
     return {
         // Enable javascript in the webview
         enableScripts: true,
-        // And restrict the webview to only loading content from our extension's `media` directory.
-        localResourceRoots: [vscode.Uri.joinPath(extensionUri, 'media')]
+        // And restrict the webview to only loading content from our extension's `client` directory.
+        localResourceRoots: [vscode.Uri.joinPath(extensionUri, "client")],
     };
 }
 /**
@@ -51,15 +51,15 @@ class CatCodingPanel {
         // This happens when the user closes the panel or when the panel is closed programmatically
         this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
         // Update the content based on view changes
-        this._panel.onDidChangeViewState(e => {
+        this._panel.onDidChangeViewState((e) => {
             if (this._panel.visible) {
                 this._update();
             }
         }, null, this._disposables);
         // Handle messages from the webview
-        this._panel.webview.onDidReceiveMessage(message => {
+        this._panel.webview.onDidReceiveMessage((message) => {
             switch (message.command) {
-                case 'alert':
+                case "alert":
                     vscode.window.showErrorMessage(message.text);
                     return;
             }
@@ -75,7 +75,7 @@ class CatCodingPanel {
             return;
         }
         // Otherwise, create a new panel.
-        const panel = vscode.window.createWebviewPanel(CatCodingPanel.viewType, 'Cat Coding', column || vscode.ViewColumn.One, getWebviewOptions(extensionUri));
+        const panel = vscode.window.createWebviewPanel(CatCodingPanel.viewType, "Cat Coding", column || vscode.ViewColumn.One, getWebviewOptions(extensionUri));
         CatCodingPanel.currentPanel = new CatCodingPanel(panel, extensionUri);
     }
     static revive(panel, extensionUri) {
@@ -84,7 +84,7 @@ class CatCodingPanel {
     doRefactor() {
         // Send a message to the webview webview.
         // You can send any JSON serializable data.
-        this._panel.webview.postMessage({ command: 'refactor' });
+        this._panel.webview.postMessage({ command: "refactor" });
     }
     dispose() {
         CatCodingPanel.currentPanel = undefined;
@@ -102,14 +102,14 @@ class CatCodingPanel {
         // Vary the webview's content based on where it is located in the editor.
         switch (this._panel.viewColumn) {
             case vscode.ViewColumn.Two:
-                this._updateForCat(webview, 'Compiling Cat');
+                this._updateForCat(webview, "Compiling Cat");
                 return;
             case vscode.ViewColumn.Three:
-                this._updateForCat(webview, 'Testing Cat');
+                this._updateForCat(webview, "Testing Cat");
                 return;
             case vscode.ViewColumn.One:
             default:
-                this._updateForCat(webview, 'Coding Cat');
+                this._updateForCat(webview, "Coding Cat");
                 return;
         }
     }
@@ -119,12 +119,12 @@ class CatCodingPanel {
     }
     _getHtmlForWebview(webview, catGifPath) {
         // Local path to main script run in the webview
-        const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, 'media', 'main.js');
+        const scriptPathOnDisk = vscode.Uri.joinPath(this._extensionUri, "client", "main.js");
         // And the uri we use to load this script in the webview
         const scriptUri = webview.asWebviewUri(scriptPathOnDisk);
         // Local path to css styles
-        const styleResetPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css');
-        const stylesPathMainPath = vscode.Uri.joinPath(this._extensionUri, 'media', 'vscode.css');
+        const styleResetPath = vscode.Uri.joinPath(this._extensionUri, "client", "reset.css");
+        const stylesPathMainPath = vscode.Uri.joinPath(this._extensionUri, "client", "vscode.css");
         // Uri to load styles into webview
         const stylesResetUri = webview.asWebviewUri(styleResetPath);
         const stylesMainUri = webview.asWebviewUri(stylesPathMainPath);
@@ -157,10 +157,10 @@ class CatCodingPanel {
 			</html>`;
     }
 }
-CatCodingPanel.viewType = 'catCoding';
+CatCodingPanel.viewType = "catCoding";
 function getNonce() {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let text = "";
+    const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     for (let i = 0; i < 32; i++) {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     }

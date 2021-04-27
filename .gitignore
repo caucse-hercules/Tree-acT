@@ -1,6 +1,8 @@
 dist
 node_modules
 *.vsix
+out
+
 
 .DS_STORE
 node_modules
