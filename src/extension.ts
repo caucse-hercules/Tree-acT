@@ -8,11 +8,21 @@ export function activate(context: vscode.ExtensionContext) {
         "treeAct", // Identifies the type of the webview. Used internally
         "Tree-acT", // Title of the panel displayed to the user
         vscode.ViewColumn.One, // Editor column to show the new webview panel in.
-        {} // Webview options. More on these later.
+        {
+          // Enable scripts in the webview
+          enableScripts: true,
+        }
       );
 
       // And set its HTML Content
       panel.webview.html = getWebviewContent();
+      panel.onDidDispose(
+        () => {
+          // When the panel is closed, cancel any future updates to the webview content
+        },
+        null,
+        context.subscriptions
+      );
     })
   );
 }
