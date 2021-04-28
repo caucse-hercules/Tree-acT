@@ -3,23 +3,34 @@
 const path = require("path");
 
 module.exports = {
+  mode: "production",
+  devtool: "source-map",
   entry: {
-    out: "./src/view/app/index.tsx",
+    main: "./src/view/index.tsx",
   },
   output: {
-    path: path.resolve(__dirname, "out"),
+    path: path.resolve(__dirname, "out", "client"),
     filename: "[name].js",
   },
-  devtool: "eval-source-map",
   resolve: {
-    extension: [".js", ".ts", ".tsx"],
+    extensions: [".js", ".ts", ".tsx"],
   },
   module: {
     rules: [
       {
-        test: /\.(ts|tsx)$/,
-        loader: "ts-loader",
-        options: {},
+        test: /\.ts(x?)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: "ts-loader",
+          },
+        ],
+      },
+      // 모든 '.js' 출력 파일은 'source-map-loader'에서 다시 처리한 소스 맵이 있습니다.
+      {
+        enforce: "pre",
+        test: /\.js$/,
+        loader: "source-map-loader",
       },
     ],
   },
