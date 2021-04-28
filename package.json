@@ -1,5 +1,5 @@
 {
-  "name": "Tree-acT",
+  "name": "treeAct",
   "description": "Tree to React Code Generator",
   "version": "0.0.1",
   "publisher": "caucse-hercules",
@@ -21,7 +21,9 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
+    "compile": "npm-run-all compile:*",
+    "compile:webpack": "npx webpack",
+    "compile:extension": "tsc -p ./",
     "lint": "eslint . --ext .ts,.tsx",
     "watch": "tsc -w -p ./"
   },
