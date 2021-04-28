@@ -21,11 +21,13 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "npm-run-all compile:*",
-    "compile:webpack": "npx webpack",
+    "compile": "npm-run-all -s compile:*",
+    "compile:webpack": "webpack",
     "compile:extension": "tsc -p ./",
     "lint": "eslint . --ext .ts,.tsx",
-    "watch": "tsc -w -p ./"
+    "watch": "npm-run-all -s watch:*",
+    "watch:webpack": "webpack",
+    "watch:extension": "tsc -w -p ./"
   },
   "devDependencies": {
     "@types/node": "^15.0.0",
