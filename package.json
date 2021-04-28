@@ -1,49 +1,29 @@
 {
-  "name": "cat-coding",
-  "description": "Cat Coding - A Webview API Sample",
+  "name": "Tree-acT",
+  "description": "Tree to React Code Generator",
   "version": "0.0.1",
-  "publisher": "vscode-samples",
+  "publisher": "caucse-hercules",
   "engines": {
     "vscode": "^1.47.0"
   },
-  "categories": [
-    "Other"
-  ],
   "activationEvents": [
-    "onCommand:catCoding.start",
-    "onCommand:catCoding.doRefactor",
-    "onWebviewPanel:catCoding"
+    "onCommand:treeAct.start"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/microsoft/vscode-extension-samples.git"
-  },
-  "main": "./out/extension.js",
+  "main": "./out/extension",
   "contributes": {
     "commands": [
       {
-        "command": "catCoding.start",
-        "title": "Start cat coding session",
-        "category": "Cat Coding"
-      },
-      {
-        "command": "catCoding.doRefactor",
-        "title": "Do some refactoring",
-        "category": "Cat Coding"
+        "command": "treeAct.start",
+        "title": "Start new Tree-acT session",
+        "category": "Tree-acT"
       }
     ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "npm-run-all compile:*",
-    "watch": "npm-run-all -p watch:*",
-    "compile:extension": "tsc -p ./",
-    "compile:views": "webpack --mode development",
-    "watch:extension": "tsc -watch -p ./",
-    "watch:views": "webpack --watch --mode development",
+    "compile": "tsc -p ./",
     "lint": "eslint . --ext .ts,.tsx",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    "watch": "tsc -w -p ./"
   },
   "devDependencies": {
     "@types/node": "^15.0.0",
