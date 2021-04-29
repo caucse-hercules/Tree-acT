@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
+import handlePostTest from "./handlePostTest";
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
@@ -21,6 +22,7 @@ export function activate(context: vscode.ExtensionContext) {
       );
       const bundledJsUri = panel.webview.asWebviewUri(bundledJsPath);
 
+      handlePostTest(context, panel);
       // And set its HTML Content
       panel.webview.html = getWebviewContent(bundledJsUri);
       panel.onDidDispose(
@@ -46,7 +48,7 @@ function getWebviewContent(bundledUri: vscode.Uri) {
 </head>
 <body>
     <div id="root"></div>
-
+    <script>const vscode = acquireVsCodeApi();</script>
     <script src="${bundledUri}"></script>
     <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" width="300" />
 </body>
