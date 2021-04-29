@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: "production",
@@ -34,7 +35,17 @@ module.exports = {
       },
     ],
   },
-  performance: {
-    hints: "warning",
+  devServer: {
+    port: 8000,
+    historyApiFallback: true,
+    // host: '0.0.0.0',
+    inline: true,
+    hot: true,
+    open: true,
+    // publicPath: "out/client/",
+    // contentBase: path.resolve(__dirname, "out", "client"),
   },
+  // performance: {
+  //   hints: "warning",
+  // },
 };
