@@ -1,8 +1,17 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import handlePostTest from "./handlePostTest";
+import { ComponentDependenciesProvider } from "./componentDependencies";
 
+// FIXME: tree view only works when registered command is fired!
 export function activate(context: vscode.ExtensionContext) {
+  vscode.window.registerTreeDataProvider(
+    "treeAct",
+    new ComponentDependenciesProvider()
+  );
+  vscode.window.createTreeView("treeAct", {
+    treeDataProvider: new ComponentDependenciesProvider(),
+  });
   context.subscriptions.push(
     vscode.commands.registerCommand("treeAct.start", () => {
       // Create and show a new webview
