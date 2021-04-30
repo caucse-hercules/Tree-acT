@@ -23,6 +23,7 @@ interface jsonItem {
   children?: jsonItem[];
 }
 
+// TODO: Need to parse all of data recursively
 export class ComponentDependenciesProvider
   implements vscode.TreeDataProvider<ComponentTreeItem> {
   getTreeItem(element: ComponentTreeItem): vscode.TreeItem {

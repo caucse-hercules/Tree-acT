@@ -7,19 +7,21 @@
     "vscode": "^1.47.0"
   },
   "activationEvents": [
-    "onCommand:treeAct.start"
+    "onView:treeAct"
   ],
   "main": "./out/extension",
   "contributes": {
-    "commands": [
-      {
-        "command": "treeAct.start",
-        "title": "Start new Tree-acT session",
-        "category": "Tree-acT"
-      }
-    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "component-explorer",
+          "title": "Component Explorer",
+          "icon": "media/dep.svg"
+        }
+      ]
+    },
     "views": {
-      "explorer": [
+      "component-explorer": [
         {
           "id": "treeAct",
           "name": "Tree-acT"
