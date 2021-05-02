@@ -1,4 +1,5 @@
-import * as React from "react";
+import React from "react";
+import { useEffect } from "react";
 import { MessageData } from "../../handlePostTest";
 
 interface vscode {
@@ -50,10 +51,20 @@ const postData = () => {
   });
 };
 
-const PostTest = () => (
-  <>
-    <button onClick={postData}>Click me to send data to extension!</button>
-  </>
-);
+const PostTest = () => {
+  useEffect(() => {
+    window.addEventListener("message", (event) => {
+      const message = event.data; // The JSON data our extension sent
+
+      console.log(message.jsonData);
+    });
+  });
+
+  return (
+    <>
+      <button onClick={postData}>Click me to send data to extension!</button>
+    </>
+  );
+};
 
 export default PostTest;

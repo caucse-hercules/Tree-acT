@@ -11,6 +11,18 @@
   ],
   "main": "./out/extension",
   "contributes": {
+    "commands": [
+      {
+        "command": "treeAct.start",
+        "title": "Start new Tree-acT session",
+        "category": "Tree-acT"
+      },
+      {
+        "command": "treeAct.postJson",
+        "title": "Post JSON to Tree-acT Webview",
+        "category": "Tree-acT"
+      }
+    ],
     "viewsContainers": {
       "activitybar": [
         {
