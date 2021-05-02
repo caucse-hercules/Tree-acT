@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
-import { MessageData } from "../../handlePostTest";
+import { MessageData } from "../../common/types";
 
 interface vscode {
   postMessage(message: MessageData): void;

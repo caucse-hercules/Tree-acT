@@ -1,8 +1,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import handlePostTest from "./handlePostTest";
 import { ComponentDependenciesProvider } from "./componentDependencies";
-import { postJSONtoWebview } from "./webviewBridge";
+import { postJSONtoWebview, handlePostTest } from "./webviewBridge";
 import { sampleData } from "./common/sampleData";
 
 export function activate(context: vscode.ExtensionContext) {

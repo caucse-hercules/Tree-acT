@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { TreeNode } from "./common/types";
+import { MessageData, TreeNode } from "./common/types";
 
 export const postJSONtoWebview = (
   context: vscode.ExtensionContext,
@@ -7,4 +7,20 @@ export const postJSONtoWebview = (
   payload: TreeNode
 ) => {
   panel.webview.postMessage({ jsonData: payload });
+};
+
+export const handlePostTest = (
+  context: vscode.ExtensionContext,
+  panel: vscode.WebviewPanel
+) => {
+  panel.webview.onDidReceiveMessage(
+    (message: MessageData) => {
+      switch (message.command) {
+        case "sendJSON":
+          vscode.window.showInformationMessage(message.text);
+      }
+    },
+    undefined,
+    context.subscriptions
+  );
 };
