@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { MessageData } from "../../common/types";
+import { sampleData } from "../../common/sampleData";
 
 interface vscode {
   postMessage(message: MessageData): void;
@@ -8,46 +9,10 @@ interface vscode {
 
 declare const vscode: vscode;
 
-const sampleData = {
-  name: "CEO",
-  children: [
-    {
-      name: "Manager",
-      attributes: {
-        department: "Production",
-      },
-      children: [
-        {
-          name: "Foreman",
-          attributes: {
-            department: "Fabrication",
-          },
-          children: [
-            {
-              name: "Worker",
-            },
-          ],
-        },
-        {
-          name: "Foreman",
-          attributes: {
-            department: "Assembly",
-          },
-          children: [
-            {
-              name: "Worker",
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
-
 const postData = () => {
   vscode.postMessage({
-    command: "sendJSON",
-    text: JSON.stringify(sampleData),
+    command: "JSONToExtension",
+    data: sampleData,
   });
 };
 

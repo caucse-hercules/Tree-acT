@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { ComponentDependenciesProvider } from "./componentDependencies";
-import { postJSONtoWebview, handlePostTest } from "./webviewBridge";
+import { postJSONToWebview, handlePostTest } from "./webviewBridge";
 import { sampleData } from "./common/sampleData";
 
 export function activate(context: vscode.ExtensionContext) {
@@ -37,7 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
   handlePostTest(context, treeActPanel);
   context.subscriptions.push(
     vscode.commands.registerCommand("treeAct.postJson", () => {
-      postJSONtoWebview(context, treeActPanel, sampleData);
+      postJSONToWebview(context, treeActPanel, sampleData);
     })
   );
 
