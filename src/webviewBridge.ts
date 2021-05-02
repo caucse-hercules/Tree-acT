@@ -1,11 +1,15 @@
 import * as vscode from "vscode";
+import { MessageData, TreeNode } from "./common/types";
 
-export interface MessageData {
-  command: string;
-  text: string;
-}
+export const postJSONtoWebview = (
+  context: vscode.ExtensionContext,
+  panel: vscode.WebviewPanel,
+  payload: TreeNode
+) => {
+  panel.webview.postMessage({ jsonData: payload });
+};
 
-const handlePostTest = (
+export const handlePostTest = (
   context: vscode.ExtensionContext,
   panel: vscode.WebviewPanel
 ) => {
@@ -20,5 +24,3 @@ const handlePostTest = (
     context.subscriptions
   );
 };
-
-export default handlePostTest;

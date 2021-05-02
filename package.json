@@ -7,7 +7,7 @@
     "vscode": "^1.47.0"
   },
   "activationEvents": [
-    "onCommand:treeAct.start"
+    "onView:treeAct"
   ],
   "main": "./out/extension",
   "contributes": {
@@ -16,8 +16,30 @@
         "command": "treeAct.start",
         "title": "Start new Tree-acT session",
         "category": "Tree-acT"
+      },
+      {
+        "command": "treeAct.postJson",
+        "title": "Post JSON to Tree-acT Webview",
+        "category": "Tree-acT"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "component-explorer",
+          "title": "Component Explorer",
+          "icon": "media/dep.svg"
+        }
+      ]
+    },
+    "views": {
+      "component-explorer": [
+        {
+          "id": "treeAct",
+          "name": "Tree-acT"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
