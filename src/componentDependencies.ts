@@ -1,22 +1,5 @@
 import * as vscode from "vscode";
-
-const data = {
-  name: "App",
-  attribute: "root",
-  children: [
-    {
-      name: "AddTodo",
-    },
-    {
-      name: "TodoList",
-      children: [
-        {
-          name: "TodoItem",
-        },
-      ],
-    },
-  ],
-};
+import { sampleData } from "./common/sampleData";
 
 interface jsonItem {
   name: string;
@@ -32,7 +15,9 @@ export class ComponentDependenciesProvider
   // Need to get one depth children only.
   // Because more deep children will gotten by children element recursively.
   getChildren(element?: ComponentTreeItem): Thenable<ComponentTreeItem[]> {
-    return Promise.resolve(this.getComponentsInJson(JSON.stringify(data)));
+    return Promise.resolve(
+      this.getComponentsInJson(JSON.stringify(sampleData))
+    );
     // if (element) {
     //   return Promise.resolve(this.getComponentsInJson(JSON.stringify(data)));
     // } else {
