@@ -21,7 +21,7 @@ const PostTest = () => {
     window.addEventListener("message", (event) => {
       const message = event.data; // The JSON data our extension sent
 
-      console.log(message.jsonData);
+      console.log(message.data);
     });
   });
 
