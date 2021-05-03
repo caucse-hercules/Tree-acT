@@ -21,6 +21,11 @@
         "command": "treeAct.postJson",
         "title": "Post JSON to Tree-acT Webview",
         "category": "Tree-acT"
+      },
+      {
+        "command": "treeAct.generateCode",
+        "title": "Generate code from sample data",
+        "category": "Tree-acT"
       }
     ],
     "viewsContainers": {
@@ -72,9 +77,11 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@types/shelljs": "^0.8.8",
     "npm-run-all": "^4.1.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-scripts": "^4.0.3"
+    "react-scripts": "^4.0.3",
+    "shelljs": "^0.8.4"
   }
 }

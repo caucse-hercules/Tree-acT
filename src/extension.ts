@@ -3,6 +3,7 @@ import * as path from "path";
 import { ComponentDependenciesProvider } from "./componentDependencies";
 import { postJSONToWebview, handlePostTest } from "./webviewBridge";
 import { sampleData } from "./common/sampleData";
+import { run } from "./generateCode";
 
 export function activate(context: vscode.ExtensionContext) {
   const startWebview = () => {
@@ -54,6 +55,12 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("treeAct.start", () => {
       startWebview();
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("treeAct.generateCode", () => {
+      run();
     })
   );
 }

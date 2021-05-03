@@ -1,0 +1,29 @@
+{
+  "command": "generate",
+  "directory": "sample-app",
+  "data": {
+    "name": "App",
+    "attribute": "root",
+    "children": [
+      {
+        "name": "AddTodo"
+      },
+      {
+        "name": "TodoList",
+        "children": [
+          {
+            "name": "TodoItem",
+            "children": [
+              {
+                "name": "item1"
+              },
+              {
+                "name": "item2"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
