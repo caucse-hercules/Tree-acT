@@ -12,7 +12,7 @@ declare const vscode: vscode;
 const postData = () => {
   vscode.postMessage({
     command: "generateApp",
-    directory: "testApp",
+    directory: "test-app",
     data: sampleData,
   });
 };

@@ -1,18 +1,10 @@
-import { sampleGenerateMessage } from "./common/sampleData";
 import fs from "fs";
 import path from "path";
 import * as vscode from "vscode";
 import * as child_process from "child_process";
+import { MessageData } from "./common/types";
 
-const folder: string =
-  vscode.workspace.rootPath || `C:\\Users\\"문법식"\\Desktop\\test3`;
-const generateComponentPath = path.join(
-  folder,
-  <string>sampleGenerateMessage.directory,
-  "src/components"
-);
-
-const makeFolder = () => {
+const makeFolder = (generateComponentPath: string) => {
   if (!fs.existsSync(generateComponentPath)) {
     try {
       fs.mkdirSync(generateComponentPath);
@@ -29,7 +21,7 @@ function FileSystem(folder: string, str: string) {
     console.log(error);
   }
 }
-function dfs(component: any) {
+function dfs(component: any, generateComponentPath: string) {
   FileSystem(
     generateComponentPath + "/" + component.name + ".js",
     "import React from 'react';\n"
@@ -45,7 +37,7 @@ function dfs(component: any) {
       generateComponentPath + "/" + component.name + ".js",
       `import ${next.name} from "./${next.name}";\n`
     );
-    dfs(next);
+    dfs(next, generateComponentPath);
   }
 
   FileSystem(
@@ -58,18 +50,25 @@ function dfs(component: any) {
   );
 }
 
-export function run() {
-  console.log("Started!");
+export function run(message: MessageData) {
+  const folder: string =
+    vscode.workspace.rootPath || `C:\\Users\\"문법식"\\Desktop\\test3`;
+  const generateComponentPath = path.join(
+    folder,
+    <string>message.directory,
+    "src/components"
+  );
+  vscode.window.showInformationMessage("Starting");
   const child = child_process.exec(
-    `cd ${folder} && npx create-react-app ${sampleGenerateMessage.directory}`,
+    `cd ${folder} && npx create-react-app ${message.directory}`,
     function (error, stdout, stderr) {
       console.log("stdout: " + stdout);
       console.log("stderr: " + stderr);
       if (error !== null) {
         console.log("exec error: " + error);
       }
-      makeFolder();
-      dfs(sampleGenerateMessage.data);
+      makeFolder(generateComponentPath);
+      dfs(message.data, generateComponentPath);
       vscode.window.showInformationMessage("Done?");
     }
   );
