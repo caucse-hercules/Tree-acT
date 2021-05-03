@@ -11,7 +11,8 @@ declare const vscode: vscode;
 
 const postData = () => {
   vscode.postMessage({
-    command: "JSONToExtension",
+    command: "generateApp",
+    directory: "testApp",
     data: sampleData,
   });
 };
@@ -27,7 +28,9 @@ const PostTest = () => {
 
   return (
     <>
-      <button onClick={postData}>Click me to send data to extension!</button>
+      <button onClick={postData}>
+        누르기 전에 수백번 생각하고 눌러라. 제발.
+      </button>
     </>
   );
 };

@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { ComponentDependenciesProvider } from "./componentDependencies";
-import { postJSONToWebview, handlePostTest } from "./webviewBridge";
+import { postJSONToWebview, handlePostTest, handlePost } from "./webviewBridge";
 import { sampleData } from "./common/sampleData";
 import { run } from "./generateCode";
 
@@ -27,15 +27,18 @@ export function activate(context: vscode.ExtensionContext) {
     );
     return panel;
   };
+
   const treeActPanel = startWebview();
 
   // Get path to webpack bundled js file on disk
   const bundledJsPath = vscode.Uri.file(
     path.join(context.extensionPath, "out", "client", "main.js")
   );
+
   const bundledJsUri = treeActPanel.webview.asWebviewUri(bundledJsPath);
 
-  handlePostTest(context, treeActPanel);
+  handlePost(context, treeActPanel);
+
   context.subscriptions.push(
     vscode.commands.registerCommand("treeAct.postJson", () => {
       postJSONToWebview(context, treeActPanel, sampleData);
@@ -49,9 +52,11 @@ export function activate(context: vscode.ExtensionContext) {
     "treeAct",
     new ComponentDependenciesProvider()
   );
+
   vscode.window.createTreeView("treeAct", {
     treeDataProvider: new ComponentDependenciesProvider(),
   });
+
   context.subscriptions.push(
     vscode.commands.registerCommand("treeAct.start", () => {
       startWebview();

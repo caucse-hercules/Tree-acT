@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { MessageData, TreeNode } from "./common/types";
+import { run } from "./generateCode";
 
 export const postJSONToWebview = (
   context: vscode.ExtensionContext,
@@ -30,3 +31,19 @@ export const handlePostTest = (
 };
 
 // Write your own handlePost function here
+
+export const handlePost = (
+  context: vscode.ExtensionContext,
+  panel: vscode.WebviewPanel
+) => {
+  panel.webview.onDidReceiveMessage(
+    (message: MessageData) => {
+      switch (message.command) {
+        case "generateApp":
+          run(message);
+      }
+    },
+    undefined,
+    context.subscriptions
+  );
+};
