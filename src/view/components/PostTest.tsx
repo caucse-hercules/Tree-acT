@@ -11,7 +11,8 @@ declare const vscode: vscode;
 
 const postData = () => {
   vscode.postMessage({
-    command: "JSONToExtension",
+    command: "generateApp",
+    directory: "testApp",
     data: sampleData,
   });
 };
