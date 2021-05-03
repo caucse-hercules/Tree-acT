@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import { ComponentDependenciesProvider } from "./componentDependencies";
-import { postJSONToWebview, handlePostTest, generateReactApp } from "./webviewBridge";
+import { postJSONToWebview, handlePostTest, handlePost } from "./webviewBridge";
 import { sampleData } from "./common/sampleData";
 
 export function activate(context: vscode.ExtensionContext) {
@@ -36,7 +36,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   const bundledJsUri = treeActPanel.webview.asWebviewUri(bundledJsPath);
 
-  generateReactApp(context, treeActPanel);
+  handlePost(context, treeActPanel);
 
   context.subscriptions.push(
     vscode.commands.registerCommand("treeAct.postJson", () => {
