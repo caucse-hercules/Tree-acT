@@ -1,4 +1,4 @@
-import { TreeNode } from "./types";
+import { MessageData, TreeNode } from "./types";
 
 export const sampleData: TreeNode = {
   name: "App",
@@ -25,4 +25,10 @@ export const sampleData: TreeNode = {
       ],
     },
   ],
+};
+
+export const sampleGenerateMessage: MessageData = {
+  command: "generate",
+  directory: "sample-app",
+  data: sampleData,
 };
