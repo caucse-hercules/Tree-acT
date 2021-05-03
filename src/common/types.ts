@@ -5,5 +5,6 @@ export interface TreeNode {
 
 export interface MessageData {
   command: string;
+  directory?: string;
   data: TreeNode;
 }
