@@ -11,9 +11,6 @@ const generateComponentPath = path.join(
   <string>sampleGenerateMessage.directory,
   "src/components"
 );
-const str1 = "const ";
-const str2 = " = () => { \n return <div>";
-const str3 = "</div>; \n};\n\n";
 
 const makeFolder = () => {
   if (!fs.existsSync(generateComponentPath)) {
@@ -37,24 +34,27 @@ function dfs(component: any) {
     generateComponentPath + "/" + component.name + ".js",
     "import React from 'react';\n"
   );
+  const sampleTemplate = `const ${component.name} = () => { 
+    return <div>${component.name}</div>; 
+  };\n\n`;
 
   for (const i in component.children) {
     const next: any = component.children[i];
     console.log(next.name);
     FileSystem(
       generateComponentPath + "/" + component.name + ".js",
-      "import " + next.name + " from '" + "./" + next.name + "';\n"
+      `import ${next.name} from "./${next.name}";\n`
     );
     dfs(next);
   }
 
   FileSystem(
     generateComponentPath + "/" + component.name + ".js",
-    "\n" + str1 + component.name + str2 + component.name + str3
+    "\n" + sampleTemplate
   );
   FileSystem(
     generateComponentPath + "/" + component.name + ".js",
-    "export default " + component.name + ";\n"
+    `export default ${component.name};\n`
   );
 }
 
