@@ -41,6 +41,7 @@ export const handlePost = (
       switch (message.command) {
         case "generateApp":
           run(message);
+          break;
       }
     },
     undefined,

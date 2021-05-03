@@ -21,11 +21,6 @@
         "command": "treeAct.postJson",
         "title": "Post JSON to Tree-acT Webview",
         "category": "Tree-acT"
-      },
-      {
-        "command": "treeAct.generateCode",
-        "title": "Generate code from sample data",
-        "category": "Tree-acT"
       }
     ],
     "viewsContainers": {
