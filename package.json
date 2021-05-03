@@ -78,12 +78,10 @@
   "license": "MIT",
   "dependencies": {
     "@types/shelljs": "^0.8.8",
-    "async-wait-until": "^2.0.5",
     "npm-run-all": "^4.1.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "^4.0.3",
-    "run-in-terminal": "^0.0.3",
     "shelljs": "^0.8.4"
   }
 }
