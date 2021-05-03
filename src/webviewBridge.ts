@@ -32,7 +32,7 @@ export const handlePostTest = (
 
 // Write your own handlePost function here
 
-export const generateReactApp = (
+export const handlePost = (
   context: vscode.ExtensionContext,
   panel: vscode.WebviewPanel
 ) => {
