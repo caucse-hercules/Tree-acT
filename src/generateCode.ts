@@ -22,32 +22,60 @@ function FileSystem(folder: string, str: string) {
   }
 }
 function dfs(component: any, generateComponentPath: string) {
-  FileSystem(
-    generateComponentPath + "/" + component.name + ".js",
-    "import React from 'react';\n"
-  );
-  const sampleTemplate = `const ${component.name} = () => { 
-    return <div>${component.name}</div>; 
-  };\n\n`;
+  const folder: string =
+    vscode.workspace.rootPath || `C:\\Users\\"문법식"\\Desktop\\test3`;
+  const appJsPath = path.join(folder, "sample-app/src/App.js");
+  const tempJsPath = path.join(folder, "sample-app/src/temp.js");
 
+  if (component.name == "App") {
+    console.log("1");
+    fs.copyFileSync(appJsPath, tempJsPath);
+    fs.truncateSync(appJsPath, 0);
+    FileSystem(appJsPath, "import React from 'react';\n");
+  } else {
+    console.log("2");
+    FileSystem(
+      generateComponentPath + "/" + component.name + ".js",
+      "import React from 'react';\n"
+    );
+  }
   for (const i in component.children) {
     const next: any = component.children[i];
     console.log(next.name);
-    FileSystem(
-      generateComponentPath + "/" + component.name + ".js",
-      `import ${next.name} from "./${next.name}";\n`
-    );
+    if (component.name == "App") {
+      FileSystem(appJsPath, `import ${next.name} from "./${next.name}";\n`);
+    } else {
+      FileSystem(
+        generateComponentPath + "/" + component.name + ".js",
+        `import ${next.name} from "./${next.name}";\n`
+      );
+    }
     dfs(next, generateComponentPath);
   }
 
-  FileSystem(
-    generateComponentPath + "/" + component.name + ".js",
-    "\n" + sampleTemplate
-  );
-  FileSystem(
-    generateComponentPath + "/" + component.name + ".js",
-    `export default ${component.name};\n`
-  );
+  if (component.name == "App") {
+    const tempStr: string[] = fs
+      .readFileSync(tempJsPath)
+      .toString()
+      .split("\n");
+    for (const j in tempStr) {
+      console.log(tempStr[j]);
+      FileSystem(appJsPath, tempStr[j] + "\n");
+    }
+    fs.unlinkSync(tempJsPath);
+  } else {
+    const sampleTemplate = `const ${component.name} = () => { 
+    return <div>${component.name}</div>; 
+    };\n\n`;
+    FileSystem(
+      generateComponentPath + "/" + component.name + ".js",
+      "\n" + sampleTemplate
+    );
+    FileSystem(
+      generateComponentPath + "/" + component.name + ".js",
+      `export default ${component.name};\n`
+    );
+  }
 }
 
 export function run(message: MessageData) {
@@ -58,6 +86,8 @@ export function run(message: MessageData) {
     <string>message.directory,
     "src/components"
   );
+  //const appJsPath = path.join(folder, <string>message.directory, "src");
+
   vscode.window.showInformationMessage("Starting");
   const child = child_process.exec(
     `cd ${folder} && npx create-react-app ${message.directory}`,
