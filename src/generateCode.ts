@@ -55,16 +55,11 @@ function dfs(component: any, generateComponentPath: string, srcPath:string) {
     FileSystem(srcPath+'/App.js', tempStr); //temp.js에 저장된 App.js의 content를 의존성 처리가 다 된 App.js에 이어적기
     fs.unlinkSync(srcPath+'/temp.js');
   } else {
-    const sampleTemplate = `const ${component.name} = () => { 
-    return <div>${component.name}</div>; 
-    };\n\n`;
+    const sampleTemplate = `const ${component.name} = () => {\n\treturn <div>${component.name}</div>;\n};\n\nexport default ${component.name};\n`;
+
     FileSystem(
       `${generateComponentPath}/${component.name}.js`,
       "\n" + sampleTemplate
-    );
-    FileSystem(
-      `${generateComponentPath}/${component.name}.js`,
-      `export default ${component.name};\n`
     );
   }
 }
