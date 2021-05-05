@@ -28,7 +28,7 @@ export const sampleData: TreeNode = {
 };
 
 export const sampleGenerateMessage: MessageData = {
-  command: "generate",
+  command: "generateApp",
   directory: "sample-app",
   data: sampleData,
 };
