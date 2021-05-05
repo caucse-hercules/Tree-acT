@@ -75,22 +75,32 @@ export function run(message: MessageData) {
   const srcPath = path.join(folder, <string>message.directory, "src");
 
   vscode.window.showInformationMessage("Starting");
+  const child_terminal=vscode.window.createTerminal('Show process');
+  child_terminal.show();
+
   const child=child_process.spawn('npx', ['create-react-app', `${message.directory}`], {cwd:folder});
   child.stdout.on('data', function(data){
     console.log('stdout: '+data.toString());
+    child_terminal.sendText(data.toString());
   });
   child.stderr.on('data', function (data) {
     console.log('stderr: ' + data.toString());
+    child_terminal.sendText(data.toString());
   });
   child.on('exit', function(code){
     console.log('Start making folder');
+    child_terminal.sendText('Start making folder');
     makeFolder(generateComponentPath);
     console.log('Finish making folder');
+    child_terminal.sendText('Finish making folder');
 
     console.log('Start making component');
+    child_terminal.sendText('Start making component');
     dfs(message.data, generateComponentPath, srcPath);
     console.log('Finish making component');
+    child_terminal.sendText('Fininsh making component');
 
+    vscode.window.showInformationMessage('Tree-acT complete!');
     vscode.window.showInformationMessage("Done?");
-  });
+  });  
 }
