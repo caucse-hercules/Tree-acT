@@ -49,13 +49,10 @@ function dfs(component: any, generateComponentPath: string, srcPath:string) {
   }
 
   if (component.name == "App") {
-    const tempStr: string[] = fs
+    const tempStr: string = fs
       .readFileSync(srcPath+'/temp.js')
       .toString()
-      .split("\n");
-    for (const j in tempStr) {
-      FileSystem(srcPath+'/App.js', tempStr[j] + "\n"); //temp.js에 저장된 App.js의 content를 의존성 처리가 다 된 App.js에 이어적기
-    }
+    FileSystem(srcPath+'/App.js', tempStr); //temp.js에 저장된 App.js의 content를 의존성 처리가 다 된 App.js에 이어적기
     fs.unlinkSync(srcPath+'/temp.js');
   } else {
     const sampleTemplate = `const ${component.name} = () => { 
