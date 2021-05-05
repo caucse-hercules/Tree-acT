@@ -75,17 +75,22 @@ export function run(message: MessageData) {
   const srcPath = path.join(folder, <string>message.directory, "src");
 
   vscode.window.showInformationMessage("Starting");
-  const child = child_process.exec(
-    `cd ${folder} && npx create-react-app ${message.directory}`,
-    function (error, stdout, stderr) {
-      console.log("stdout: " + stdout);
-      console.log("stderr: " + stderr);
-      if (error !== null) {
-        console.log("exec error: " + error);
-      }
-      makeFolder(generateComponentPath);
-      dfs(message.data, generateComponentPath, srcPath);
-      vscode.window.showInformationMessage("Done?");
-    }
-  );
+  const child=child_process.spawn('npx', ['create-react-app', `${message.directory}`], {cwd:folder});
+  child.stdout.on('data', function(data){
+    console.log('stdout: '+data.toString());
+  });
+  child.stderr.on('data', function (data) {
+    console.log('stderr: ' + data.toString());
+  });
+  child.on('exit', function(code){
+    console.log('Start making folder');
+    makeFolder(generateComponentPath);
+    console.log('Finish making folder');
+
+    console.log('Start making component');
+    dfs(message.data, generateComponentPath, srcPath);
+    console.log('Finish making component');
+
+    vscode.window.showInformationMessage("Done?");
+  });
 }
