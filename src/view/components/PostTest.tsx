@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { MessageData } from "../../common/types";
-import { sampleData } from "../../common/sampleData";
+import { sampleData, sampleGenerateMessage } from "../../common/sampleData";
 
 interface vscode {
   postMessage(message: MessageData): void;
@@ -10,11 +10,7 @@ interface vscode {
 declare const vscode: vscode;
 
 const postData = () => {
-  vscode.postMessage({
-    command: "generateApp",
-    directory: "sample-app",
-    data: sampleData,
-  });
+  vscode.postMessage(sampleGenerateMessage);
 };
 
 const PostTest = () => {
