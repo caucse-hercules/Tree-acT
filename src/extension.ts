@@ -49,11 +49,11 @@ export function activate(context: vscode.ExtensionContext) {
 
   vscode.window.registerTreeDataProvider(
     "treeAct",
-    new ComponentDependenciesProvider()
+    new ComponentDependenciesProvider(context, sampleData)
   );
 
   vscode.window.createTreeView("treeAct", {
-    treeDataProvider: new ComponentDependenciesProvider(),
+    treeDataProvider: new ComponentDependenciesProvider(context, sampleData),
   });
 
   context.subscriptions.push(
