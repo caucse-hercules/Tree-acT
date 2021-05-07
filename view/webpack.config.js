@@ -1,16 +1,15 @@
 /* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: "production",
   devtool: "source-map",
   entry: {
-    main: "./src/view/index.tsx",
+    main: "./src/index.tsx",
   },
   output: {
-    path: path.resolve(__dirname, "out", "client"),
+    path: path.resolve(__dirname, "..", "out", "client"),
     filename: "[name].js",
   },
   resolve: {

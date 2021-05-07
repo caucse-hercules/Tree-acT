@@ -1,0 +1,26 @@
+{
+  "name": "tree-act",
+  "version": "0.0.1",
+  "description": "React code generator from Tree",
+  "main": "index.js",
+  "repository": "https://github.com/caucse-hercules/Tree-acT.git",
+  "author": "DoLim <limdongyoung0@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "view",
+    "extension"
+  ],
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "npm-run-all -s compile:*",
+    "compile:view": "yarn workspace @treeact/view compile",
+    "compile:extension": "yarn workspace @treeact/extension compile",
+    "watch": "npm-run-all -s watch:*",
+    "watch:view": "yarn workspace @treeact/view watch",
+    "watch:extension": "yarn workspace @treeact/extension watch"
+  },
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

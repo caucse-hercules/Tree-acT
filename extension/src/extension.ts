@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 import * as path from "path";
 import { ComponentDependenciesProvider } from "./componentDependencies";
 import { postJSONToWebview, handlePostTest, handlePost } from "./webviewBridge";
-import { sampleData } from "./common/sampleData";
+import { sampleData } from "../../common/sampleData";
 
 export function activate(context: vscode.ExtensionContext) {
   const startWebview = () => {

@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { MessageData, TreeNode } from "./common/types";
+import { MessageData, TreeNode } from "../../common/types";
 import { run } from "./generateCode";
 
 export const postJSONToWebview = (

@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { TreeNode } from "./common/types";
+import { TreeNode } from "../../common/types";
 
 export class ComponentDependenciesProvider
   implements vscode.TreeDataProvider<ComponentTreeItem> {

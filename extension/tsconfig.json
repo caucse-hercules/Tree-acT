@@ -3,12 +3,13 @@
     "module": "commonjs",
     "target": "es6",
     // "lib": ["ES2019"],
-    "outDir": "out",
+    "outDir": "../out",
     "sourceMap": true,
     "strict": true,
-    "rootDir": "src",
+    "rootDir": "..",
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "skipLibCheck": true
   },
-  "exclude": ["node_modules", ".vscode-test", "./src/view/"]
+  "exclude": ["node_modules", ".vscode-test", "../view", "**/node_modules"]
 }

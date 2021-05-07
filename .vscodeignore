@@ -4,3 +4,5 @@ src/**
 package-json.lock
 tsconfig.json
 webpack.config.js
+**/*.ts
+**/tsconfig.json
