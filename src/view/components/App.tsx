@@ -1,14 +1,8 @@
 import * as React from "react";
-import PostTest from "./PostTest";
+import Tree from './Tree';
+import data from './data';
 
-export interface HelloProps {
-  compiler: string;
-  framework: string;
-}
 
-export const Hello = (props: HelloProps) => (
-  <h1>
-    Hello from {props.compiler} and {props.framework}!
-    <PostTest />
-  </h1>
+export const Hello = () => (
+  <Tree data={data} width={600} height={500} />
 );
