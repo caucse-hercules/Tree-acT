@@ -2,6 +2,9 @@
   "name": "@treeact/extension",
   "description": "Tree-acT extension logic",
   "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.47.0"
+  },
   "scripts": {
     "compile": "webpack --mode production",
     "develop": "webpack --mode development",
@@ -9,7 +12,7 @@
     "watch": "webpack --mode development --watch"
   },
   "devDependencies": {
-    "@types/node": "^15.0.0",
+    "@types/node": "^15.0.2",
     "@types/vscode": "^1.55.0",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",

@@ -11,5 +11,10 @@
     "resolveJsonModule": true,
     "skipLibCheck": true
   },
-  "exclude": ["node_modules", ".vscode-test", "../view", "**/node_modules"]
+  "exclude": [
+    "node_modules",
+    ".vscode-test",
+    "../treeAct-view",
+    "**/node_modules"
+  ]
 }

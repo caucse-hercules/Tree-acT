@@ -9,8 +9,8 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "view",
-    "extension"
+    "treeAct-view",
+    "treeAct-extension"
   ],
   "engines": {
     "vscode": "^1.47.0"
