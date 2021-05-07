@@ -2,23 +2,61 @@
   "name": "tree-act",
   "version": "0.0.1",
   "description": "React code generator from Tree",
-  "main": "index.js",
+  "main": "out/extension",
   "repository": "https://github.com/caucse-hercules/Tree-acT.git",
   "author": "DoLim <limdongyoung0@gmail.com>",
+  "publisher": "caucse-hercules",
   "license": "MIT",
   "private": true,
   "workspaces": [
     "view",
     "extension"
   ],
+  "engines": {
+    "vscode": "^1.47.0"
+  },
+  "activationEvents": [
+    "onView:treeAct"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "treeAct.start",
+        "title": "Start new Tree-acT session",
+        "category": "Tree-acT"
+      },
+      {
+        "command": "treeAct.postJson",
+        "title": "Post JSON to Tree-acT Webview",
+        "category": "Tree-acT"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "component-explorer",
+          "title": "Component Explorer",
+          "icon": "./extension/media/dep.svg"
+        }
+      ]
+    },
+    "views": {
+      "component-explorer": [
+        {
+          "id": "treeAct",
+          "name": "Tree-acT"
+        }
+      ]
+    }
+  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "npm-run-all -s compile:*",
     "compile:view": "yarn workspace @treeact/view compile",
     "compile:extension": "yarn workspace @treeact/extension compile",
-    "watch": "npm-run-all -s watch:*",
-    "watch:view": "yarn workspace @treeact/view watch",
-    "watch:extension": "yarn workspace @treeact/extension watch"
+    "develop": "npm-run-all -s develop:*",
+    "develop:view": "yarn workspace @treeact/view develop",
+    "develop:extension": "yarn workspace @treeact/extension develop"
   },
   "dependencies": {
     "npm-run-all": "^4.1.5"

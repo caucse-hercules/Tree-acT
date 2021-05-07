@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack serve",
     "compile": "webpack",
-    "watch": "webpack"
+    "develop": "webpack"
   },
   "devDependencies": {
     "@types/react": "^17.0.5",
