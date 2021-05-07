@@ -1,0 +1,26 @@
+{
+  "name": "@treeact/extension",
+  "description": "Tree-acT extension logic",
+  "version": "0.0.1",
+  "scripts": {
+    "compile": "webpack --mode production",
+    "develop": "webpack --mode development",
+    "lint": "eslint . --ext .ts,.tsx",
+    "watch": "webpack --mode development --watch"
+  },
+  "devDependencies": {
+    "@types/node": "^15.0.0",
+    "@types/vscode": "^1.55.0",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "eslint": "^7.25.0",
+    "ts-loader": "^9.1.2",
+    "webpack": "^5.36.2",
+    "webpack-cli": "^4.7.0"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "async-wait-until": "^2.0.5",
+    "cross-env": "^7.0.3"
+  }
+}
