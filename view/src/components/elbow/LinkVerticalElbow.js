@@ -1,11 +1,11 @@
-import React from 'react';
-import cx from 'classnames';
-import PropTypes from 'prop-types';
+import React from "react";
+import cx from "classnames";
+import PropTypes from "prop-types";
 
 LinkVerticalElbow.propTypes = {
   innerRef: PropTypes.func,
   before: PropTypes.bool,
-  after: PropTypes.bool
+  after: PropTypes.bool,
 };
 
 export default function LinkVerticalElbow({
@@ -14,11 +14,10 @@ export default function LinkVerticalElbow({
   data,
   before,
   after,
-  x = d => d.y,
-  y = d => d.x,
+  x = (d) => d.x,
+  y = (d) => d.y,
   ...restProps
 }) {
-
   const line = (source, target) => {
     var b = target.y - source.y;
     var a = Math.abs(Math.tan(Math.PI / 4) * b);
@@ -31,38 +30,32 @@ export default function LinkVerticalElbow({
       Check if the line between the two points is less than 
       the hypotenuse between a and b
     */
-    // if (h < ab) {
-    //   a = target.x - source.x;
-    //   b = Math.abs(Math.tan(Math.PI / 4) * a);
+    if (h < ab) {
+      a = target.x - source.x;
+      b = Math.abs(Math.tan(Math.PI / 4) * a);
 
-    //   if ((target.y - source.y) < 0) {
-    //     b = -b;;
-    //   }
-    // } else {
-    //   if ((target.x - source.x) < 0) {
-    //     a = -a;
-    //   }
-    // }
+      if (target.y - source.y < 0) {
+        b = -b;
+      }
+    } else {
+      if (target.x - source.x < 0) {
+        a = -a;
+      }
+    }
 
     return `
       M${x(source)},${y(source)}
-      L${x(source) + a},${x(source) + b}
+      L${a},${b}
       L${x(target)},${y(target)}
     `;
-    // return { a, b }
-  }
+  };
 
   return (
     <path
       ref={innerRef}
-      className={cx('vx-link', className)}
+      className={cx("vx-link", className)}
       d={line(data.source, data.target)}
       {...restProps}
     />
-  )
-
-  // const { a, b } = line(data.source, data.target);
-  // return (
-  //   <circle r={5} cx={a} cy={b} fill="#ccc" />
-  // )
+  );
 }

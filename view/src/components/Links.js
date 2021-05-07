@@ -1,8 +1,8 @@
-import React, { Fragment } from 'react';
-import{ Group } from '@visx/group';
-import { NodeGroup } from 'react-move';
+import React, { Fragment } from "react";
+import { Group } from "@visx/group";
+import { NodeGroup } from "react-move";
 
-import Link from './Link';
+import Link from "./Link";
 
 function findCollapsedParent(node) {
   if (!node.data.isExpanded) {
@@ -30,10 +30,10 @@ function Links({ links, linkType, layout, orientation, stepPercent }) {
             fill="none"
             key={i}
           />
-        )
+        );
       })}
     </Fragment>
-  )
+  );
 }
 
 export default Links;
