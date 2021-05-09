@@ -14,7 +14,7 @@ function findCollapsedParent(node) {
   }
 }
 
-function Links({ links, linkType, layout, orientation, stepPercent }) {
+function Links({ links, linkType, layout, orientation }) {
   return (
     <Fragment>
       {links.map((link, i) => {
@@ -24,7 +24,6 @@ function Links({ links, linkType, layout, orientation, stepPercent }) {
             linkType={linkType}
             layout={layout}
             orientation={orientation}
-            stepPercent={stepPercent}
             stroke="#374469"
             strokeWidth="1"
             fill="none"

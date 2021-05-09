@@ -16,7 +16,7 @@ import {
 } from "@visx/shape";
 import { LinkHorizontalElbow, LinkVerticalElbow } from "./elbow/index";
 
-function Link({ data, linkType, layout, orientation, stepPercent, ...props }) {
+function Link({ data, ...props }) {
   let LinkComponent;
 
   if (layout === "polar") {
