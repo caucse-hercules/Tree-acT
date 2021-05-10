@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Group } from "@visx/group";
 import { Tree as VxTree } from "@visx/hierarchy";
 import { LinearGradient } from "@visx/gradient";
@@ -35,9 +35,8 @@ export default function Tree(treeProps: TreeProps) {
       bottom: 30,
     },
   } = treeProps;
-  const layout: string = "cartesian";
-  const orientation: string = "vertical";
-  const linkType: string = "diagonal";
+
+  if (width < 10) return null;
 
   const innerWidth: number = width - margin.left - margin.right;
   const innerHeight: number = height - margin.top - margin.bottom;
@@ -49,8 +48,9 @@ export default function Tree(treeProps: TreeProps) {
   const sizeWidth: number = innerWidth;
   const sizeHeight: number = innerHeight;
 
-  if (width < 10) return null;
-
+  const [treeData, setTreeData] = useState<any>(data);
+  const [expandedNodes, setExpandedNodes] = useState<string[]>([]);
+  const [value, setValue] = useState<number>(0);
   const root = hierarchy(data, (d) => (d.isExpanded ? d.children : null));
 
   return (
@@ -75,15 +75,16 @@ export default function Tree(treeProps: TreeProps) {
               <Links links={tree.links()} />
               <Nodes
                 nodes={tree.descendants()}
-                layout={layout}
-                orientation={orientation}
                 onNodeClick={(node: any) => {
                   if (!node.data.isExpanded) {
                     node.data.x0 = node.x;
                     node.data.y0 = node.y;
                   }
                   node.data.isExpanded = !node.data.isExpanded;
-                  forceUpdate();
+                  console.log(node);
+                  console.log(tree);
+                  console.log("root is", root);
+                  setValue(1);
                 }}
               />
             </Group>

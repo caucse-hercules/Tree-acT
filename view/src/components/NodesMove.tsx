@@ -3,27 +3,30 @@ import { Group } from "@visx/group";
 import NodeGroup from "react-move/NodeGroup";
 
 import Node from "./Node";
-import { findCollapsedParent, getTopLeft } from "./utils";
+import { findCollapsedParent, translateCoords } from "./utils";
 
-function Nodes({ nodes, layout, orientation, onNodeClick }) {
+interface NodesProps {
+  nodes: any[];
+  onNodeClick: any;
+}
+
+function Nodes(nodesProps: NodesProps) {
+  const { nodes, onNodeClick } = nodesProps;
+
   return (
     <NodeGroup
       data={nodes}
       keyAccessor={(d) => d.data.name}
       start={(node) => {
-        const parentTopLeft = getTopLeft(
-          node.parent || { x: 0, y: 0 },
-          layout,
-          orientation
-        );
+        const parentCoords = translateCoords(node.parent || { x: 0, y: 0 });
         return {
-          top: parentTopLeft.top,
-          left: parentTopLeft.left,
+          top: parentCoords.top,
+          left: parentCoords.left,
           opacity: 0,
         };
       }}
       enter={(node) => {
-        const topLeft = getTopLeft(node, layout, orientation);
+        const topLeft = translateCoords(node);
         return {
           top: [topLeft.top],
           left: [topLeft.left],
@@ -31,7 +34,7 @@ function Nodes({ nodes, layout, orientation, onNodeClick }) {
         };
       }}
       update={(node) => {
-        const topLeft = getTopLeft(node, layout, orientation);
+        const topLeft = translateCoords(node);
         return {
           top: [topLeft.top],
           left: [topLeft.left],
@@ -44,7 +47,7 @@ function Nodes({ nodes, layout, orientation, onNodeClick }) {
           x: collapsedParent.data.x0,
           y: collapsedParent.data.y0,
         };
-        const topLeft = getTopLeft(collapsedParentPrevPos, layout, orientation);
+        const topLeft = translateCoords(collapsedParentPrevPos);
         return {
           top: [topLeft.top],
           left: [topLeft.left],

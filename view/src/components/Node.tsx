@@ -1,7 +1,14 @@
 import React, { Fragment } from "react";
 import { Group } from "@visx/group";
 
-function Node({ node, onClick }) {
+interface NodeProps {
+  node: any;
+  onClick: any;
+}
+
+function Node(nodeProps: NodeProps) {
+  const { node, onClick } = nodeProps;
+
   const width = 40;
   const height = 20;
 

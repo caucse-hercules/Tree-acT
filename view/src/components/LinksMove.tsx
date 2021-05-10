@@ -5,12 +5,27 @@ import { NodeGroup } from "react-move";
 import Link from "./Link";
 import { findCollapsedParent } from "./utils";
 
-function Links({ links, linkType, layout, orientation, stepPercent }) {
+interface LinkData {
+  source: any;
+  target: any;
+}
+
+type LinksProps = {
+  links: LinkData[];
+}
+
+function Links(linksProps: LinksProps) {
+  const {links} = linksProps;
+  console.log("links", links);
   return (
     <NodeGroup
       data={links}
       keyAccessor={(d, i) => `${d.source.data.name}_${d.target.data.name}`}
       start={({ source, target }) => {
+        console.log("link start source");
+        console.log(source);
+        console.log("link start target");
+        console.log(target);
         return {
           source: {
             x: source.data.x0,
@@ -23,6 +38,10 @@ function Links({ links, linkType, layout, orientation, stepPercent }) {
         };
       }}
       enter={({ source, target }) => {
+        console.log("link enter source");
+        console.log(source);
+        console.log("link enter target");
+        console.log(target);
         return {
           source: {
             x: [source.x],
@@ -60,16 +79,13 @@ function Links({ links, linkType, layout, orientation, stepPercent }) {
         };
       }}
     >
-      {(nodes) => (
-        <Group>
+      {(nodes) => {
+        console.log("PLEASE", nodes);
+       return  (<Group>
           {nodes.map(({ key, data, state }) => {
             return (
               <Link
                 data={state}
-                linkType={linkType}
-                layout={layout}
-                orientation={orientation}
-                stepPercent={stepPercent}
                 stroke="#374469"
                 strokeWidth="1"
                 fill="none"
@@ -77,8 +93,8 @@ function Links({ links, linkType, layout, orientation, stepPercent }) {
               />
             );
           })}
-        </Group>
-      )}
+        </Group>);}
+      }
     </NodeGroup>
   );
 }
