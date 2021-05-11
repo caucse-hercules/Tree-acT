@@ -50,7 +50,7 @@ export default function Tree(treeProps: TreeProps) {
 
   const [treeData, setTreeData] = useState<any>(data);
   const [expandedNodes, setExpandedNodes] = useState<string[]>([]);
-  const [value, setValue] = useState<number>(0);
+  const [update, setUpdate] = useState<boolean>(false);
   const root = hierarchy(data, (d) => (d.isExpanded ? d.children : null));
 
   return (
@@ -84,7 +84,7 @@ export default function Tree(treeProps: TreeProps) {
                   console.log(node);
                   console.log(tree);
                   console.log("root is", root);
-                  setValue(value + 1);
+                  setUpdate(!update);
                 }}
               />
             </Group>
