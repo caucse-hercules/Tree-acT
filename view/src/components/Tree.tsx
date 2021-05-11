@@ -84,7 +84,7 @@ export default function Tree(treeProps: TreeProps) {
                   console.log(node);
                   console.log(tree);
                   console.log("root is", root);
-                  setValue(1);
+                  setValue(value + 1);
                 }}
               />
             </Group>
