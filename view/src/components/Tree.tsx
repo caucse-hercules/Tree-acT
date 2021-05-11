@@ -71,7 +71,7 @@ export default function Tree(treeProps: TreeProps) {
           }
         >
           {(tree: any) => (
-            <Group top={origin.y} left={origin.x}>
+            <Group top={margin.top} left={margin.left}>
               <Links links={tree.links()} />
               <Nodes
                 nodes={tree.descendants()}
