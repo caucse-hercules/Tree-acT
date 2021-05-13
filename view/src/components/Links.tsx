@@ -16,16 +16,11 @@ type LinksProps = {
 
 function Links(linksProps: LinksProps) {
   const {links} = linksProps;
-  console.log("links", links);
   return (
     <NodeGroup
       data={links}
       keyAccessor={(d, i) => `${d.source.data.name}_${d.target.data.name}`}
       start={({ source, target }) => {
-        console.log("link start source");
-        console.log(source);
-        console.log("link start target");
-        console.log(target);
         return {
           source: {
             x: source.data.x0,
@@ -38,10 +33,6 @@ function Links(linksProps: LinksProps) {
         };
       }}
       enter={({ source, target }) => {
-        console.log("link enter source");
-        console.log(source);
-        console.log("link enter target");
-        console.log(target);
         return {
           source: {
             x: [source.x],
@@ -80,7 +71,6 @@ function Links(linksProps: LinksProps) {
       }}
     >
       {(nodes) => {
-        console.log("PLEASE", nodes);
        return  (<Group>
           {nodes.map(({ key, data, state }) => {
             return (

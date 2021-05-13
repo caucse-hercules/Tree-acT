@@ -3,7 +3,6 @@ import { LinkVertical } from "@visx/shape";
 
 function Link({ data, ...props }: any) {
   const LinkComponent = LinkVertical;
-  console.log("link data", data);
   return (
     <LinkComponent
       data={data}

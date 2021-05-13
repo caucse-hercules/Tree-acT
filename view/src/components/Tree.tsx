@@ -6,10 +6,10 @@ import { hierarchy } from "d3-hierarchy";
 import { Zoom } from "@visx/zoom";
 
 // import Links from './Links';
-import Links from "./LinksMove";
+import Links from "./Links";
 
 // import Nodes from './Nodes';
-import Nodes from "./NodesMove";
+import Nodes from "./Nodes";
 
 export interface TreeProps {
   data: any;
@@ -80,10 +80,8 @@ export default function Tree(treeProps: TreeProps) {
                     node.data.x0 = node.x;
                     node.data.y0 = node.y;
                   }
+                  console.log("node clicked");
                   node.data.isExpanded = !node.data.isExpanded;
-                  console.log(node);
-                  console.log(tree);
-                  console.log("root is", root);
                   setUpdate(!update);
                 }}
               />

@@ -1,5 +1,4 @@
-import React, { Fragment } from "react";
-import { Group } from "@visx/group";
+import React, { Fragment, useState, useCallback, useRef, useEffect, MutableRefObject } from "react";
 
 interface NodeProps {
   node: any;
@@ -8,9 +7,45 @@ interface NodeProps {
 
 function Node(nodeProps: NodeProps) {
   const { node, onClick } = nodeProps;
+  const [ nodeName, setNodeName ] = useState<string>(node.data.name);
+  const [ editable, setEditable ] = useState<boolean>(true);
 
   const width = 40;
   const height = 20;
+  const ref = useRef() as MutableRefObject<SVGRectElement>;
+
+  const onChange = useCallback((e : React.ChangeEvent<HTMLInputElement>) => {
+    setNodeName(e.target.value);
+  }, []);
+
+  const editOn = () => {
+    setEditable(true);
+    console.log(editable);
+  };
+
+  const handelKeyDown = (e : React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setEditable(!editable);
+      console.log("Entered");
+    }
+  };
+
+  /*const handleClickOutside = (e : React.MouseEvent)=> {
+    if (editable == true)
+      setEditable(false);
+  };*/
+
+  useEffect(() => {
+    window.onclick = (e: MouseEvent) : any => {
+      console.log("current ref : ", ref.current);
+      console.log("target : ", e.target as Node);
+      console.log(ref.current.contains(e.target as Node));
+      if (editable == true && !(ref.current.contains(e.target as Node)))
+        setEditable(false);
+        console.log("window clicked");
+        console.log(editable);
+    };
+  });
 
   return (
     <Fragment>
@@ -19,6 +54,7 @@ function Node(nodeProps: NodeProps) {
       )}
       {node.depth !== 0 && (
         <rect
+          ref = {ref}
           height={height}
           width={width}
           y={-height / 2}
@@ -32,7 +68,23 @@ function Node(nodeProps: NodeProps) {
           onClick={onClick}
         />
       )}
-      <text
+      {editable ? (
+        <input
+        type = "text"
+        value = {nodeName}
+        placeholder = {nodeName}
+        /*dy={".33em"}
+        fontSize={9}
+        fontFamily="Arial"
+        textAnchor={"middle"}
+        style={{ pointerEvents: "none" }}
+        fill={
+          node.depth === 0 ? "#71248e" : node.children ? "white" : "#26deb0"
+        }*/
+        onChange = {(e) => onChange(e)}
+        onKeyDown = {handelKeyDown}
+      />
+      ) : (<text 
         dy={".33em"}
         fontSize={9}
         fontFamily="Arial"
@@ -41,9 +93,9 @@ function Node(nodeProps: NodeProps) {
         fill={
           node.depth === 0 ? "#71248e" : node.children ? "white" : "#26deb0"
         }
-      >
-        {node.data.name}
-      </text>
+        onDoubleClick = {() => editOn()}>{nodeName}
+        </text>
+        )}
     </Fragment>
   );
 }
