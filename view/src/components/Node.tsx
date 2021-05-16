@@ -76,11 +76,18 @@ function Node(nodeProps: NodeProps) {
         />
       )}
       {editable ? (
-        <input
-          type="text"
-          value={nodeName}
-          placeholder={nodeName}
-          /*dy={".33em"}
+        <foreignObject
+          x={-width / 2}
+          y={-height / 2}
+          width={width * 1.2}
+          height={height * 1.2}
+        >
+          <input
+            type="text"
+            value={nodeName}
+            placeholder={nodeName}
+            style={{ fontSize: 10 }}
+            /*dy={".33em"}
         fontSize={9}
         fontFamily="Arial"
         textAnchor={"middle"}
@@ -88,13 +95,14 @@ function Node(nodeProps: NodeProps) {
         fill={
           node.depth === 0 ? "#71248e" : node.children ? "white" : "#26deb0"
         }*/
-          onChange={(e) => onChange(e)}
-          onKeyDown={handelKeyDown}
-        />
+            onChange={(e) => onChange(e)}
+            onKeyDown={handelKeyDown}
+          />
+        </foreignObject>
       ) : (
         <text
           dy={".33em"}
-          fontSize={9}
+          fontSize={10}
           fontFamily="Arial"
           textAnchor={"middle"}
           style={{ pointerEvents: "none" }}
