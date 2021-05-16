@@ -47,12 +47,16 @@ export default function Tree(treeProps: TreeProps) {
   };
   const sizeWidth: number = innerWidth;
   const sizeHeight: number = innerHeight;
+  let controlKeyPressed = false;
 
   const [treeData, setTreeData] = useState<any>(data);
   const [expandedNodes, setExpandedNodes] = useState<string[]>([]);
   const [update, setUpdate] = useState<boolean>(false);
   const root = hierarchy(data, (d) => (d.isExpanded ? d.children : null));
 
+  /* const ctrlKeyDown = (e: React.KeyboardEvent<SVGRectElement>) => {
+    if (e.key === '')
+  }*/
   return (
     // root.each((node, i) => node.onClick = () => {
     //   console.log('clicked');
@@ -75,14 +79,18 @@ export default function Tree(treeProps: TreeProps) {
               <Links links={tree.links()} />
               <Nodes
                 nodes={tree.descendants()}
-                onNodeClick={(node: any) => {
-                  if (!node.data.isExpanded) {
-                    node.data.x0 = node.x;
-                    node.data.y0 = node.y;
+                onNodeCtrlClick={(node: any, e: React.MouseEvent) => {
+                  e.stopPropagation();
+                  if (e.ctrlKey) {
+                    console.log(node);
+                    if (!node.data.isExpanded) {
+                      node.data.x0 = node.x;
+                      node.data.y0 = node.y;
+                    }
+                    console.log("node clicked");
+                    node.data.isExpanded = !node.data.isExpanded;
+                    setUpdate(!update);
                   }
-                  console.log("node clicked");
-                  node.data.isExpanded = !node.data.isExpanded;
-                  setUpdate(!update);
                 }}
               />
             </Group>

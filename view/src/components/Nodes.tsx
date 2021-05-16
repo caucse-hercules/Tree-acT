@@ -7,11 +7,11 @@ import { findCollapsedParent, translateCoords } from "./utils";
 
 interface NodesProps {
   nodes: any[];
-  onNodeClick: any;
+  onNodeCtrlClick: any;
 }
 
 function Nodes(nodesProps: NodesProps) {
-  const { nodes, onNodeClick } = nodesProps;
+  const { nodes, onNodeCtrlClick } = nodesProps;
 
   return (
     <NodeGroup
@@ -67,7 +67,13 @@ function Nodes(nodesProps: NodesProps) {
                 key={key}
                 opacity={state.opacity}
               >
-                <Node node={node} onClick={() => onNodeClick(node)} key={key} />
+                <Node
+                  node={node}
+                  onCtrlClick={(e: React.MouseEvent) =>
+                    onNodeCtrlClick(node, e)
+                  }
+                  key={key}
+                />
               </Group>
             );
           })}

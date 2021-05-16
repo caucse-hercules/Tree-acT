@@ -1,29 +1,36 @@
-import React, { Fragment, useState, useCallback, useRef, useEffect, MutableRefObject } from "react";
+import React, {
+  Fragment,
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+  MutableRefObject,
+} from "react";
 
 interface NodeProps {
   node: any;
-  onClick: any;
+  onCtrlClick: any;
 }
 
 function Node(nodeProps: NodeProps) {
-  const { node, onClick } = nodeProps;
-  const [ nodeName, setNodeName ] = useState<string>(node.data.name);
-  const [ editable, setEditable ] = useState<boolean>(true);
+  const { node, onCtrlClick } = nodeProps;
+  const [nodeName, setNodeName] = useState<string>(node.data.name);
+  const [editable, setEditable] = useState<boolean>(false);
 
   const width = 40;
   const height = 20;
   const ref = useRef() as MutableRefObject<SVGRectElement>;
 
-  const onChange = useCallback((e : React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setNodeName(e.target.value);
   }, []);
 
-  const editOn = () => {
+  const editOn = (e: React.MouseEvent) => {
     setEditable(true);
     console.log(editable);
   };
 
-  const handelKeyDown = (e : React.KeyboardEvent<HTMLInputElement>) => {
+  const handelKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       setEditable(!editable);
       console.log("Entered");
@@ -36,25 +43,24 @@ function Node(nodeProps: NodeProps) {
   };*/
 
   useEffect(() => {
-    window.onclick = (e: MouseEvent) : any => {
+    window.onclick = (e: MouseEvent): any => {
       console.log("current ref : ", ref.current);
       console.log("target : ", e.target as Node);
       console.log(ref.current.contains(e.target as Node));
-      if (editable == true && !(ref.current.contains(e.target as Node)))
-        setEditable(false);
-        console.log("window clicked");
-        console.log(editable);
+      if (editable == true) setEditable(false);
+      console.log("window clicked");
+      console.log(editable);
     };
   });
 
   return (
     <Fragment>
       {node.depth === 0 && (
-        <circle r={12} fill="url('#lg')" onClick={onClick} />
+        <circle r={12} fill="url('#lg')" onClick={onCtrlClick} />
       )}
       {node.depth !== 0 && (
         <rect
-          ref = {ref}
+          ref={ref}
           height={height}
           width={width}
           y={-height / 2}
@@ -65,15 +71,16 @@ function Node(nodeProps: NodeProps) {
           strokeDasharray={!node.data.children ? "2,2" : "0"}
           strokeOpacity={!node.data.children ? 0.6 : 1}
           rx={!node.data.children ? 10 : 0}
-          onClick={onClick}
+          onClick={onCtrlClick}
+          onDoubleClick={(e) => editOn(e)}
         />
       )}
       {editable ? (
         <input
-        type = "text"
-        value = {nodeName}
-        placeholder = {nodeName}
-        /*dy={".33em"}
+          type="text"
+          value={nodeName}
+          placeholder={nodeName}
+          /*dy={".33em"}
         fontSize={9}
         fontFamily="Arial"
         textAnchor={"middle"}
@@ -81,21 +88,23 @@ function Node(nodeProps: NodeProps) {
         fill={
           node.depth === 0 ? "#71248e" : node.children ? "white" : "#26deb0"
         }*/
-        onChange = {(e) => onChange(e)}
-        onKeyDown = {handelKeyDown}
-      />
-      ) : (<text 
-        dy={".33em"}
-        fontSize={9}
-        fontFamily="Arial"
-        textAnchor={"middle"}
-        style={{ pointerEvents: "none" }}
-        fill={
-          node.depth === 0 ? "#71248e" : node.children ? "white" : "#26deb0"
-        }
-        onDoubleClick = {() => editOn()}>{nodeName}
+          onChange={(e) => onChange(e)}
+          onKeyDown={handelKeyDown}
+        />
+      ) : (
+        <text
+          dy={".33em"}
+          fontSize={9}
+          fontFamily="Arial"
+          textAnchor={"middle"}
+          style={{ pointerEvents: "none" }}
+          fill={
+            node.depth === 0 ? "#71248e" : node.children ? "white" : "#26deb0"
+          }
+        >
+          {nodeName}
         </text>
-        )}
+      )}
     </Fragment>
   );
 }
