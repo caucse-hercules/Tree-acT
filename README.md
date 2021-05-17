@@ -29,3 +29,7 @@ Open this repository directory with VSCode.
 And press `F5` or execute `Run - Start Debugging` at the VSCode menu.  
 That's it! You'll see build processes and after seconds, will be able to see `Extension Development Host`.  
 You can use our extension by clicking our `extension's activity menu icon` which is on the leftmost side of VSCode.
+
+## LICENSE
+
+MIT License
