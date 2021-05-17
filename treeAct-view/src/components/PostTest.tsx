@@ -24,9 +24,7 @@ const PostTest = () => {
 
   return (
     <>
-      <button onClick={postData}>
-        누르기 전에 수백번 생각하고 눌러라. 제발.
-      </button>
+      <button onClick={postData}>Generate React Project</button>
     </>
   );
 };
