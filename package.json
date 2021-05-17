@@ -59,6 +59,7 @@
     "develop:extension": "yarn workspace @treeact/extension develop"
   },
   "dependencies": {
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "yarn": "^1.22.10"
   }
 }

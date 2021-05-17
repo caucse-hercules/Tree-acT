@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { MessageData, TreeNode } from "../../common/types";
 import { run } from "./generateCode";
+import { getPath } from "./getPath";
 
 export const postJSONToWebview = (
   context: vscode.ExtensionContext,
@@ -37,10 +38,10 @@ export const handlePost = (
   panel: vscode.WebviewPanel
 ) => {
   panel.webview.onDidReceiveMessage(
-    (message: MessageData) => {
+    async (message: MessageData) => {
       switch (message.command) {
         case "generateApp":
-          run(message);
+          run(message, await getPath());
           break;
       }
     },

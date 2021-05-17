@@ -14,11 +14,11 @@ export const sampleData: TreeNode = {
             },
             {
               name: "HappyBin",
-            }
+            },
           ],
         },
         {
-          name: "SearchBar"
+          name: "SearchBar",
         },
       ],
     },
@@ -32,12 +32,12 @@ export const sampleData: TreeNode = {
               name: "Mail",
               children: [
                 {
-                  name:"writeMail"
+                  name: "writeMail",
                 },
                 {
-                  name:"writeMailtoMe"
-                }
-              ]
+                  name: "writeMailtoMe",
+                },
+              ],
             },
             {
               name: "Cafe",
@@ -88,11 +88,11 @@ export const sampleData: TreeNode = {
                             {
                               name: "ADImage",
                             },
-                          ]
+                          ],
                         },
-                      ]
+                      ],
                     },
-                  ]
+                  ],
                 },
               ],
             },
@@ -135,7 +135,7 @@ export const sampleData: TreeNode = {
               name: "OpenAPI",
             },
           ],
-        }
+        },
       ],
     },
   ],
