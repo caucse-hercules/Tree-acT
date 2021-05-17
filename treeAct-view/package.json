@@ -4,14 +4,18 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "start": "webpack serve",
+    "start": "webpack serve --env development",
     "compile": "webpack",
     "develop": "webpack"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.0",
+    "@babel/preset-env": "^7.14.1",
+    "@babel/preset-react": "^7.13.13",
     "@types/react": "^17.0.5",
     "@types/react-dom": "^17.0.3",
     "@types/webpack-dev-server": "^3.11.3",
+    "babel-loader": "^8.2.2",
     "eslint": "^7.25.0",
     "source-map-loader": "^2.0.1",
     "ts-loader": "^9.1.2",
@@ -21,8 +25,12 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "@visx/visx": "^1.10.0",
     "cross-env": "^7.0.3",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-move": "^6.4.0",
+    "react-spring": "^9.1.2",
+    "styled-components": "^5.3.0"
   }
 }
