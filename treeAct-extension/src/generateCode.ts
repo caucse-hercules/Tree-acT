@@ -64,9 +64,8 @@ function dfs(component: any, generateComponentPath: string, srcPath: string) {
   }
 }
 
-export async function run(message: MessageData) {
-  const folder: string =
-    vscode.workspace.rootPath || `C:\\Users\\"문법식"\\Desktop\\test3`;
+export async function run(message: MessageData, dirPath: string) {
+  const folder: string = vscode.workspace.rootPath || dirPath;
   const generateComponentPath = path.join(
     folder,
     <string>message.directory,
