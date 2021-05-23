@@ -3,7 +3,4 @@ import * as ReactDOM from "react-dom";
 
 import { Hello } from "./components/App";
 
-ReactDOM.render(
-  <Hello compiler="TypeScript" framework="React" />,
-  document.getElementById("root")
-);
+ReactDOM.render(<Hello />, document.getElementById("root"));
