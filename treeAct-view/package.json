@@ -11,6 +11,7 @@
   "devDependencies": {
     "@types/react": "^17.0.5",
     "@types/react-dom": "^17.0.3",
+    "@types/styled-components": "^5.1.9",
     "@types/webpack-dev-server": "^3.11.3",
     "eslint": "^7.25.0",
     "source-map-loader": "^2.0.1",
@@ -21,8 +22,15 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.58",
     "cross-env": "^7.0.3",
+    "immer": "^9.0.2",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.4",
+    "redux-actions": "^2.6.5",
+    "styled-components": "^5.3.0"
   }
 }
