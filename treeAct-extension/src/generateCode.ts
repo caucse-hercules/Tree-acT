@@ -22,7 +22,11 @@ function FileSystem(folder: string, str: string) {
   }
 }
 
-function dfs(component: any, generateComponentPath: string, srcPath: string) {
+function makeComponent(
+  component: any,
+  generateComponentPath: string,
+  srcPath: string
+) {
   if (component.name == "App") {
     fs.copyFileSync(srcPath + "/App.js", srcPath + "/temp.js"); //리액트 프로젝트에서 생성된 App.js의 content를 복사해서 temp.js에 저장
     fs.truncateSync(srcPath + "/App.js", 0); //App.js의 content 지우기
@@ -47,7 +51,7 @@ function dfs(component: any, generateComponentPath: string, srcPath: string) {
         `import ${next.name} from './${next.name}';\n`
       );
     }
-    dfs(next, generateComponentPath, srcPath);
+    makeComponent(next, generateComponentPath, srcPath);
   }
 
   if (component.name == "App") {
@@ -89,7 +93,7 @@ export async function run(message: MessageData, dirPath: string) {
   const exists = await waitUntil(() => fs.existsSync(srcPath), WAIT_FOREVER);
   if (exists) {
     makeFolder(generateComponentPath);
-    dfs(message.data, generateComponentPath, srcPath);
+    makeComponent(message.data, generateComponentPath, srcPath);
     vscode.window.showInformationMessage("Generate Component Complete!");
   }
   const committed = await waitUntil(
