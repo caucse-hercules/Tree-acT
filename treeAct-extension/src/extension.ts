@@ -1,7 +1,6 @@
 import * as vscode from "vscode";
 import * as path from "path";
-import { ComponentDependenciesProvider } from "./componentDependencies";
-import { postJSONToWebview, handlePostTest, handlePost } from "./webviewBridge";
+import { TreeActTreeView } from "./treeActTreeView";
 import { sampleData } from "../../common/sampleData";
 import { TreeActPanel } from "./treeActPanel";
 
@@ -38,12 +37,18 @@ export function activate(context: vscode.ExtensionContext) {
 
   vscode.window.registerTreeDataProvider(
     "treeAct",
-    new ComponentDependenciesProvider(context, sampleData)
+    new TreeActTreeView(context, sampleData)
   );
 
   vscode.window.createTreeView("treeAct", {
-    treeDataProvider: new ComponentDependenciesProvider(context, sampleData),
+    treeDataProvider: new TreeActTreeView(context, sampleData),
   });
 
   TreeActPanel.createOrShow(context.extensionUri);
+
+  console.log("Activated!");
+}
+
+export function deactivate() {
+  console.log("Deactivated!");
 }
