@@ -65,7 +65,7 @@ function dfs(component: any, generateComponentPath: string, srcPath: string) {
 }
 
 export async function run(message: MessageData, dirPath: string) {
-  const folder: string = vscode.workspace.rootPath || dirPath;
+  const folder: string = dirPath;
   const generateComponentPath = path.join(
     folder,
     <string>message.directory,
