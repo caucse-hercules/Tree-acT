@@ -32,10 +32,9 @@ export const handlePostTest = (
 };
 
 // Write your own handlePost function here
-
 export const handlePost = (
-  context: vscode.ExtensionContext,
-  panel: vscode.WebviewPanel
+  panel: vscode.WebviewPanel,
+  disposables?: vscode.Disposable[]
 ) => {
   panel.webview.onDidReceiveMessage(
     async (message: MessageData) => {
@@ -46,6 +45,6 @@ export const handlePost = (
       }
     },
     undefined,
-    context.subscriptions
+    disposables
   );
 };

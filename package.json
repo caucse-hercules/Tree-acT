@@ -16,7 +16,8 @@
     "vscode": "^1.47.0"
   },
   "activationEvents": [
-    "onView:treeAct"
+    "onView:treeAct",
+    "onWebviewPanel:treeAct"
   ],
   "contributes": {
     "commands": [
@@ -34,14 +35,14 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "component-explorer",
-          "title": "Component Explorer",
-          "icon": "./extension/media/dep.svg"
+          "id": "treeAct",
+          "title": "Tree-acT",
+          "icon": "./treeAct-extension/media/dep.svg"
         }
       ]
     },
     "views": {
-      "component-explorer": [
+      "treeAct": [
         {
           "id": "treeAct",
           "name": "Tree-acT"

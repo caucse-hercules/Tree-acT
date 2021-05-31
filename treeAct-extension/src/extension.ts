@@ -3,49 +3,38 @@ import * as path from "path";
 import { ComponentDependenciesProvider } from "./componentDependencies";
 import { postJSONToWebview, handlePostTest, handlePost } from "./webviewBridge";
 import { sampleData } from "../../common/sampleData";
+import { TreeActPanel } from "./treeActPanel";
 
 export function activate(context: vscode.ExtensionContext) {
-  const startWebview = () => {
-    // Create and show a new webview
-    const panel = vscode.window.createWebviewPanel(
-      "treeAct", // Identifies the type of the webview. Used internally
-      "Tree-acT", // Title of the panel displayed to the user
-      vscode.ViewColumn.One, // Editor column to show the new webview panel in.
-      {
-        // Enable scripts in the webview
-        enableScripts: true,
-      }
-    );
-
-    panel.onDidDispose(
-      () => {
-        // When the panel is closed, cancel any future updates to the webview content
-      },
-      null,
-      context.subscriptions
-    );
-    return panel;
-  };
-
-  const treeActPanel = startWebview();
-
-  // Get path to webpack bundled js file on disk
-  const bundledJsPath = vscode.Uri.file(
-    path.join(context.extensionPath, "out", "client", "main.js")
-  );
-
-  const bundledJsUri = treeActPanel.webview.asWebviewUri(bundledJsPath);
-
-  handlePost(context, treeActPanel);
-
   context.subscriptions.push(
-    vscode.commands.registerCommand("treeAct.postJson", () => {
-      postJSONToWebview(context, treeActPanel, sampleData);
+    vscode.commands.registerCommand("treeAct.start", () => {
+      TreeActPanel.createOrShow(context.extensionUri);
     })
   );
 
-  // And set its HTML Content
-  treeActPanel.webview.html = getWebviewContent(bundledJsUri);
+  if (vscode.window.registerWebviewPanelSerializer) {
+    // Make sure we register a serializer in activation event
+    vscode.window.registerWebviewPanelSerializer(TreeActPanel.viewType, {
+      async deserializeWebviewPanel(
+        webviewPanel: vscode.WebviewPanel,
+        state: any
+      ) {
+        console.log(`Got state: ${state}`);
+        // Reset the webview options so we use latest uri for `localResourceRoots`.
+        webviewPanel.webview.options = getWebviewOptions(context.extensionUri);
+        TreeActPanel.revive(webviewPanel, context.extensionUri);
+      },
+    });
+  }
+
+  function getWebviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
+    return {
+      // Enable javascript in the webview
+      enableScripts: true,
+
+      // TODO: And restrict the webview to only loading content from our extension's `media` directory.
+    };
+  }
 
   vscode.window.registerTreeDataProvider(
     "treeAct",
@@ -56,32 +45,5 @@ export function activate(context: vscode.ExtensionContext) {
     treeDataProvider: new ComponentDependenciesProvider(context, sampleData),
   });
 
-  context.subscriptions.push(
-    vscode.commands.registerCommand("treeAct.start", () => {
-      startWebview();
-    })
-  );
-
-  // context.subscriptions.push(
-  //   vscode.commands.registerCommand("treeAct.generateCode", () => {
-  //     run();
-  //   })
-  // );
-}
-
-function getWebviewContent(bundledUri: vscode.Uri) {
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cat Coding</title>
-</head>
-<body>
-    <div id="root"></div>
-    <script>const vscode = acquireVsCodeApi();</script>
-    <script src="${bundledUri}"></script>
-    <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" width="300" />
-</body>
-</html>`;
+  TreeActPanel.createOrShow(context.extensionUri);
 }
