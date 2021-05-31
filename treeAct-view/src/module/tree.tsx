@@ -6,12 +6,13 @@ const REMOVE_NODE = "tree/REMOVE";
 
 let id = 1;
 
-const defaultNode: TreeNode = {
+/*const defaultNode: TreeNode = {
   id: id++,
   name: "",
+  parent: 
   children: [],
   isExpanded: true,
-};
+};*/
 
 export const insertNode = createAction(INSERT_NODE)<number>();
 /*{
@@ -33,6 +34,7 @@ type TreeAction = ActionType<typeof actions>;
 export type TreeNode = {
   id: number;
   name: string;
+  parent?: number;
   children: number[];
   isExpanded: boolean;
 };
@@ -51,14 +53,25 @@ const treeData: TreeState = [
 const tree = createReducer<TreeState, TreeAction>(treeData)
   .handleAction(insertNode, (state, action) =>
     produce(state, (draft) => {
-      draft.push(defaultNode);
+      draft.push({
+        id: id++,
+        name: "",
+        parent: action.payload,
+        children: [],
+        isExpanded: true,
+      });
       const parent = draft.find((node) => node.id === action.payload);
-      parent?.children.push(action.payload);
+      parent!.children?.push(action.payload);
     })
   )
   .handleAction(removeNode, (state, action) =>
     produce(state, (draft) => {
-      draft.filter((node) => node.id !== action.payload);
-      draft.map();
+      const removeIndex = draft.findIndex((node) => node.id !== action.payload);
+      const parentId = draft[removeIndex].parent;
+      const parentIndex = draft.findIndex((node) => node.id !== parentId);
+      draft[parentIndex].children = draft[parentIndex].children.filter(
+        (childId) => childId !== action.payload
+      );
+      draft.splice(removeIndex, 1);
     })
   );
