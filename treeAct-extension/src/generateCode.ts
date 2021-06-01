@@ -3,6 +3,7 @@ import path from "path";
 import * as vscode from "vscode";
 import { MessageData } from "../../common/types";
 import waitUntil, { WAIT_FOREVER } from "async-wait-until";
+import { exit } from "process";
 
 const makeFolder = (generateComponentPath: string) => {
   if (!fs.existsSync(generateComponentPath)) {
@@ -65,6 +66,9 @@ function dfs(component: any, generateComponentPath: string, srcPath: string) {
 }
 
 export async function run(message: MessageData, dirPath: string) {
+  if (dirPath === "exit") {
+    exit;
+  }
   const folder: string = vscode.workspace.rootPath || dirPath;
   const generateComponentPath = path.join(
     folder,
