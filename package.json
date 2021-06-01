@@ -24,8 +24,12 @@
     "commands": [
       {
         "command": "treeAct.start",
-        "title": "Start new Tree-acT session",
-        "category": "Tree-acT"
+        "title": "Open Tree-acT Panel",
+        "category": "Tree-acT",
+        "icon": {
+          "light": "./treeAct-extension/resources/light/open.svg",
+          "dark": "./treeAct-extension/resources/dark/open.svg"
+        }
       }
     ],
     "viewsContainers": {
@@ -42,6 +46,15 @@
         {
           "id": "treeAct",
           "name": "Tree-acT"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "treeAct.start",
+          "when": "view == treeAct",
+          "group": "navigation"
         }
       ]
     }
