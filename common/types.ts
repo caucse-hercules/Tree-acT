@@ -1,6 +1,10 @@
 export interface TreeNode {
-  name: string;
-  children?: TreeNode[];
+  Node: {
+    name: string;
+    index: number;
+    //children?: TreeNode[];
+    children: number[];
+  }[];
 }
 
 export interface MessageData {
