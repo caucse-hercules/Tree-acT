@@ -3,6 +3,7 @@ import PostTest from "./PostTest";
 //import { sampleData } from "../../../common/sampleData";
 import { dataTemp } from "../../../common/dataTemp";
 import Layout from "./Layout";
+import MarkdownRender from "./markdownRender";
 
 export interface HelloProps {
   compiler: string;
@@ -14,5 +15,6 @@ export const Hello = (props: HelloProps) => (
     Hello from {props.compiler} and {props.framework}!
     <Layout data={dataTemp} />
     <PostTest />
+    <MarkdownRender />
   </h1>
 );
