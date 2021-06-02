@@ -7,7 +7,6 @@ import { exit } from "process";
 
 const checkSameName = (projectPath: string, child_terminal: any): boolean => {
   if (fs.existsSync(projectPath)) {
-    child_terminal.sendText(`exit`);
     return true;
   }
   return false;
@@ -105,6 +104,7 @@ export async function run(message: MessageData, dirPath: string) {
     const sameProjectName = checkSameName(projectPath, child_terminal);
 
     if (sameProjectName) {
+      child_terminal.sendText(`exit`);
       vscode.window.showInformationMessage("Canceled");
       vscode.window.showErrorMessage(
         "A project with the same name as the project name you entered already exists. Please enter a different name!"
