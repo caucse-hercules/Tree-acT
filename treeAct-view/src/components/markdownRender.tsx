@@ -10,13 +10,17 @@ const MarkDownStyle = styled.div`
   color: lightgray;
   background-color: black;
 `;
+const InlineCode = styled.span`
+  background-color: yellow;
+`;
 
 const MarkdownRender = () => {
   const [html, setHTML] = useState("");
 
   return (
     <MarkDownStyle>
-      <Markdown children={readme} />
+      {/* <Markdown children={readme} /> */}
+      <ReactMarkdown>{readme}</ReactMarkdown>
     </MarkDownStyle>
   );
 };
