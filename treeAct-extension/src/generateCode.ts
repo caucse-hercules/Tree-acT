@@ -67,42 +67,44 @@ function dfs(component: any, generateComponentPath: string, srcPath: string) {
 
 export async function run(message: MessageData, dirPath: string) {
   if (dirPath === "exit") {
+    vscode.window.showInformationMessage("Canceled");
     exit;
-  }
-  const folder: string = vscode.workspace.rootPath || dirPath;
-  const generateComponentPath = path.join(
-    folder,
-    <string>message.directory,
-    "src/components"
-  );
-  const srcPath = path.join(folder, <string>message.directory, "src");
-  const gitLogPath = path.join(
-    folder,
-    <string>message.directory,
-    ".git",
-    "logs"
-  );
-  vscode.window.showInformationMessage("Starting");
-  const child_terminal = vscode.window.createTerminal({
-    name: "Show process",
-    cwd: folder,
-  });
-  child_terminal.show();
+  } else {
+    const folder: string = vscode.workspace.rootPath || dirPath;
+    const generateComponentPath = path.join(
+      folder,
+      <string>message.directory,
+      "src/components"
+    );
+    const srcPath = path.join(folder, <string>message.directory, "src");
+    const gitLogPath = path.join(
+      folder,
+      <string>message.directory,
+      ".git",
+      "logs"
+    );
+    vscode.window.showInformationMessage("Starting");
+    const child_terminal = vscode.window.createTerminal({
+      name: "Show process",
+      cwd: folder,
+    });
+    child_terminal.show();
 
-  child_terminal.sendText(`npx create-react-app ${message.directory}`);
-  const exists = await waitUntil(() => fs.existsSync(srcPath), WAIT_FOREVER);
-  if (exists) {
-    makeFolder(generateComponentPath);
-    dfs(message.data, generateComponentPath, srcPath);
-    vscode.window.showInformationMessage("Generate Component Complete!");
-  }
-  const committed = await waitUntil(
-    () => fs.existsSync(gitLogPath),
-    WAIT_FOREVER
-  );
-  if (committed) {
-    setTimeout(() => {
-      vscode.window.showInformationMessage("Tree-acT Complete!");
-    }, 500);
+    child_terminal.sendText(`npx create-react-app ${message.directory}`);
+    const exists = await waitUntil(() => fs.existsSync(srcPath), WAIT_FOREVER);
+    if (exists) {
+      makeFolder(generateComponentPath);
+      dfs(message.data, generateComponentPath, srcPath);
+      vscode.window.showInformationMessage("Generate Component Complete!");
+    }
+    const committed = await waitUntil(
+      () => fs.existsSync(gitLogPath),
+      WAIT_FOREVER
+    );
+    if (committed) {
+      setTimeout(() => {
+        vscode.window.showInformationMessage("Tree-acT Complete!");
+      }, 500);
+    }
   }
 }
