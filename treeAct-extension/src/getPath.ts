@@ -12,7 +12,7 @@ export async function getPath() {
   const path = await vscode.window.showOpenDialog(options);
 
   if (path == undefined) {
-    return "";
+    return "exit";
   } else {
     return path[0].fsPath;
   }
