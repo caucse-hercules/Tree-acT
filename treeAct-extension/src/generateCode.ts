@@ -80,7 +80,7 @@ export async function run(message: MessageData, dirPath: string) {
     vscode.window.showInformationMessage("Canceled");
     exit;
   } else {
-    const folder: string = vscode.workspace.rootPath || dirPath;
+    const folder: string = dirPath;
     const generateComponentPath = path.join(
       folder,
       <string>message.directory,
