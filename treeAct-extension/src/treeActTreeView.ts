@@ -68,3 +68,11 @@ class TreeActTreeViewItem extends vscode.TreeItem {
     this.description = `Component ${this.label}`;
   }
 }
+
+export const addNode = () => {
+  vscode.window.showInformationMessage("Add Node Clicked.");
+};
+
+export const deleteNode = () => {
+  vscode.window.showInformationMessage("Delete Node Clicked");
+};
