@@ -31,10 +31,13 @@ function FileSystem(path: string, str: string) {
 }
 
 function makeComponent(
-  component: any,
+  componentArray: any,
+  index: number,
   generateComponentPath: string,
   srcPath: string
 ) {
+  const component = componentArray[index];
+  console.log(component.name);
   if (component.name == "App") {
     fs.copyFileSync(`${srcPath}/App.js`, `${srcPath}/temp.js`); //리액트 프로젝트에서 생성된 App.js의 content를 복사해서 temp.js에 저장
     fs.truncateSync(`${srcPath}/App.js`, 0); //App.js의 content 지우기
@@ -46,20 +49,20 @@ function makeComponent(
     );
   }
   for (const i in component.children) {
-    const next: any = component.children[i];
-    console.log(next.name);
+    const nextindex: number = component.children[i];
+    const nextComponent = componentArray[nextindex];
     if (component.name == "App") {
       FileSystem(
         `${srcPath}/App.js`,
-        `import ${next.name} from './components/${next.name}';\n`
+        `import ${nextComponent.name} from './components/${nextComponent.name}';\n`
       ); //리액트 프로젝트에서 생성된 App.js에 의존성 처리
     } else {
       FileSystem(
         `${generateComponentPath}/${component.name}.js`,
-        `import ${next.name} from './${next.name}';\n`
+        `import ${nextComponent.name} from './${nextComponent.name}';\n`
       );
     }
-    makeComponent(next, generateComponentPath, srcPath);
+    makeComponent(componentArray, nextindex, generateComponentPath, srcPath);
   }
 
   if (component.name == "App") {
@@ -117,7 +120,7 @@ export async function run(message: MessageData, dirPath: string) {
       );
       if (exists) {
         makeFolder(generateComponentPath);
-        makeComponent(message.data, generateComponentPath, srcPath);
+        makeComponent(message.data, 0, generateComponentPath, srcPath);
         vscode.window.showInformationMessage("Generate Component Complete!");
       }
       const committed = await waitUntil(
