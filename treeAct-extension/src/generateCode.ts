@@ -5,6 +5,14 @@ import { MessageData } from "../../common/types";
 import waitUntil, { WAIT_FOREVER } from "async-wait-until";
 import { exit } from "process";
 
+const checkSameName = (projectPath: string, child_terminal: any): boolean => {
+  if (fs.existsSync(projectPath)) {
+    child_terminal.sendText(`exit`);
+    return true;
+  }
+  return false;
+};
+
 const makeFolder = (generateComponentPath: string) => {
   if (!fs.existsSync(generateComponentPath)) {
     try {
@@ -15,9 +23,9 @@ const makeFolder = (generateComponentPath: string) => {
   }
 };
 
-function FileSystem(folder: string, str: string) {
+function FileSystem(path: string, str: string) {
   try {
-    fs.appendFileSync(folder, str);
+    fs.appendFileSync(path, str);
   } catch (error) {
     console.log(error);
   }
@@ -79,6 +87,7 @@ export async function run(message: MessageData, dirPath: string) {
       <string>message.directory,
       "src/components"
     );
+    const projectPath = path.join(folder, <string>message.directory);
     const srcPath = path.join(folder, <string>message.directory, "src");
     const gitLogPath = path.join(
       folder,
@@ -93,21 +102,33 @@ export async function run(message: MessageData, dirPath: string) {
     });
     child_terminal.show();
 
-    child_terminal.sendText(`npx create-react-app ${message.directory}`);
-    const exists = await waitUntil(() => fs.existsSync(srcPath), WAIT_FOREVER);
-    if (exists) {
-      makeFolder(generateComponentPath);
-    makeComponent(message.data, generateComponentPath, srcPath);
-      vscode.window.showInformationMessage("Generate Component Complete!");
-    }
-    const committed = await waitUntil(
-      () => fs.existsSync(gitLogPath),
-      WAIT_FOREVER
-    );
-    if (committed) {
-      setTimeout(() => {
-        vscode.window.showInformationMessage("Tree-acT Complete!");
-      }, 500);
+    const sameProjectName = checkSameName(projectPath, child_terminal);
+
+    if (sameProjectName) {
+      vscode.window.showInformationMessage("Canceled");
+      vscode.window.showErrorMessage(
+        "A project with the same name as the project name you entered already exists. Please enter a different name!"
+      );
+    } else {
+      child_terminal.sendText(`npx create-react-app ${message.directory}`);
+      const exists = await waitUntil(
+        () => fs.existsSync(srcPath),
+        WAIT_FOREVER
+      );
+      if (exists) {
+        makeFolder(generateComponentPath);
+        makeComponent(message.data, generateComponentPath, srcPath);
+        vscode.window.showInformationMessage("Generate Component Complete!");
+      }
+      const committed = await waitUntil(
+        () => fs.existsSync(gitLogPath),
+        WAIT_FOREVER
+      );
+      if (committed) {
+        setTimeout(() => {
+          vscode.window.showInformationMessage("Tree-acT Complete!");
+        }, 500);
+      }
     }
   }
 }
