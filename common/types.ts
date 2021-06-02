@@ -8,3 +8,11 @@ export interface MessageData {
   directory?: string;
   data?: TreeNode;
 }
+
+export type NewTreeNode = {
+  id: number;
+  name: string;
+  parent?: number;
+  children: number[];
+  isExpanded: boolean;
+};

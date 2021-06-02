@@ -42,6 +42,10 @@ export const handlePost = (
         case "generateApp":
           run(message, await getPath());
           break;
+        case "updateState":
+          // TODO: add state update logic of tree view
+          console.log(message);
+          break;
       }
     },
     undefined,

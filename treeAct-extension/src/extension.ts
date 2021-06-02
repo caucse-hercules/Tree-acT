@@ -1,8 +1,7 @@
 import * as vscode from "vscode";
-import * as path from "path";
-import { TreeActTreeView } from "./treeActTreeView";
-import { sampleData } from "../../common/sampleData";
+import { initialData } from "../../common/sampleData";
 import { TreeActPanel } from "./treeActPanel";
+import { TreeActTreeView } from "./treeActTreeView";
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
@@ -37,14 +36,14 @@ export function activate(context: vscode.ExtensionContext) {
 
   vscode.window.registerTreeDataProvider(
     "treeAct",
-    new TreeActTreeView(context, sampleData)
+    new TreeActTreeView(context, initialData)
   );
 
   vscode.window.createTreeView("treeAct", {
-    treeDataProvider: new TreeActTreeView(context, sampleData),
+    treeDataProvider: new TreeActTreeView(context, initialData),
   });
 
-  TreeActPanel.createOrShow(context.extensionUri);
+  // TreeActPanel.createOrShow(context.extensionUri);
 
   console.log("Activated!");
 }

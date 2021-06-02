@@ -1,4 +1,13 @@
-import { MessageData, TreeNode } from "./types";
+import { MessageData, NewTreeNode, TreeNode } from "./types";
+
+export const initialData: NewTreeNode[] = [
+  {
+    id: 0,
+    name: "App",
+    children: [],
+    isExpanded: true,
+  },
+];
 
 export const sampleData: TreeNode = {
   name: "App",
