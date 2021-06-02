@@ -1,8 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { MessageData } from "../../../common/types";
-// import { sampleData, sampleGenerateMessage } from "../../../common/sampleData";
-import { dataTemp, sampleGenerateMessage } from "../../../common/dataTemp";
+import { sampleData, sampleGenerateMessage } from "../../../common/sampleData";
 
 interface vscode {
   postMessage(message: MessageData): void;
