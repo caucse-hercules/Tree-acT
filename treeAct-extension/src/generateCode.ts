@@ -28,9 +28,9 @@ function makeComponent(
   srcPath: string
 ) {
   if (component.name == "App") {
-    fs.copyFileSync(srcPath + "/App.js", srcPath + "/temp.js"); //리액트 프로젝트에서 생성된 App.js의 content를 복사해서 temp.js에 저장
-    fs.truncateSync(srcPath + "/App.js", 0); //App.js의 content 지우기
-    FileSystem(srcPath + "/App.js", "import React from 'react';\n");
+    fs.copyFileSync(`${srcPath}/App.js`, `${srcPath}/temp.js`); //리액트 프로젝트에서 생성된 App.js의 content를 복사해서 temp.js에 저장
+    fs.truncateSync(`${srcPath}/App.js`, 0); //App.js의 content 지우기
+    FileSystem(`${srcPath}/App.js`, "import React from 'react';\n");
   } else {
     FileSystem(
       `${generateComponentPath}/${component.name}.js`,
@@ -42,7 +42,7 @@ function makeComponent(
     console.log(next.name);
     if (component.name == "App") {
       FileSystem(
-        srcPath + "/App.js",
+        `${srcPath}/App.js`,
         `import ${next.name} from './components/${next.name}';\n`
       ); //리액트 프로젝트에서 생성된 App.js에 의존성 처리
     } else {
@@ -55,15 +55,14 @@ function makeComponent(
   }
 
   if (component.name == "App") {
-    const tempStr: string = fs.readFileSync(srcPath + "/temp.js").toString();
-    FileSystem(srcPath + "/App.js", tempStr); //temp.js에 저장된 App.js의 content를 의존성 처리가 다 된 App.js에 이어적기
-    fs.unlinkSync(srcPath + "/temp.js");
+    const tempStr: string = fs.readFileSync(`${srcPath}/temp.js`).toString();
+    FileSystem(`${srcPath}/App.js`, tempStr); //temp.js에 저장된 App.js의 content를 의존성 처리가 다 된 App.js에 이어적기
+    fs.unlinkSync(`${srcPath}/temp.js`);
   } else {
-    const sampleTemplate = `const ${component.name} = () => {\n\treturn <div>${component.name}</div>;\n};\n\nexport default ${component.name};\n`;
-
+    const componentTemplate = `const ${component.name} = () => {\n\treturn <div>${component.name}</div>;\n};\n\nexport default ${component.name};\n`;
     FileSystem(
       `${generateComponentPath}/${component.name}.js`,
-      "\n" + sampleTemplate
+      `\n${componentTemplate}`
     );
   }
 }
