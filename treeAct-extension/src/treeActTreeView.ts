@@ -17,6 +17,10 @@ export class TreeActTreeView
     public treeData: NewTreeNode[]
   ) {}
 
+  refresh(): void {
+    this._onDidChangeTreeData.fire();
+  }
+
   getTreeItem(element: TreeActTreeViewItem): vscode.TreeItem {
     return element;
   }

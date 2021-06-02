@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
-import { MessageData, TreeNode } from "../../common/types";
+import { MessageData, TreeNode, RequestData } from "../../common/types";
+import { TreeActTreeViewProvider } from "./extension";
 import { run } from "./generateCode";
 import { getPath } from "./getPath";
 
@@ -12,6 +13,15 @@ export const postJSONToWebview = (
     command: "JSONToWebview",
     data: payload,
   };
+  panel.webview.postMessage(message);
+};
+
+export const requestStateUpdate = (
+  panel: vscode.WebviewPanel,
+  payload: RequestData
+) => {
+  console.log("Requested state update");
+  const message: RequestData = payload;
   panel.webview.postMessage(message);
 };
 
@@ -45,6 +55,8 @@ export const handlePost = (
         case "updateState":
           // TODO: add state update logic of tree view
           console.log(message);
+          // TODO: edit state from state.ts
+          TreeActTreeViewProvider.refresh();
           break;
       }
     },
