@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import ToggleButton from "@material-ui/lab/ToggleButton";
-import { Input } from "@material-ui/core";
+import { Input, ClickAwayListener } from "@material-ui/core";
 import { AddCircleOutline, RemoveCircleOutlineSharp } from "@material-ui/icons";
 import { node } from "webpack";
-
-let p: any;
-
-const isEditable: boolean = false;
+import { TreeNode, Name } from "../module/tree";
 
 const Root = styled.p`
   display: inline-block;
@@ -58,40 +55,71 @@ const Leaf = styled(ToggleButton)`
   position: relative;
 `;
 
-export interface NodeProps {
-  name: string;
-  depth: number;
-  hasChildren: boolean;
+interface nodeProps {
+  node: TreeNode;
+  onInsert: (id: number) => void;
+  onRemove: (id: number) => void;
+  onChangeName: ({ id, name }: Name) => void;
 }
 
-const Node = (nodeProps: NodeProps) => {
-  const { name, depth, hasChildren } = nodeProps;
-  p = nodeProps;
+const Node = (props: nodeProps) => {
+  const { node, onInsert, onRemove, onChangeName } = props;
+  const [isEditable, setEditable] = useState<boolean>(false);
+
+  const handleDoubleClick = () => {
+    setEditable(true);
+  };
+
+  const handleClickAway = () => {
+    setEditable(false);
+  };
 
   return (
-    <div>
-      {depth == 0 ? (
-        <Root>
-          <text>App</text>
-        </Root>
-      ) : hasChildren ? (
-        <NonLeaf>
-          <Input
-            defaultValue={name}
-            disabled={!isEditable}
-            inputProps={{ "aria-label": "description" }}
-          />
-        </NonLeaf>
-      ) : (
-        <Leaf>
-          <Input
-            defaultValue={name}
-            disabled={!isEditable}
-            inputProps={{ "aria-label": "description" }}
-          />
-        </Leaf>
-      )}
-    </div>
+    <ClickAwayListener onClickAway={handleClickAway}>
+      <div>
+        {node.name === "App.js" ? (
+          <Root>
+            <text>App</text>
+            <div>
+              <AddCircleOutline onClick={() => onInsert(node.id)} />
+            </div>
+          </Root>
+        ) : node.children.length !== 0 ? (
+          <NonLeaf>
+            <div>
+              <RemoveCircleOutlineSharp onClick={() => onRemove(node.id)} />
+            </div>
+            <Input
+              defaultValue={node.name}
+              disabled={!isEditable}
+              inputProps={{ "aria-label": "description" }}
+              onDoubleClick={handleDoubleClick}
+            />
+            <div>
+              <AddCircleOutline onClick={() => onInsert(node.id)} />
+            </div>
+          </NonLeaf>
+        ) : (
+          <Leaf>
+            <div>
+              <RemoveCircleOutlineSharp onClick={() => onRemove(node.id)} />
+            </div>
+            <Input
+              defaultValue={node.name}
+              disabled={!isEditable}
+              inputProps={{ "aria-label": "description" }}
+              onDoubleClick={handleDoubleClick}
+              onChange={(e) =>
+                onChangeName({ id: node.id, name: e.target.value })
+              }
+            />
+            <div>
+              <AddCircleOutline onClick={() => onInsert(node.id)} />
+            </div>
+          </Leaf>
+        )}
+      </div>
+    </ClickAwayListener>
   );
 };
 

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { sampleData } from "../../../common/sampleData";
 import styled from "styled-components";
-import Node, { NodeProps } from "./Node";
-import { TreeNode } from "../types";
+import Node from "./Node";
+import { Input } from "@material-ui/core";
+import { TreeNode, TreeState, Name } from "../module/tree";
 import { node } from "webpack";
 import { blue } from "@material-ui/core/colors";
 
@@ -80,38 +81,53 @@ const ChildLi = styled.li`
   }
 `;
 
-let treeData: TreeNode[];
-let depth = 0;
+interface treeProps {
+  treeData: TreeNode[];
+  onInsert: (id: number) => void;
+  onRemove: (id: number) => void;
+  onChangeName: ({ id, name }: Name) => void;
+}
 
-const Tree = () => {
-  if (sampleData.children) treeData = sampleData.children;
-
-  const createNode = (childrenNode: TreeNode[]) => {
-    let node_name: string;
-    depth += 1;
-    console.log(childrenNode);
+const Tree = (props: treeProps) => {
+  const { treeData, onInsert, onRemove, onChangeName } = props;
+  console.log("TreeData :", treeData);
+  const createNode = (childrenId: number[]) => {
+    console.log("ChildrenId: ", childrenId);
     return (
       <ChildUl>
-        {childrenNode.map((node) => (
-          <ChildLi>
-            {node.children ? (
-              <Node name={node.name} depth={depth} hasChildren={true} />
-            ) : (
-              <Node name={node.name} depth={depth} hasChildren={false} />
-            )}
-            {node.children && createNode(node.children)}
-          </ChildLi>
-        ))}
+        {childrenId.map((childId) => {
+          const childNode = treeData.find((node) => node.id === childId);
+          console.log("Childe Node:", childNode);
+          return (
+            <ChildLi>
+              <Node
+                node={childNode!}
+                onInsert={onInsert}
+                onRemove={onRemove}
+                onChangeName={onChangeName}
+              />
+              {childNode!.children.length !== 0 &&
+                createNode(childNode!.children)}
+            </ChildLi>
+          );
+        })}
       </ChildUl>
     );
   };
 
   return (
     <div>
+      <Input onChange={(e) => onChangeName({ id: 1, name: e.target.value })} />
       <RootUl>
         <RootLi>
-          <Node name="App" depth={0} hasChildren={true}></Node>
-          {createNode(treeData)}
+          <Node
+            node={treeData[0]}
+            onInsert={onInsert}
+            onRemove={onRemove}
+            onChangeName={onChangeName}
+          ></Node>
+          {treeData[0].children.length !== 0 &&
+            createNode(treeData[0].children)}
         </RootLi>
       </RootUl>
     </div>
