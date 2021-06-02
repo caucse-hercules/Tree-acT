@@ -32,12 +32,16 @@ function FileSystem(path: string, str: string) {
 
 function makeComponent(
   componentArray: any,
-  index: number,
+  id: number,
   generateComponentPath: string,
   srcPath: string
 ) {
+  const index = componentArray.findIndex(
+    (item: { id: number }) => item.id === id
+  );
   const component = componentArray[index];
   console.log(component.name);
+
   if (component.name == "App") {
     fs.copyFileSync(`${srcPath}/App.js`, `${srcPath}/temp.js`); //리액트 프로젝트에서 생성된 App.js의 content를 복사해서 temp.js에 저장
     fs.truncateSync(`${srcPath}/App.js`, 0); //App.js의 content 지우기
@@ -48,9 +52,14 @@ function makeComponent(
       "import React from 'react';\n"
     );
   }
+
   for (const i in component.children) {
-    const nextindex: number = component.children[i];
-    const nextComponent = componentArray[nextindex];
+    const nextId: number = component.children[i];
+    const nextIndex = componentArray.findIndex(
+      (item: { id: number }) => item.id === nextId
+    );
+    const nextComponent = componentArray[nextIndex];
+
     if (component.name == "App") {
       FileSystem(
         `${srcPath}/App.js`,
@@ -62,7 +71,8 @@ function makeComponent(
         `import ${nextComponent.name} from './${nextComponent.name}';\n`
       );
     }
-    makeComponent(componentArray, nextindex, generateComponentPath, srcPath);
+
+    makeComponent(componentArray, nextId, generateComponentPath, srcPath);
   }
 
   if (component.name == "App") {
@@ -97,6 +107,7 @@ export async function run(message: MessageData, dirPath: string) {
       ".git",
       "logs"
     );
+
     vscode.window.showInformationMessage("Starting");
     const child_terminal = vscode.window.createTerminal({
       name: "Show process",
