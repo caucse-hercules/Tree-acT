@@ -73,7 +73,7 @@ export async function run(message: MessageData, dirPath: string) {
     vscode.window.showInformationMessage("Canceled");
     exit;
   } else {
-    const folder: string = vscode.workspace.rootPath || dirPath;
+    const folder: string = dirPath;
     const generateComponentPath = path.join(
       folder,
       <string>message.directory,
@@ -97,7 +97,7 @@ export async function run(message: MessageData, dirPath: string) {
     const exists = await waitUntil(() => fs.existsSync(srcPath), WAIT_FOREVER);
     if (exists) {
       makeFolder(generateComponentPath);
-    makeComponent(message.data, generateComponentPath, srcPath);
+      makeComponent(message.data, generateComponentPath, srcPath);
       vscode.window.showInformationMessage("Generate Component Complete!");
     }
     const committed = await waitUntil(
