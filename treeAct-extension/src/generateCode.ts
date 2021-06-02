@@ -22,11 +22,15 @@ function FileSystem(folder: string, str: string) {
   }
 }
 
-function dfs(component: any, generateComponentPath: string, srcPath: string) {
+function makeComponent(
+  component: any,
+  generateComponentPath: string,
+  srcPath: string
+) {
   if (component.name == "App") {
-    fs.copyFileSync(srcPath + "/App.js", srcPath + "/temp.js"); //리액트 프로젝트에서 생성된 App.js의 content를 복사해서 temp.js에 저장
-    fs.truncateSync(srcPath + "/App.js", 0); //App.js의 content 지우기
-    FileSystem(srcPath + "/App.js", "import React from 'react';\n");
+    fs.copyFileSync(`${srcPath}/App.js`, `${srcPath}/temp.js`); //리액트 프로젝트에서 생성된 App.js의 content를 복사해서 temp.js에 저장
+    fs.truncateSync(`${srcPath}/App.js`, 0); //App.js의 content 지우기
+    FileSystem(`${srcPath}/App.js`, "import React from 'react';\n");
   } else {
     FileSystem(
       `${generateComponentPath}/${component.name}.js`,
@@ -38,7 +42,7 @@ function dfs(component: any, generateComponentPath: string, srcPath: string) {
     console.log(next.name);
     if (component.name == "App") {
       FileSystem(
-        srcPath + "/App.js",
+        `${srcPath}/App.js`,
         `import ${next.name} from './components/${next.name}';\n`
       ); //리액트 프로젝트에서 생성된 App.js에 의존성 처리
     } else {
@@ -47,19 +51,18 @@ function dfs(component: any, generateComponentPath: string, srcPath: string) {
         `import ${next.name} from './${next.name}';\n`
       );
     }
-    dfs(next, generateComponentPath, srcPath);
+    makeComponent(next, generateComponentPath, srcPath);
   }
 
   if (component.name == "App") {
-    const tempStr: string = fs.readFileSync(srcPath + "/temp.js").toString();
-    FileSystem(srcPath + "/App.js", tempStr); //temp.js에 저장된 App.js의 content를 의존성 처리가 다 된 App.js에 이어적기
-    fs.unlinkSync(srcPath + "/temp.js");
+    const tempStr: string = fs.readFileSync(`${srcPath}/temp.js`).toString();
+    FileSystem(`${srcPath}/App.js`, tempStr); //temp.js에 저장된 App.js의 content를 의존성 처리가 다 된 App.js에 이어적기
+    fs.unlinkSync(`${srcPath}/temp.js`);
   } else {
-    const sampleTemplate = `const ${component.name} = () => {\n\treturn <div>${component.name}</div>;\n};\n\nexport default ${component.name};\n`;
-
+    const componentTemplate = `const ${component.name} = () => {\n\treturn <div>${component.name}</div>;\n};\n\nexport default ${component.name};\n`;
     FileSystem(
       `${generateComponentPath}/${component.name}.js`,
-      "\n" + sampleTemplate
+      `\n${componentTemplate}`
     );
   }
 }
@@ -89,7 +92,7 @@ export async function run(message: MessageData, dirPath: string) {
   const exists = await waitUntil(() => fs.existsSync(srcPath), WAIT_FOREVER);
   if (exists) {
     makeFolder(generateComponentPath);
-    dfs(message.data, generateComponentPath, srcPath);
+    makeComponent(message.data, generateComponentPath, srcPath);
     vscode.window.showInformationMessage("Generate Component Complete!");
   }
   const committed = await waitUntil(
