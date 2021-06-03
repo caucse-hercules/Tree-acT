@@ -97,7 +97,7 @@ export async function run(message: MessageData, dirPath: string) {
     const exists = await waitUntil(() => fs.existsSync(srcPath), WAIT_FOREVER);
     if (exists) {
       makeFolder(generateComponentPath);
-    makeComponent(message.data, generateComponentPath, srcPath);
+      makeComponent(message.data, generateComponentPath, srcPath);
       vscode.window.showInformationMessage("Generate Component Complete!");
     }
     const committed = await waitUntil(
@@ -109,5 +109,10 @@ export async function run(message: MessageData, dirPath: string) {
         vscode.window.showInformationMessage("Tree-acT Complete!");
       }, 500);
     }
+
+    // return new Promise(function (resolve, reject) {
+    //   resolve("DONE");
+    // });
+    return "DONE";
   }
 }
