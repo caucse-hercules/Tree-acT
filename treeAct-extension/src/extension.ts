@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { treeState } from "./state";
 import { TreeActPanel } from "./treeActPanel";
-import { addNode, deleteNode, TreeActTreeView } from "./treeActTreeView";
+import { TreeActTreeView } from "./treeActTreeView";
 
 export let TreeActTreeViewProvider: TreeActTreeView;
 
@@ -9,16 +9,6 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("treeAct.start", () => {
       TreeActPanel.createOrShow(context.extensionUri);
-    })
-  );
-  context.subscriptions.push(
-    vscode.commands.registerCommand("treeAct.addNode", () => {
-      addNode();
-    })
-  );
-  context.subscriptions.push(
-    vscode.commands.registerCommand("treeAct.deleteNode", () => {
-      deleteNode();
     })
   );
 
