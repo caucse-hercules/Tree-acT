@@ -4,41 +4,12 @@ import { TreeActTreeViewProvider } from "./extension";
 import { run } from "./generateCode";
 import { getPath } from "./getPath";
 
-export const postJSONToWebview = (
-  context: vscode.ExtensionContext,
-  panel: vscode.WebviewPanel,
-  payload: TreeNode
-) => {
-  const message: MessageData = {
-    command: "JSONToWebview",
-    data: payload,
-  };
-  panel.webview.postMessage(message);
-};
-
 export const requestStateUpdate = (
   panel: vscode.WebviewPanel,
   payload: RequestData
 ) => {
   console.log("Requested state update");
-  const message: RequestData = payload;
-  panel.webview.postMessage(message);
-};
-
-export const handlePostTest = (
-  context: vscode.ExtensionContext,
-  panel: vscode.WebviewPanel
-) => {
-  panel.webview.onDidReceiveMessage(
-    (message: MessageData) => {
-      switch (message.command) {
-        case "JSONToExtension":
-          vscode.window.showInformationMessage(JSON.stringify(message.data));
-      }
-    },
-    undefined,
-    context.subscriptions
-  );
+  panel.webview.postMessage(payload);
 };
 
 // Write your own handlePost function here
