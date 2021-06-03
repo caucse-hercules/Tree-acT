@@ -6,12 +6,8 @@ import Tree from "../components/Tree";
 
 const TreeContainer = () => {
   const treeData = useSelector((state: RootState) => {
-    console.log(state);
-    console.log(state.treeReducer.treeData);
-    console.log(typeof state);
     return state.treeReducer.treeData;
   });
-  console.log(treeData);
   const dispatch = useDispatch();
   const onInsert = useCallback((id) => dispatch(insertNode(id)), [dispatch]);
   const onRemove = useCallback((id) => dispatch(removeNode(id)), [dispatch]);

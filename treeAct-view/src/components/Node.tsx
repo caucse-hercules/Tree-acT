@@ -74,6 +74,7 @@ const Node = (props: nodeProps) => {
     setEditable(false);
   };
 
+  console.log("node name: ", node.name);
   return (
     <ClickAwayListener onClickAway={handleClickAway}>
       <div>
@@ -90,10 +91,13 @@ const Node = (props: nodeProps) => {
               <RemoveCircleOutlineSharp onClick={() => onRemove(node.id)} />
             </div>
             <Input
-              defaultValue={node.name}
+              value={node.name}
               disabled={!isEditable}
               inputProps={{ "aria-label": "description" }}
               onDoubleClick={handleDoubleClick}
+              onChange={(e) =>
+                onChangeName({ id: node.id, name: e.target.value })
+              }
             />
             <div>
               <AddCircleOutline onClick={() => onInsert(node.id)} />
@@ -105,7 +109,7 @@ const Node = (props: nodeProps) => {
               <RemoveCircleOutlineSharp onClick={() => onRemove(node.id)} />
             </div>
             <Input
-              defaultValue={node.name}
+              value={node.name}
               disabled={!isEditable}
               inputProps={{ "aria-label": "description" }}
               onDoubleClick={handleDoubleClick}

@@ -90,14 +90,13 @@ interface treeProps {
 
 const Tree = (props: treeProps) => {
   const { treeData, onInsert, onRemove, onChangeName } = props;
-  console.log("TreeData :", treeData);
+  console.log("Now Tree Data: ", treeData);
   const createNode = (childrenId: number[]) => {
-    console.log("ChildrenId: ", childrenId);
     return (
       <ChildUl>
         {childrenId.map((childId) => {
           const childNode = treeData.find((node) => node.id === childId);
-          console.log("Childe Node:", childNode);
+          console.log("making node: ", childNode);
           return (
             <ChildLi>
               <Node
