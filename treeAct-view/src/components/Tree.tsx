@@ -116,7 +116,6 @@ const Tree = (props: treeProps) => {
 
   return (
     <div>
-      <Input onChange={(e) => onChangeName({ id: 1, name: e.target.value })} />
       <RootUl>
         <RootLi>
           <Node
