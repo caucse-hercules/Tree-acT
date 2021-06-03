@@ -69,17 +69,6 @@
           "command": "treeAct.start",
           "when": "view == treeAct",
           "group": "navigation"
-        },
-        {
-          "command": "treeAct.addNode",
-          "when": "view == treeAct",
-          "group": "navigation"
-        }
-      ],
-      "view/item/context": [
-        {
-          "command": "treeAct.deleteNode",
-          "when": "view == treeAct"
         }
       ]
     }
