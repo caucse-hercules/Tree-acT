@@ -72,6 +72,9 @@ export class TreeActPanel {
   public dispose() {
     TreeActPanel.currentPanel = undefined;
 
+    vscode.window.showInformationMessage(
+      "You can open Tree-acT again via clicking the icon on Tree View."
+    );
     // Clean up our resources
     this._panel.dispose();
 
