@@ -5,6 +5,15 @@ import { MessageData } from "../../common/types";
 import waitUntil, { WAIT_FOREVER } from "async-wait-until";
 import { exit } from "process";
 
+const checkBlank = (componentArray: any): number => {
+  for (const i in componentArray) {
+    if (componentArray[i].name.search(/\s/) != -1) {
+      return Number(i);
+    }
+  }
+  return -1;
+};
+
 const checkSameName = (projectPath: string, child_terminal: any): boolean => {
   if (fs.existsSync(projectPath)) {
     return true;
@@ -22,20 +31,20 @@ const makeFolder = (generateComponentPath: string) => {
   }
 };
 
-function FileSystem(path: string, str: string) {
+const FileSystem = (path: string, str: string) => {
   try {
     fs.appendFileSync(path, str);
   } catch (error) {
     console.log(error);
   }
-}
+};
 
-function makeComponent(
+const makeComponent = (
   componentArray: any,
   id: number,
   generateComponentPath: string,
   srcPath: string
-) {
+) => {
   const index = componentArray.findIndex(
     (item: { id: number }) => item.id === id
   );
@@ -86,9 +95,9 @@ function makeComponent(
       `\n${componentTemplate}`
     );
   }
-}
+};
 
-export async function run(message: MessageData, dirPath: string) {
+export const run = async (message: MessageData, dirPath: string) => {
   if (dirPath === "exit") {
     vscode.window.showInformationMessage("Canceled");
     exit;
@@ -115,13 +124,24 @@ export async function run(message: MessageData, dirPath: string) {
     });
     child_terminal.show();
 
-    const sameProjectName = checkSameName(projectPath, child_terminal);
+    const componentIndex = checkBlank(message.data);
+    if (componentIndex != -1) {
+      console.log(componentIndex);
+      const componentArray: any = message.data;
+      const component = componentArray[componentIndex];
+      child_terminal.sendText(`exit`);
+      vscode.window.showInformationMessage("Canceled");
+      vscode.window.showErrorMessage(
+        `Component file name contains spaces!  (${component.name}.js)`
+      );
+    }
 
+    const sameProjectName = checkSameName(projectPath, child_terminal);
     if (sameProjectName) {
       child_terminal.sendText(`exit`);
       vscode.window.showInformationMessage("Canceled");
       vscode.window.showErrorMessage(
-        "A project with the same name as the project name you entered already exists. Please enter a different name!"
+        `A project with the same name already exists!  (${message.directory})`
       );
     } else {
       child_terminal.sendText(`npx create-react-app ${message.directory}`);
@@ -145,4 +165,4 @@ export async function run(message: MessageData, dirPath: string) {
       }
     }
   }
-}
+};
