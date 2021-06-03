@@ -1,11 +1,11 @@
 {
-  "name": "tree-act",
+  "name": "Tree-acT",
   "version": "0.0.1",
   "description": "React code generator from Tree",
   "main": "out/extension",
   "repository": "https://github.com/caucse-hercules/Tree-acT.git",
   "author": "DoLim <limdongyoung0@gmail.com>",
-  "publisher": "caucse-hercules",
+  "publisher": "Tree-acT",
   "license": "MIT",
   "private": true,
   "workspaces": [
