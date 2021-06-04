@@ -11,16 +11,6 @@ const FlexRow = styled.div`
   display: flex;
   flex-direction: row;
 `;
-
-// const LSide = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   border-style: solid;
-//   border-color: lightgray;
-//   min-width: 200px;
-//   height: 100vh;
-//   margin-right: 10px;
-// `;
 const TreeSpace = styled.div`
   display: flex;
   border-style: solid;
