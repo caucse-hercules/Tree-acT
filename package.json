@@ -6,7 +6,7 @@
   "repository": "https://github.com/caucse-hercules/Tree-acT.git",
   "author": "DoLim <limdongyoung0@gmail.com>",
   "publisher": "Tree-acT",
-  "icon": "https://res.cloudinary.com/pil0t/image/upload/v1622821430/Tree-Act-icon_b5by0x.png",
+  "icon": "image/Tree-acT-icon.png",
   "license": "MIT",
   "private": true,
   "workspaces": [
