@@ -69,7 +69,6 @@ const treeReducer = createReducer<TreeState, TreeAction>(treeData)
   )
   .handleAction(removeNode, (state, action) =>
     produce(state, (draft) => {
-      console.log("remove id: ", action.payload);
       const removeIndex = draft.treeData.findIndex(
         (node) => node.id === action.payload
       );
