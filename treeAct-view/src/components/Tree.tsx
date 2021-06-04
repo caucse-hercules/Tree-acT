@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { NewTreeNode } from "../../../common/types";
+import { Name } from "../module/tree";
 import Node from "./Node";
 import { TreeNode, TreeState, Name } from "../module/tree";
 
@@ -78,7 +80,7 @@ const ChildLi = styled.li`
 `;
 
 interface treeProps {
-  treeData: TreeNode[];
+  treeData: NewTreeNode[];
   onInsert: (id: number) => void;
   onRemove: (id: number) => void;
   onChangeName: ({ id, name }: Name) => void;

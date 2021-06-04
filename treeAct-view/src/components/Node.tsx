@@ -1,9 +1,10 @@
+import { ClickAwayListener, Input } from "@material-ui/core";
+import { AddCircleOutline, RemoveCircleOutlineSharp } from "@material-ui/icons";
+import ToggleButton from "@material-ui/lab/ToggleButton";
 import React, { useState } from "react";
 import styled from "styled-components";
-import ToggleButton from "@material-ui/lab/ToggleButton";
-import { Input, ClickAwayListener } from "@material-ui/core";
-import { AddCircleOutline, RemoveCircleOutlineSharp } from "@material-ui/icons";
-import { TreeNode, Name } from "../module/tree";
+import { NewTreeNode } from "../../../common/types";
+import { Name } from "../module/tree";
 
 const Root = styled.p`
   display: inline-block;
@@ -85,7 +86,7 @@ const LabelText = styled.p`
 `;
 
 interface nodeProps {
-  node: TreeNode;
+  node: NewTreeNode;
   onInsert: (id: number) => void;
   onRemove: (id: number) => void;
   onChangeName: ({ id, name }: Name) => void;
