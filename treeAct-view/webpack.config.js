@@ -26,6 +26,17 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.js?$/,
+        exclude: /(node_modules)/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env", "@babel/preset-react"],
+          },
+        },
+      },
+
       // 모든 '.js' 출력 파일은 'source-map-loader'에서 다시 처리한 소스 맵이 있습니다.
       {
         enforce: "pre",
