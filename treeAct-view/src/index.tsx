@@ -13,7 +13,9 @@ const store = createStore(rootReducer, composeEnhancers());
 ReactDOM.render(
   <Provider store={store}>
     <StylesProvider injectFirst>
-      <Hello />
+      <div style={{ backgroundColor: "rgb(30,30,30)" }}>
+        <Hello />
+      </div>
     </StylesProvider>
   </Provider>,
   document.getElementById("root")
