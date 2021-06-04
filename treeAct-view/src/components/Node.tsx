@@ -3,7 +3,6 @@ import styled from "styled-components";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import { Input, ClickAwayListener } from "@material-ui/core";
 import { AddCircleOutline, RemoveCircleOutlineSharp } from "@material-ui/icons";
-import { node } from "webpack";
 import { TreeNode, Name } from "../module/tree";
 
 const Root = styled.p`
@@ -14,7 +13,6 @@ const Root = styled.p`
   background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%);
   border: 0;
   position: relative;
-  //&:not(:last-child) {
   &:after {
     border-left: 1px solid green;
     bottom: -30px;
@@ -23,7 +21,6 @@ const Root = styled.p`
     left: 50%;
     position: absolute;
   }
-  //}
 `;
 
 const NonLeaf = styled(ToggleButton)`
@@ -92,13 +89,14 @@ interface nodeProps {
   onInsert: (id: number) => void;
   onRemove: (id: number) => void;
   onChangeName: ({ id, name }: Name) => void;
+  onExpand: (id: number) => void;
 }
 
 const Node = (props: nodeProps) => {
-  const { node, onInsert, onRemove, onChangeName } = props;
+  const { node, onInsert, onRemove, onChangeName, onExpand } = props;
   const [isEditable, setEditable] = useState<boolean>(false);
 
-  const handleDoubleClick = () => {
+  const handleDoubleClick = (e: React.MouseEvent<HTMLElement>) => {
     setEditable(true);
   };
 
@@ -106,19 +104,34 @@ const Node = (props: nodeProps) => {
     setEditable(false);
   };
 
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    onExpand(node.id);
+  };
+
+  const handleInsert = (e: React.MouseEvent<SVGElement>) => {
+    e.stopPropagation();
+    onInsert(node.id);
+  };
+
+  const handleRemove = (e: React.MouseEvent<SVGElement>) => {
+    e.stopPropagation();
+    console.log("remove id: ", node.id);
+    onRemove(node.id);
+  };
+
   return (
     <div>
-      {node.name === "App.js" ? (
+      {node.name === "App" ? (
         <>
-          <Root>
+          <Root onClick={handleClick}>
             <text>App</text>
-            <RootAddButton onClick={() => onInsert(node.id)} />
+            <RootAddButton onClick={handleInsert} />
           </Root>
         </>
       ) : node.children.length !== 0 ? (
         <ClickAwayListener onClickAway={handleClickAway}>
-          <NonLeaf onDoubleClick={handleDoubleClick}>
-            <RemoveButton onClick={() => onRemove(node.id)} />
+          <NonLeaf onClick={handleClick} onDoubleClick={handleDoubleClick}>
+            <RemoveButton onClick={handleRemove} />
             {isEditable ? (
               <WhiteInput
                 value={node.name}
@@ -134,23 +147,21 @@ const Node = (props: nodeProps) => {
             ) : (
               <LabelText>{node.name}</LabelText>
             )}
-            <AddButton onClick={() => onInsert(node.id)} />
+            <AddButton onClick={handleInsert} />
           </NonLeaf>
         </ClickAwayListener>
       ) : (
         <ClickAwayListener onClickAway={handleClickAway}>
-          <Leaf onDoubleClick={handleDoubleClick}>
-            <RemoveButton onClick={() => onRemove(node.id)} />
+          <Leaf onClick={handleClick} onDoubleClick={handleDoubleClick}>
+            <RemoveButton onClick={handleRemove} />
             {isEditable ? (
               <WhiteInput
                 value={node.name}
-                //disabled={!isEditable}
                 autoFocus={true}
                 inputProps={{
                   "aria-label": "description",
                   autoCapitalize: "none",
                 }}
-                //onDoubleClick={handleDoubleClick}
                 onChange={(e) =>
                   onChangeName({ id: node.id, name: e.target.value })
                 }
@@ -158,7 +169,7 @@ const Node = (props: nodeProps) => {
             ) : (
               <LabelText>{node.name}</LabelText>
             )}
-            <AddButton onClick={() => onInsert(node.id)} />
+            <AddButton onClick={handleInsert} />
           </Leaf>
         </ClickAwayListener>
       )}

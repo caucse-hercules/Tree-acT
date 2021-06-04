@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { insertNode, removeNode, changeName } from "../module/tree";
+import { insertNode, removeNode, changeName, expandNode } from "../module/tree";
 import { RootState } from "../module";
 import Tree from "../components/Tree";
 
@@ -15,12 +15,14 @@ const TreeContainer = () => {
     (name) => dispatch(changeName(name)),
     [dispatch]
   );
+  const onExpand = useCallback((id) => dispatch(expandNode(id)), [dispatch]);
   return (
     <Tree
       treeData={treeData}
       onInsert={onInsert}
       onRemove={onRemove}
       onChangeName={onChangeName}
+      onExpand={onExpand}
     />
   );
 };
