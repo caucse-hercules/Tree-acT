@@ -33,9 +33,8 @@ const NonLeaf = styled(ToggleButton)`
   width: 80px;
   height: 60px;
   border-radius: 10%;
-  border: 2px solid gray;
+  border: 2px solid #ffffff;
   position: relative;
-  /* text-transform: none; */
   &:after {
     border-left: 1px solid green;
     bottom: -30px;
@@ -52,14 +51,18 @@ const Leaf = styled(ToggleButton)`
   padding: 10px 20px;
   width: 80px;
   height: 60px;
-  border: 2px dashed gray;
+  border: 2px dashed #ffffff;
   position: relative;
   /* text-transform: none; */
 `;
 
+const WhiteInput = styled(Input)`
+  color: white;
+`;
+
 const RootAddButton = styled(AddCircleOutline)`
   position: absolute;
-  left: 24px;
+  left: 22px;
   top: 45px;
   color: green;
 `;
@@ -79,7 +82,9 @@ const RemoveButton = styled(RemoveCircleOutlineSharp)`
 `;
 
 const LabelText = styled.p`
+  color: white;
   text-transform: none;
+  margin: 0;
 `;
 
 interface nodeProps {
@@ -115,7 +120,7 @@ const Node = (props: nodeProps) => {
           <NonLeaf onDoubleClick={handleDoubleClick}>
             <RemoveButton onClick={() => onRemove(node.id)} />
             {isEditable ? (
-              <Input
+              <WhiteInput
                 value={node.name}
                 autoFocus={true}
                 inputProps={{
@@ -137,7 +142,7 @@ const Node = (props: nodeProps) => {
           <Leaf onDoubleClick={handleDoubleClick}>
             <RemoveButton onClick={() => onRemove(node.id)} />
             {isEditable ? (
-              <Input
+              <WhiteInput
                 value={node.name}
                 //disabled={!isEditable}
                 autoFocus={true}
