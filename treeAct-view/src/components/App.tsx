@@ -5,6 +5,11 @@ import TreeContainer from "../containers/TreeContainer";
 import PostTest from "./PostTest";
 import Layout from "./Layout";
 import MarkdownRender from "./markdownRender";
+export interface HelloProps {
+  compiler: string;
+  framework: string;
+}
+
 const data = sampleData;
 
 export const Hello = () => <TreeContainer />;

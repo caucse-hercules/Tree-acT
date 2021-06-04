@@ -11,6 +11,7 @@
   "devDependencies": {
     "@types/react": "^17.0.5",
     "@types/react-dom": "^17.0.3",
+    "@types/react-responsive": "^8.0.2",
     "@types/styled-components": "^5.1.9",
     "@types/webpack-dev-server": "^3.11.3",
     "eslint": "^7.25.0",
@@ -32,7 +33,9 @@
     "raw-loader": "^4.0.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-markdown": "^6.0.2",
     "react-redux": "^7.2.4",
+    "react-responsive": "^8.2.0",
     "redux": "^4.1.0",
     "redux-actions": "^2.6.5",
     "redux-devtools-extension": "^2.13.9",
