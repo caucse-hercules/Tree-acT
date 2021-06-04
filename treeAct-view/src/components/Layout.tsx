@@ -3,10 +3,15 @@ import styled from "styled-components";
 import { useMediaQuery } from "react-responsive";
 //import Rside from "./Rsidebar";
 
-const Div = styled.div`
+type LayoutProps = {
+  children: React.ReactElement;
+};
+
+const FlexRow = styled.div`
   display: flex;
   flex-direction: row;
 `;
+
 // const LSide = styled.div`
 //   display: flex;
 //   flex-direction: column;
@@ -23,10 +28,11 @@ const TreeSpace = styled.div`
   border-radius: 4px;
   width: 84%;
   //min-width: 1200px;
-  height: 100vh;
+  height: 98vh;
   margin-right: 10px;
   overflow: auto;
 `;
+
 const Rside = styled.div`
   display: flex;
   font-size: 20px;
@@ -37,15 +43,16 @@ const Rside = styled.div`
   margin-right: 10px;
 
   min-width: 230px;
-  height: 100vh;
+  height: 98vh;
 `;
-const Layout = (props: any) => {
-  const isBig = useMediaQuery({ minWidth: 1250 });
+
+const Layout = ({ children }: LayoutProps) => {
+  const isBig = useMediaQuery({ minWidth: 1280 });
   return (
-    <Div>
-      <TreeSpace>트리공간</TreeSpace>
+    <FlexRow>
+      <TreeSpace>{children}</TreeSpace>
       {isBig && <Rside>사이드바</Rside>}
-    </Div>
+    </FlexRow>
   );
 };
 export default Layout;

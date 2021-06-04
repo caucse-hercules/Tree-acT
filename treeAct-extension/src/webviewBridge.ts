@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import { MessageData, TreeNode, RequestData } from "../../common/types";
-import { TreeActTreeViewProvider } from "./extension";
+import { MessageData, RequestData } from "../../common/types";
+import { treeActTreeViewProvider } from "./extension";
 import { run } from "./generateCode";
 import { getPath } from "./getPath";
 
@@ -12,8 +12,24 @@ export const requestStateUpdate = (
   panel.webview.postMessage(payload);
 };
 
+export const setInitialState = (
+  panel: vscode.WebviewPanel,
+  payload: RequestData
+) => {
+  console.log("Setting initial state");
+  panel.webview.postMessage(payload);
+};
+
+export const postMessage = (
+  panel: vscode.WebviewPanel,
+  payload: RequestData
+) => {
+  panel.webview.postMessage(payload);
+};
+
 // Write your own handlePost function here
 export const handlePost = (
+  context: vscode.ExtensionContext,
   panel: vscode.WebviewPanel,
   disposables?: vscode.Disposable[]
 ) => {
@@ -24,10 +40,15 @@ export const handlePost = (
           run(message, await getPath());
           break;
         case "updateState":
-          // TODO: add state update logic of tree view
-          console.log(message);
-          // TODO: edit state from state.ts
-          TreeActTreeViewProvider.refresh();
+          context.globalState.update("treeData", message.data);
+          treeActTreeViewProvider.refresh();
+          break;
+        case "init":
+          console.log("Initialize request from webview");
+          postMessage(panel, {
+            command: "init",
+            data: context.globalState.get("treeData"),
+          });
           break;
       }
     },

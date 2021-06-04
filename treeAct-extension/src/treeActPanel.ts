@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
-import { handlePost } from "./webviewBridge";
+import { NewTreeNode, RequestData } from "../../common/types";
+import { handlePost, setInitialState } from "./webviewBridge";
 
 /**
  * Manages Tree-acT webview panels
@@ -16,12 +17,16 @@ export class TreeActPanel {
   private readonly _extensionUri: vscode.Uri;
   private _disposables: vscode.Disposable[] = [];
 
-  public static createOrShow(extensionUri: vscode.Uri) {
+  public static createOrShow(
+    context: vscode.ExtensionContext,
+    extensionUri: vscode.Uri
+  ) {
     const column = vscode.window.activeTextEditor
       ? vscode.window.activeTextEditor.viewColumn
-      : undefined;
+      : vscode.ViewColumn.One;
     // If we already have a panel, show it
     if (TreeActPanel.currentPanel) {
+      console.log("Jebal");
       TreeActPanel.currentPanel._panel.reveal(column);
       return;
     }
@@ -36,14 +41,22 @@ export class TreeActPanel {
       }
     );
 
-    TreeActPanel.currentPanel = new TreeActPanel(panel, extensionUri);
+    TreeActPanel.currentPanel = new TreeActPanel(context, panel, extensionUri);
   }
 
-  public static revive(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
-    TreeActPanel.currentPanel = new TreeActPanel(panel, extensionUri);
+  public static revive(
+    context: vscode.ExtensionContext,
+    panel: vscode.WebviewPanel,
+    extensionUri: vscode.Uri
+  ) {
+    TreeActPanel.currentPanel = new TreeActPanel(context, panel, extensionUri);
   }
 
-  private constructor(panel: vscode.WebviewPanel, extensionUri: vscode.Uri) {
+  private constructor(
+    context: vscode.ExtensionContext,
+    panel: vscode.WebviewPanel,
+    extensionUri: vscode.Uri
+  ) {
     this._panel = panel;
     this._extensionUri = extensionUri;
 
@@ -66,7 +79,17 @@ export class TreeActPanel {
     );
 
     // Handle messages from the webview
-    handlePost(this._panel, this._disposables);
+    handlePost(context, this._panel, this._disposables);
+
+    // const prevState: NewTreeNode[] | undefined =
+    //   context.workspaceState.get("treeData");
+    // if (prevState !== undefined) {
+    //   const payload: RequestData = {
+    //     command: "init",
+    //     data: prevState,
+    //   };
+    //   setInitialState(this._panel, payload);
+    // }
   }
 
   public dispose() {
@@ -120,7 +143,6 @@ export class TreeActPanel {
           <div id="root"></div>
           <script>const vscode = acquireVsCodeApi();</script>
           <script src="${scriptUri}"></script>
-          <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" width="300" />
       </body>
       </html>`;
   }
