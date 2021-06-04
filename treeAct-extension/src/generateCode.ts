@@ -126,12 +126,6 @@ export const run = async (message: MessageData, dirPath: string) => {
     ); //Path where the component will be created
     const projectPath = path.join(folder, <string>message.directory); //Path to the created project
     const srcPath = path.join(folder, <string>message.directory, "src"); //src path for project
-    const gitLogPath = path.join(
-      folder,
-      <string>message.directory,
-      ".git",
-      "logs"
-    ); //git.logs path for project
 
     //Initialize child_terminal to create React poject and make its components
     vscode.window.showInformationMessage("Starting");
@@ -178,16 +172,25 @@ export const run = async (message: MessageData, dirPath: string) => {
         vscode.window.showInformationMessage("Generate Component Complete!");
       }
 
+      child_terminal.sendText("cd " + <string>message.directory);
+      child_terminal.sendText("touch Tree-acT.md");
+
       const committed = await waitUntil(
-        () => fs.existsSync(gitLogPath),
+        () => fs.existsSync(projectPath + "/Tree-acT.md"),
         WAIT_FOREVER
       );
-      //When git.log is created, Tree-acT is complete, so execute the inside of the conditional statement.
+      //When Tree-acT.md is created, Tree-acT is complete, so execute the inside of the conditional statement.
       if (committed) {
         setTimeout(() => {
           vscode.window.showInformationMessage("Tree-acT Complete!");
         }, 500);
       }
+
+      fs.writeFileSync(
+        projectPath + "/Tree-acT.md",
+        "Thank you for using Tree-acT!!!",
+        "utf8"
+      );
     }
   }
 };
