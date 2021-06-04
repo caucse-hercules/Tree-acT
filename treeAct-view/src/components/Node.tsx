@@ -62,6 +62,7 @@ const RootAddButton = styled(AddCircleOutline)`
   left: 22px;
   top: 45px;
   color: green;
+  z-index: 1;
 `;
 
 const AddButton = styled(AddCircleOutline)`
@@ -69,6 +70,7 @@ const AddButton = styled(AddCircleOutline)`
   left: 27px;
   top: 60px;
   color: green;
+  z-index: 1;
 `;
 
 const RemoveButton = styled(RemoveCircleOutlineSharp)`
@@ -76,6 +78,7 @@ const RemoveButton = styled(RemoveCircleOutlineSharp)`
   left: 27px;
   top: -30px;
   color: red;
+  z-index: 1;
 `;
 
 const LabelText = styled.p`
@@ -95,17 +98,27 @@ interface nodeProps {
 const Node = (props: nodeProps) => {
   const { node, onInsert, onRemove, onChangeName, onExpand } = props;
   const [isEditable, setEditable] = useState<boolean>(false);
+  let timer: ReturnType<typeof setTimeout>;
 
-  const handleDoubleClick = (e: React.MouseEvent<HTMLElement>) => {
-    setEditable(true);
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    clearTimeout(timer);
+    if (e.detail === 1) {
+      timer = setTimeout(() => onExpand(node.id), 175);
+    } else if (e.detail === 2) {
+      setEditable(true);
+    }
   };
 
   const handleClickAway = () => {
     setEditable(false);
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+  const handleSingleClick = () => {
     onExpand(node.id);
+  };
+
+  const handleDoubleClick = () => {
+    setEditable(true);
   };
 
   const handleInsert = (e: React.MouseEvent<SVGElement>) => {
@@ -120,16 +133,16 @@ const Node = (props: nodeProps) => {
 
   return (
     <div>
-      {node.name === "App" ? (
+      {node.id === 0 ? (
         <>
-          <Root onClick={handleClick}>
+          <Root onClick={handleSingleClick}>
             <text>App</text>
-            <RootAddButton onClick={handleInsert} />
+            {node.isExpanded && <RootAddButton onClick={handleInsert} />}
           </Root>
         </>
       ) : node.children.length !== 0 ? (
         <ClickAwayListener onClickAway={handleClickAway}>
-          <NonLeaf onClick={handleClick} onDoubleClick={handleDoubleClick}>
+          <NonLeaf onClick={handleClick}>
             <RemoveButton onClick={handleRemove} />
             {isEditable ? (
               <WhiteInput
@@ -146,12 +159,12 @@ const Node = (props: nodeProps) => {
             ) : (
               <LabelText>{node.name}</LabelText>
             )}
-            <AddButton onClick={handleInsert} />
+            {node.isExpanded && <AddButton onClick={handleInsert} />}
           </NonLeaf>
         </ClickAwayListener>
       ) : (
         <ClickAwayListener onClickAway={handleClickAway}>
-          <Leaf onClick={handleClick} onDoubleClick={handleDoubleClick}>
+          <Leaf onDoubleClick={handleDoubleClick}>
             <RemoveButton onClick={handleRemove} />
             {isEditable ? (
               <WhiteInput
