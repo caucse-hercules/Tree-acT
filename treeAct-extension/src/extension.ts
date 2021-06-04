@@ -43,7 +43,7 @@ export function activate(context: vscode.ExtensionContext) {
     treeDataProvider: TreeActTreeViewProvider,
   });
 
-  // TreeActPanel.createOrShow(context.extensionUri);
+  TreeActPanel.createOrShow(context.extensionUri);
 
   console.log("Activated!");
 }

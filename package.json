@@ -1,11 +1,11 @@
 {
-  "name": "tree-act",
+  "name": "Tree-acT",
   "version": "0.0.1",
   "description": "React code generator from Tree",
   "main": "out/extension",
   "repository": "https://github.com/caucse-hercules/Tree-acT.git",
   "author": "DoLim <limdongyoung0@gmail.com>",
-  "publisher": "caucse-hercules",
+  "publisher": "Tree-acT",
   "license": "MIT",
   "private": true,
   "workspaces": [
@@ -30,6 +30,20 @@
           "light": "./treeAct-extension/resources/light/open.svg",
           "dark": "./treeAct-extension/resources/dark/open.svg"
         }
+      },
+      {
+        "command": "treeAct.addNode",
+        "title": "Add Node(component) to Tree",
+        "category": "Tree-acT",
+        "icon": {
+          "light": "./treeAct-extension/resources/light/add.svg",
+          "dark": "./treeAct-extension/resources/dark/add.svg"
+        }
+      },
+      {
+        "command": "treeAct.deleteNode",
+        "title": "Delete Node(component) from Tree",
+        "category": "Tree-acT"
       }
     ],
     "viewsContainers": {
@@ -37,7 +51,7 @@
         {
           "id": "treeAct",
           "title": "Tree-acT",
-          "icon": "./treeAct-extension/media/dep.svg"
+          "icon": "./treeAct-extension/media/treeAct.svg"
         }
       ]
     },
