@@ -115,7 +115,6 @@ const Node = (props: nodeProps) => {
 
   const handleRemove = (e: React.MouseEvent<SVGElement>) => {
     e.stopPropagation();
-    console.log("remove id: ", node.id);
     onRemove(node.id);
   };
 
