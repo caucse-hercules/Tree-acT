@@ -1,4 +1,6 @@
 import * as vscode from "vscode";
+import { run } from "./generateCode";
+import { getPath } from "./getPath";
 import { TreeActPanel } from "./treeActPanel";
 import { TreeActTreeView } from "./treeActTreeView";
 
@@ -10,6 +12,18 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand("treeAct.start", () => {
       TreeActPanel.createOrShow(context, context.extensionUri);
+    })
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("treeAct.generate", async () => {
+      run(
+        {
+          command: "generateApp",
+          directory: "sample-app",
+          data: context.globalState.get("treeData"),
+        },
+        await getPath()
+      );
     })
   );
 
