@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { NewTreeNode } from "../../../common/types";
 import { Name } from "../module/tree";
 import Node from "./Node";
-import { TreeNode, TreeState, Name } from "../module/tree";
 
 const RootUl = styled.ul`
   display: flex;
