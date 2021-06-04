@@ -2,26 +2,28 @@ import * as assert from "assert";
 import { run } from "../../generateCode";
 import fs from "fs";
 import rimraf from "rimraf";
-import { sampleGenerateMessage } from "../../../../common/sampleData";
+import { testGenerateMessage } from "../../../../common/testData";
 import { NewTreeNode } from "../../../../common/types";
 
 suite("Extension d Test Suite", function () {
   this.timeout(100000);
 
   test("Run Test", async () => {
-    const testPath = "../..";
-    const testMessage = sampleGenerateMessage;
+    const testPath = "./src/test";
+    const testMessage = testGenerateMessage;
     const data: any = testMessage.data;
 
-    if (fs.existsSync(testPath + "/sample-app")) {
-      rimraf.sync(testPath + "/sample-app");
+    if (fs.existsSync(testPath + "/" + testMessage.directory)) {
+      rimraf.sync(testPath + "/" + testMessage.directory);
     }
 
     await run(testMessage, testPath);
 
     const nameList = await getComponentName(data);
 
-    const createNameList = await getCreateComponentName(testPath);
+    const createNameList = await getCreateComponentName(
+      testPath + "/" + testMessage.directory + "/src"
+    );
 
     const equal = checkComponent(nameList, createNameList);
     assert.strictEqual(equal, true);
@@ -52,10 +54,10 @@ const getComponentName = async (data: NewTreeNode[]) => {
 };
 
 const getCreateComponentName = async (dirPath: string) => {
-  const files = fs.readdirSync(dirPath + "/sample-app/src/components");
+  const files = fs.readdirSync(dirPath + "/components");
   const sliceFiles: string[] = [];
 
-  if (fs.existsSync(dirPath + "/sample-app/src/App.js")) {
+  if (fs.existsSync(dirPath + "/App.js")) {
     files.push("App.js");
   }
 
