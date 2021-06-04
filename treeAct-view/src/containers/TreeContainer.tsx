@@ -15,7 +15,7 @@ type vscode = {
 declare const vscode: vscode;
 const TreeContainer = () => {
   const sendStateToExtension = useCallback(
-    debounce((state: RootState) => {
+    debounce((state: RootState) => { 
       console.log(state.treeReducer.treeData);
       vscode.postMessage({
         command: "updateState",

@@ -1,11 +1,10 @@
 import { ClickAwayListener, Input } from "@material-ui/core";
-import { AddCircleOutline, RemoveCircleOutlineSharp } from "@material-ui/icons";
+import { RemoveCircleOutlineSharp } from "@material-ui/icons";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { NewTreeNode } from "../../../common/types";
 import { Name } from "../module/tree";
-import { AddBox, RemoveCircleOutlineSharp } from "@material-ui/icons";
 
 const Root = styled.p`
   display: inline-block;
@@ -59,7 +58,7 @@ const Leaf = styled(ToggleButton)`
   padding: 10px 20px;
   width: 80px;
   height: 60px;
-  border: 2px dashed #ffffff;
+  border: 1.5px dashed #ffffff;
   position: relative;
   text-align: center;
   /* text-transform: none; */
@@ -173,6 +172,10 @@ const Node = (props: nodeProps) => {
     onExpand(node.id);
   };
 
+  const handleDoubleClick = () => {
+    setEditable(true);
+  };
+
   const handleInsert = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     onInsert(node.id);
@@ -189,7 +192,9 @@ const Node = (props: nodeProps) => {
         <>
           <Root onClick={handleSingleClick}>
             <text>App</text>
-            {node.isExpanded && <RootAddButton onClick={handleInsert} />}
+            {node.isExpanded && (
+              <RootAddButton onClick={handleInsert}>+</RootAddButton>
+            )}
           </Root>
         </>
       ) : node.children.length !== 0 ? (
@@ -211,7 +216,7 @@ const Node = (props: nodeProps) => {
             ) : (
               <LabelText>{node.name}</LabelText>
             )}
-            {node.isExpanded && <AddButton onClick={handleInsert} />}
+            {node.isExpanded && <AddButton onClick={handleInsert}>+</AddButton>}
           </NonLeaf>
         </ClickAwayListener>
       ) : (
