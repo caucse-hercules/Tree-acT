@@ -3,9 +3,29 @@ import { useSelector, useDispatch } from "react-redux";
 import { insertNode, removeNode, changeName } from "../module/tree";
 import { RootState } from "../module";
 import Tree from "../components/Tree";
+import { debounce } from "lodash";
+import { MessageData } from "../../../common/types";
+
+interface vscode {
+  postMessage(message: MessageData): void;
+}
+
+declare const vscode: vscode;
 
 const TreeContainer = () => {
+  const sendStateToExtension = useCallback(
+    debounce((state: RootState) => {
+      console.log(state.treeReducer.treeData);
+      vscode.postMessage({
+        command: "updateState",
+        data: state.treeReducer.treeData,
+      });
+    }, 200),
+    []
+  );
+
   const treeData = useSelector((state: RootState) => {
+    sendStateToExtension(state);
     return state.treeReducer.treeData;
   });
   const dispatch = useDispatch();

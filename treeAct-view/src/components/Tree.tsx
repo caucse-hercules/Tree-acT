@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { sampleData } from "../../../common/sampleData";
 import styled from "styled-components";
 import Node from "./Node";
@@ -6,6 +6,14 @@ import { Input } from "@material-ui/core";
 import { TreeNode, TreeState, Name } from "../module/tree";
 import { node } from "webpack";
 import { blue } from "@material-ui/core/colors";
+import { MessageData } from "../../../common/types";
+import { debounce } from "lodash";
+
+interface vscode {
+  postMessage(message: MessageData): void;
+}
+
+declare const vscode: vscode;
 
 const RootUl = styled.ul`
   display: flex;
@@ -90,13 +98,14 @@ interface treeProps {
 
 const Tree = (props: treeProps) => {
   const { treeData, onInsert, onRemove, onChangeName } = props;
-  console.log("Now Tree Data: ", treeData);
+
+  // console.log("Now Tree Data: ", treeData);
   const createNode = (childrenId: number[]) => {
     return (
       <ChildUl>
         {childrenId.map((childId) => {
           const childNode = treeData.find((node) => node.id === childId);
-          console.log("making node: ", childNode);
+          // console.log("making node: ", childNode);
           return (
             <ChildLi>
               <Node

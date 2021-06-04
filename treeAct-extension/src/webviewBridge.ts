@@ -43,6 +43,9 @@ export const handlePost = (
         case "generateApp":
           run(message, await getPath());
           break;
+        case "updateState":
+          console.log(message.data);
+          break;
       }
     },
     undefined,
