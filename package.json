@@ -23,21 +23,21 @@
   "contributes": {
     "commands": [
       {
+        "command": "treeAct.generate",
+        "title": "Generate React project from Tree",
+        "category": "Tree-acT",
+        "icon": {
+          "light": "./treeAct-extension/resources/light/play.svg",
+          "dark": "./treeAct-extension/resources/dark/play.svg"
+        }
+      },
+      {
         "command": "treeAct.start",
         "title": "Open Tree-acT Panel",
         "category": "Tree-acT",
         "icon": {
           "light": "./treeAct-extension/resources/light/open.svg",
           "dark": "./treeAct-extension/resources/dark/open.svg"
-        }
-      },
-      {
-        "command": "treeAct.generate",
-        "title": "Start generating Code from Tree",
-        "category": "Tree-acT",
-        "icon": {
-          "light": "./treeAct-extension/resources/light/play.svg",
-          "dark": "./treeAct-extension/resources/dark/play.svg"
         }
       }
     ],
