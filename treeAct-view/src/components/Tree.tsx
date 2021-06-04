@@ -1,11 +1,7 @@
-import React, { useState } from "react";
-import { sampleData } from "../../../common/sampleData";
+import React from "react";
 import styled from "styled-components";
 import Node from "./Node";
-import { Input } from "@material-ui/core";
 import { TreeNode, TreeState, Name } from "../module/tree";
-import { node } from "webpack";
-import { blue } from "@material-ui/core/colors";
 
 const RootUl = styled.ul`
   display: flex;
@@ -86,17 +82,17 @@ interface treeProps {
   onInsert: (id: number) => void;
   onRemove: (id: number) => void;
   onChangeName: ({ id, name }: Name) => void;
+  onExpand: (id: number) => void;
 }
 
 const Tree = (props: treeProps) => {
-  const { treeData, onInsert, onRemove, onChangeName } = props;
-  console.log("Now Tree Data: ", treeData);
+  const { treeData, onInsert, onRemove, onChangeName, onExpand } = props;
+
   const createNode = (childrenId: number[]) => {
     return (
       <ChildUl>
         {childrenId.map((childId) => {
           const childNode = treeData.find((node) => node.id === childId);
-          console.log("making node: ", childNode);
           return (
             <ChildLi>
               <Node
@@ -104,8 +100,10 @@ const Tree = (props: treeProps) => {
                 onInsert={onInsert}
                 onRemove={onRemove}
                 onChangeName={onChangeName}
+                onExpand={onExpand}
               />
               {childNode!.children.length !== 0 &&
+                childNode!.isExpanded &&
                 createNode(childNode!.children)}
             </ChildLi>
           );
@@ -123,8 +121,10 @@ const Tree = (props: treeProps) => {
             onInsert={onInsert}
             onRemove={onRemove}
             onChangeName={onChangeName}
+            onExpand={onExpand}
           ></Node>
           {treeData[0].children.length !== 0 &&
+            treeData[0].isExpanded &&
             createNode(treeData[0].children)}
         </RootLi>
       </RootUl>
