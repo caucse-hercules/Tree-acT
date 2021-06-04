@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { NewTreeNode } from "../../../common/types";
+import { Name } from "../module/tree";
 import Node from "./Node";
-import { TreeNode, TreeState, Name } from "../module/tree";
 
 const RootUl = styled.ul`
   display: flex;
@@ -29,7 +30,7 @@ const ChildLi = styled.li`
   position: relative;
   &:after,
   &:before {
-    border-top: 1px solid green;
+    border-top: 1px solid rgb(100, 100, 100);
     content: "";
     position: absolute;
     top: -30px;
@@ -37,7 +38,7 @@ const ChildLi = styled.li`
   }
 
   &:before {
-    border-left: 1px solid green;
+    border-left: 1px solid rgb(100, 100, 100);
     height: 30px;
     left: 50%;
   }
@@ -48,7 +49,7 @@ const ChildLi = styled.li`
   &:first-child,
   &:last-child {
     &:before {
-      border-top: 1px solid green;
+      border-top: 1px solid rgb(100, 100, 100);
       border-top-left-radius: 10px;
       top: -30px;
     }
@@ -61,7 +62,7 @@ const ChildLi = styled.li`
   &:last-child {
     &:before {
       border-left: 0;
-      border-right: 1px solid green;
+      border-right: 1px solid rgb(100, 100, 100);
       border-top-left-radius: 0;
       border-top-right-radius: 10px;
       left: 0;
@@ -78,7 +79,7 @@ const ChildLi = styled.li`
 `;
 
 interface treeProps {
-  treeData: TreeNode[];
+  treeData: NewTreeNode[];
   onInsert: (id: number) => void;
   onRemove: (id: number) => void;
   onChangeName: ({ id, name }: Name) => void;

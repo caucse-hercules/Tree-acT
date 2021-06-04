@@ -1,6 +1,8 @@
 import { createAction, ActionType, createReducer } from "typesafe-actions";
 import produce from "immer";
+import { NewTreeNode } from "../../../common/types";
 
+const INIT_STATE = "tree/INIT_STATE";
 const INSERT_NODE = "tree/INSERT";
 const REMOVE_NODE = "tree/REMOVE";
 const CHANGE_NAME = "tree/CHANGE_NAME";
@@ -8,12 +10,14 @@ const EXPAND_NODE = "tree/EXPAND_NODE";
 
 let id = 0;
 
+export const initState = createAction(INIT_STATE)<NewTreeNode[]>();
 export const insertNode = createAction(INSERT_NODE)<number>();
 export const removeNode = createAction(REMOVE_NODE)<number>();
 export const changeName = createAction(CHANGE_NAME)<Name>();
 export const expandNode = createAction(EXPAND_NODE)<number>();
 
 const actions = {
+  initState,
   insertNode,
   removeNode,
   changeName,
@@ -27,15 +31,7 @@ export type Name = {
 
 export type TreeAction = ActionType<typeof actions>;
 
-export type TreeNode = {
-  id: number;
-  name: string;
-  parent?: number;
-  children: number[];
-  isExpanded: boolean;
-};
-
-export type TreeState = { treeData: TreeNode[] };
+export type TreeState = { treeData: NewTreeNode[] };
 
 const treeData: TreeState = {
   treeData: [
@@ -49,6 +45,15 @@ const treeData: TreeState = {
 };
 
 const treeReducer = createReducer<TreeState, TreeAction>(treeData)
+  .handleAction(initState, (state, action) =>
+    produce(state, (draft) => {
+      const maxIdNode = action.payload.reduce((prev, curr) => {
+        return prev.id > curr.id ? prev : curr;
+      });
+      id = maxIdNode.id;
+      draft.treeData = action.payload;
+    })
+  )
   .handleAction(insertNode, (state, action) =>
     produce(state, (draft) => {
       draft.treeData.push({
@@ -64,7 +69,6 @@ const treeReducer = createReducer<TreeState, TreeAction>(treeData)
   )
   .handleAction(removeNode, (state, action) =>
     produce(state, (draft) => {
-      console.log("remove id: ", action.payload);
       const removeIndex = draft.treeData.findIndex(
         (node) => node.id === action.payload
       );

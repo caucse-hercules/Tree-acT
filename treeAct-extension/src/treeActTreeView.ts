@@ -12,12 +12,14 @@ export class TreeActTreeView
     TreeActTreeViewItem | undefined | void
   > = this._onDidChangeTreeData.event;
 
-  constructor(
-    private context: vscode.ExtensionContext,
-    public treeData: NewTreeNode[]
-  ) {}
+  private treeData: NewTreeNode[];
+
+  constructor(private context: vscode.ExtensionContext) {
+    this.treeData = this.context.globalState.get("treeData") as NewTreeNode[];
+  }
 
   refresh(): void {
+    this.treeData = this.context.globalState.get("treeData") as NewTreeNode[];
     this._onDidChangeTreeData.fire();
   }
 
@@ -31,6 +33,7 @@ export class TreeActTreeView
     if (element) {
       return Promise.resolve(this.toItems(element.children));
     } else {
+      if (this.treeData.length === 0) return Promise.resolve([]);
       const node = this.treeData[0];
       const root = new TreeActTreeViewItem(
         node.name,
@@ -45,13 +48,13 @@ export class TreeActTreeView
 
   private toItems(children: number[]): TreeActTreeViewItem[] {
     return children.map((id) => {
-      const node = this.treeData[id];
+      const node = this.treeData.find((item) => item.id === id);
       return new TreeActTreeViewItem(
-        node.name,
-        node.children && node.children.length !== 0
+        node!.name,
+        node!.children && node!.children.length !== 0
           ? vscode.TreeItemCollapsibleState.Expanded
           : vscode.TreeItemCollapsibleState.None,
-        node.children || []
+        node!.children || []
       );
     });
   }

@@ -1,19 +1,35 @@
 import * as vscode from "vscode";
-import { treeState } from "./state";
+import { run } from "./generateCode";
+import { getPath } from "./getPath";
 import { TreeActPanel } from "./treeActPanel";
 import { TreeActTreeView } from "./treeActTreeView";
 
-export let TreeActTreeViewProvider: TreeActTreeView;
+export let treeActTreeViewProvider: TreeActTreeView;
 
 export function activate(context: vscode.ExtensionContext) {
+  context.globalState.update("treeData", []);
+
   context.subscriptions.push(
     vscode.commands.registerCommand("treeAct.start", () => {
-      TreeActPanel.createOrShow(context.extensionUri);
+      TreeActPanel.createOrShow(context, context.extensionUri);
+    })
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand("treeAct.generate", async () => {
+      run(
+        {
+          command: "generateApp",
+          directory: "sample-app",
+          data: context.globalState.get("treeData"),
+        },
+        await getPath()
+      );
     })
   );
 
   if (vscode.window.registerWebviewPanelSerializer) {
     // Make sure we register a serializer in activation event
+    console.log("Registering serializer");
     vscode.window.registerWebviewPanelSerializer(TreeActPanel.viewType, {
       async deserializeWebviewPanel(
         webviewPanel: vscode.WebviewPanel,
@@ -22,7 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
         console.log(`Got state: ${state}`);
         // Reset the webview options so we use latest uri for `localResourceRoots`.
         webviewPanel.webview.options = getWebviewOptions(context.extensionUri);
-        TreeActPanel.revive(webviewPanel, context.extensionUri);
+        TreeActPanel.revive(context, webviewPanel, context.extensionUri);
       },
     });
   }
@@ -36,14 +52,14 @@ export function activate(context: vscode.ExtensionContext) {
     };
   }
 
-  TreeActTreeViewProvider = new TreeActTreeView(context, treeState);
-  vscode.window.registerTreeDataProvider("treeAct", TreeActTreeViewProvider);
+  treeActTreeViewProvider = new TreeActTreeView(context);
+  vscode.window.registerTreeDataProvider("treeAct", treeActTreeViewProvider);
 
   vscode.window.createTreeView("treeAct", {
-    treeDataProvider: TreeActTreeViewProvider,
+    treeDataProvider: treeActTreeViewProvider,
   });
 
-  TreeActPanel.createOrShow(context.extensionUri);
+  // TreeActPanel.createOrShow(context.extensionUri);
 
   console.log("Activated!");
 }
