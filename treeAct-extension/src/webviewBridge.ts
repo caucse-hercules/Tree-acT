@@ -1,41 +1,37 @@
 import * as vscode from "vscode";
-import { MessageData, TreeNode } from "../../common/types";
+import { MessageData, RequestData } from "../../common/types";
+import { treeActTreeViewProvider } from "./extension";
 import { run } from "./generateCode";
 import { getPath } from "./getPath";
 
-export const postJSONToWebview = (
-  context: vscode.ExtensionContext,
+export const requestStateUpdate = (
   panel: vscode.WebviewPanel,
-  payload: TreeNode
+  payload: RequestData
 ) => {
-  const message: MessageData = {
-    command: "JSONToWebview",
-    data: payload,
-  };
-  panel.webview.postMessage(message);
+  console.log("Requested state update");
+  panel.webview.postMessage(payload);
 };
 
-export const handlePostTest = (
-  context: vscode.ExtensionContext,
-  panel: vscode.WebviewPanel
+export const setInitialState = (
+  panel: vscode.WebviewPanel,
+  payload: RequestData
 ) => {
-  panel.webview.onDidReceiveMessage(
-    (message: MessageData) => {
-      switch (message.command) {
-        case "JSONToExtension":
-          vscode.window.showInformationMessage(JSON.stringify(message.data));
-      }
-    },
-    undefined,
-    context.subscriptions
-  );
+  console.log("Setting initial state");
+  panel.webview.postMessage(payload);
+};
+
+export const postMessage = (
+  panel: vscode.WebviewPanel,
+  payload: RequestData
+) => {
+  panel.webview.postMessage(payload);
 };
 
 // Write your own handlePost function here
-
 export const handlePost = (
   context: vscode.ExtensionContext,
-  panel: vscode.WebviewPanel
+  panel: vscode.WebviewPanel,
+  disposables?: vscode.Disposable[]
 ) => {
   panel.webview.onDidReceiveMessage(
     async (message: MessageData) => {
@@ -43,9 +39,20 @@ export const handlePost = (
         case "generateApp":
           run(message, await getPath());
           break;
+        case "updateState":
+          context.globalState.update("treeData", message.data);
+          treeActTreeViewProvider.refresh();
+          break;
+        case "init":
+          console.log("Initialize request from webview");
+          postMessage(panel, {
+            command: "init",
+            data: context.globalState.get("treeData"),
+          });
+          break;
       }
     },
     undefined,
-    context.subscriptions
+    disposables
   );
 };

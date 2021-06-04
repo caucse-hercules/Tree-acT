@@ -1,11 +1,12 @@
 {
-  "name": "tree-act",
-  "version": "0.0.1",
+  "name": "Tree-acT",
+  "version": "0.1.0",
   "description": "React code generator from Tree",
   "main": "out/extension",
   "repository": "https://github.com/caucse-hercules/Tree-acT.git",
   "author": "DoLim <limdongyoung0@gmail.com>",
-  "publisher": "caucse-hercules",
+  "publisher": "Tree-acT",
+  "icon": "image/Tree-acT-icon.png",
   "license": "MIT",
   "private": true,
   "workspaces": [
@@ -13,38 +14,62 @@
     "treeAct-extension"
   ],
   "engines": {
-    "vscode": "^1.47.0"
+    "vscode": "^1.56.0"
   },
   "activationEvents": [
-    "onView:treeAct"
+    "onView:treeAct",
+    "onWebviewPanel:treeAct",
+    "onCommand:treeAct.start"
   ],
   "contributes": {
     "commands": [
       {
-        "command": "treeAct.start",
-        "title": "Start new Tree-acT session",
-        "category": "Tree-acT"
+        "command": "treeAct.generate",
+        "title": "Generate React project from Tree",
+        "category": "Tree-acT",
+        "icon": {
+          "light": "./treeAct-extension/resources/light/play.svg",
+          "dark": "./treeAct-extension/resources/dark/play.svg"
+        }
       },
       {
-        "command": "treeAct.postJson",
-        "title": "Post JSON to Tree-acT Webview",
-        "category": "Tree-acT"
+        "command": "treeAct.start",
+        "title": "Open Tree-acT Panel",
+        "category": "Tree-acT",
+        "icon": {
+          "light": "./treeAct-extension/resources/light/open.svg",
+          "dark": "./treeAct-extension/resources/dark/open.svg"
+        }
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "component-explorer",
-          "title": "Component Explorer",
-          "icon": "./extension/media/dep.svg"
+          "id": "treeAct",
+          "title": "Tree-acT",
+          "icon": "./treeAct-extension/media/treeAct.svg"
         }
       ]
     },
     "views": {
-      "component-explorer": [
+      "treeAct": [
         {
           "id": "treeAct",
           "name": "Tree-acT"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "treeAct.generate",
+          "when": "view == treeAct",
+          "group": "navigation"
+        },
+        {
+          "command": "treeAct.start",
+          "when": "view == treeAct",
+          "group": "navigation"
         }
       ]
     }

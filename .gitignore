@@ -29,6 +29,7 @@ chrome-user-data
 *.iml
 *.swp
 *.swo
+.vscode-test/
 
 packages/react-devtools-core/dist
 packages/react-devtools-extensions/chrome/build
