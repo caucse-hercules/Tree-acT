@@ -1,6 +1,6 @@
 import { MessageData, NewTreeNode } from "./types";
 
-export const initialData: NewTreeNode[] = [
+export const testData: NewTreeNode[] = [
   {
     id: 0,
     name: "App",
@@ -58,8 +58,8 @@ export const initialData: NewTreeNode[] = [
   },
 ];
 
-export const sampleGenerateMessage: MessageData = {
+export const testGenerateMessage: MessageData = {
   command: "generateApp",
-  directory: "sample-app",
-  data: initialData,
+  directory: "test-app",
+  data: testData,
 };
