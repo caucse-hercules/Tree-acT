@@ -3,36 +3,64 @@ import { run } from "../../generateCode";
 import fs from "fs";
 import rimraf from "rimraf";
 import { sampleGenerateMessage } from "../../../../common/sampleData";
-//import { sampleGenerateMessage } from "../../../../common/testData";
-//import { after } from "mocha";
-
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
-import * as vscode from "vscode";
-import waitUntil, { WAIT_FOREVER } from "async-wait-until";
-// import * as myExtension from '../extension';
+import { NewTreeNode } from "../../../../common/types";
 
 suite("Extension d Test Suite", function () {
   this.timeout(100000);
-  // after(() => {
-  //   vscode.window.showInformationMessage("All tests done!");
-  // });
 
-  // test("Sample Test", () => {
-  //   assert.strictEqual(-1, [1, 2, 3].indexOf(0));
-  //   assert.strictEqual(-1, [1, 2, 3].indexOf(-5));
-  // });
-
-  test("Run Test", () => {
-    const testPath = "../";
+  test("Run Test", async () => {
+    const testPath = "../..";
     const testMessage = sampleGenerateMessage;
+    const data: any = testMessage.data;
 
-    if (fs.existsSync(testPath + "sample-app")) {
-      rimraf.sync(testPath + "sample-app");
+    if (fs.existsSync(testPath + "/sample-app")) {
+      rimraf.sync(testPath + "/sample-app");
     }
 
-    //const res = await waitUntil(() => run(testMessage, testPath), WAIT_FOREVER);
-    const res = run(testMessage, testPath);
-    assert.strictEqual(res, "DONE");
+    await run(testMessage, testPath);
+
+    const nameList = await getComponentName(data);
+
+    const createNameList = await getCreateComponentName(testPath);
+
+    const equal = checkComponent(nameList, createNameList);
+    assert.strictEqual(equal, true);
   });
 });
+
+const checkComponent = (inputNameList: string[], createNameList: string[]) => {
+  inputNameList.sort((one, two) => (one > two ? -1 : 1));
+  createNameList.sort((one, two) => (one > two ? -1 : 1));
+
+  for (let i = 0; i < inputNameList.length; i++) {
+    if (inputNameList[i] !== createNameList[i]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
+const getComponentName = async (data: NewTreeNode[]) => {
+  const nameList: string[] = [];
+
+  for (const i in data) {
+    nameList.push(data[i].name);
+  }
+
+  return nameList;
+};
+
+const getCreateComponentName = async (dirPath: string) => {
+  const files = fs.readdirSync(dirPath + "/sample-app/src/components");
+  const sliceFiles: string[] = [];
+
+  if (fs.existsSync(dirPath + "/sample-app/src/App.js")) {
+    files.push("App.js");
+  }
+
+  for (const i of files) {
+    sliceFiles.push(i.split(".")[0]);
+  }
+  return sliceFiles;
+};

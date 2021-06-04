@@ -189,10 +189,5 @@ export const run = async (message: MessageData, dirPath: string) => {
         }, 500);
       }
     }
-
-    // return new Promise(function (resolve, reject) {
-    //   resolve("DONE");
-    // });
-    return "DONE";
   }
 };
