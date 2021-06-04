@@ -115,7 +115,7 @@ const makeComponent = (
 //Create reacat project and make its components.
 export const run = async (message: MessageData, dirPath: string) => {
   if (dirPath === "exit") {
-    vscode.window.showInformationMessage("Canceled");
+    vscode.window.showInformationMessage("Cancelled");
     exit;
   } else {
     const folder: string = dirPath; //Path where the project will be created

@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { run } from "./generateCode";
+import { getAppName } from "./getAppName";
 import { getPath } from "./getPath";
 import { TreeActPanel } from "./treeActPanel";
 import { TreeActTreeView } from "./treeActTreeView";
@@ -16,13 +17,15 @@ export function activate(context: vscode.ExtensionContext) {
   );
   context.subscriptions.push(
     vscode.commands.registerCommand("treeAct.generate", async () => {
+      const path = await getPath();
+      const name = await getAppName();
       run(
         {
           command: "generateApp",
-          directory: "sample-app",
+          directory: name,
           data: context.globalState.get("treeData"),
         },
-        await getPath()
+        path
       );
     })
   );
