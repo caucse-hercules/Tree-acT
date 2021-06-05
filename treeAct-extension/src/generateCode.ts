@@ -173,7 +173,12 @@ export const run = async (message: MessageData, dirPath: string) => {
       }
 
       child_terminal.sendText("cd " + <string>message.directory);
-      child_terminal.sendText("touch Tree-acT.md");
+
+      if (process.platform === "win32") {
+        child_terminal.sendText("fsutil file createnew Tree-acT.md");
+      } else {
+        child_terminal.sendText("touch Tree-acT.md");
+      }
 
       const committed = await waitUntil(
         () => fs.existsSync(projectPath + "/Tree-acT.md"),
