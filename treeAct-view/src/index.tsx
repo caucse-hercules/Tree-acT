@@ -4,19 +4,8 @@ import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { MessageData } from "../../common/types";
 import App from "./components/App";
 import rootReducer from "./module";
-
-declare const vscode: vscode;
-
-type vscode = {
-  getState(): any;
-  setState(state: any): void;
-  postMessage(message: MessageData): void;
-};
-
-console.log("vscode getstate", vscode.getState());
 
 // vscode.postMessage({ command: "init" });
 

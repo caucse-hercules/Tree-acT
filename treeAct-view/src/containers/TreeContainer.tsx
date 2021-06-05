@@ -1,10 +1,18 @@
 import React, { useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { insertNode, removeNode, changeName, initState, expandNode } from "../module/tree";
+import {
+  insertNode,
+  removeNode,
+  changeName,
+  initState,
+  expandNode,
+} from "../module/tree";
 import { RootState } from "../module";
 import Tree from "../components/Tree";
 import { MessageData } from "../../../common/types";
 import { debounce } from "lodash";
+
+declare const vscode: vscode;
 
 type vscode = {
   postMessage(message: MessageData): void;
@@ -12,16 +20,30 @@ type vscode = {
   getState(): any;
 };
 
-declare const vscode: vscode;
 const TreeContainer = () => {
-  const sendStateToExtension = useCallback(
-    debounce((state: RootState) => { 
-      console.log(state.treeReducer.treeData);
-      vscode.postMessage({
-        command: "updateState",
-        data: state.treeReducer.treeData,
+  useEffect(() => {
+    if (vscode !== undefined) {
+      vscode.postMessage({ command: "init" });
+      // TODO: dispatch loading and wait for checking initial state.
+      window.addEventListener("message", (event) => {
+        const message = event.data; // The JSON data our extension sent
+
+        onInitState(message.data);
+        // TODO: update state and dispatch loading done
       });
-      vscode.setState({ data: state.treeReducer.treeData });
+    }
+  }, []);
+
+  const sendStateToExtension = useCallback(
+    debounce((state: RootState) => {
+      console.log(state.treeReducer.treeData);
+      if (vscode !== undefined) {
+        vscode.postMessage({
+          command: "updateState",
+          data: state.treeReducer.treeData,
+        });
+        vscode.setState({ data: state.treeReducer.treeData });
+      }
     }, 200),
     []
   );
@@ -42,17 +64,6 @@ const TreeContainer = () => {
     (initialState) => dispatch(initState(initialState)),
     [dispatch]
   );
-
-  useEffect(() => {
-    vscode.postMessage({ command: "init" });
-    // TODO: dispatch loading and wait for checking initial state.
-    window.addEventListener("message", (event) => {
-      const message = event.data; // The JSON data our extension sent
-
-      onInitState(message.data);
-      // TODO: update state and dispatch loading done
-    });
-  }, []);
 
   return (
     <Tree
