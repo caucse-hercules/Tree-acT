@@ -175,7 +175,7 @@ export const run = async (message: MessageData, dirPath: string) => {
       child_terminal.sendText("cd " + <string>message.directory);
 
       if (process.platform === "win32") {
-        child_terminal.sendText("fsutil file createnew Tree-acT.md");
+        child_terminal.sendText("fsutil file createnew Tree-acT.md 0");
       } else {
         child_terminal.sendText("touch Tree-acT.md");
       }
