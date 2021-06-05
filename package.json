@@ -1,6 +1,6 @@
 {
   "name": "Tree-acT",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React code generator from Tree",
   "main": "out/extension",
   "repository": "https://github.com/caucse-hercules/Tree-acT.git",
