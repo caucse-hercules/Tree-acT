@@ -5,10 +5,14 @@ import { MessageData } from "../../common/types";
 import waitUntil, { WAIT_FOREVER } from "async-wait-until";
 import { exit } from "process";
 
-//Function that checks if the component file name contains spaces.
+/**
+ * Function that checks if the component file name contains spaces.
+ */
 const checkBlank = (componentArray: any): number => {
   for (const i in componentArray) {
-    //Returns the component's index if the component file name contains a space.
+    /**
+     * Returns the component's index if the component file name contains a space.
+     */
     if (componentArray[i].name.search(/\s/) != -1) {
       return Number(i);
     }
@@ -16,16 +20,22 @@ const checkBlank = (componentArray: any): number => {
   return -1;
 };
 
-//Function that checks if another project with the same name exists in the directory in which the project will be created.
+/**
+ * Function that checks if another project with the same name exists in the directory in which the project will be created.
+ */
 const checkSameName = (projectPath: string, child_terminal: any): boolean => {
-  //Returns true if another project with the same name exists.
+  /**
+   * Returns true if another project with the same name exists.
+   */
   if (fs.existsSync(projectPath)) {
     return true;
   }
   return false;
 };
 
-//Create a folder to store the components created by Tree-Act. The folder is named 'components' and is located in src of the project it created.
+/**
+ * Create a folder to store the components created by Tree-Act. The folder is named 'components' and is located in src of the project it created.
+ */
 const makeFolder = (generateComponentPath: string) => {
   if (!fs.existsSync(generateComponentPath)) {
     try {
@@ -36,7 +46,9 @@ const makeFolder = (generateComponentPath: string) => {
   }
 };
 
-//Function that appends a string to a file in that path when it is received as a parameter.
+/**
+ * Function that appends a string to a file in that path when it is received as a parameter.
+ */
 const FileSystem = (path: string, str: string) => {
   try {
     fs.appendFileSync(path, str);
@@ -45,23 +57,31 @@ const FileSystem = (path: string, str: string) => {
   }
 };
 
-//Functions that consider the dependencies between components and generate import statements properly with DFS
+/**
+ * Functions that consider the dependencies between components and generate import statements properly with DFS
+ */
 const makeComponent = (
-  componentArray: any, //JSONArray of Components to Create
-  id: number, //Component's id
-  generateComponentPath: string, //Path of folder to store the components created by Tree-Act
-  srcPath: string //src directory path of the project.
+  componentArray: any, // JSONArray of Components to Create
+  id: number, // Component's id
+  generateComponentPath: string, // Path of folder to store the components created by Tree-Act
+  srcPath: string // src directory path of the project.
 ) => {
-  //Store index of component with id matching id values in 'index'.
+  /**
+   * Store index of component with id matching id values in 'index'.
+   */
   const index = componentArray.findIndex(
     (item: { id: number }) => item.id === id
   );
 
-  //Store the JSONObject of that index in 'component'
+  /**
+   * Store the JSONObject of that index in 'component'
+   */
   const component = componentArray[index];
   console.log(component.name);
 
-  //Divide cases by conditional statement because App.js path to be stored is different from other components.
+  /**
+   * Divide cases by conditional statement because App.js path to be stored is different from other components.
+   */
   if (component.name == "App") {
     fs.copyFileSync(`${srcPath}/App.js`, `${srcPath}/temp.js`);
     fs.truncateSync(`${srcPath}/App.js`, 0);
@@ -73,7 +93,9 @@ const makeComponent = (
     );
   }
 
-  //Get the child components that the current component will use and write import statement to current component file properly.
+  /**
+   * Get the child components that the current component will use and write import statement to current component file properly.
+   */
   for (const i in component.children) {
     const nextId: number = component.children[i];
     const nextIndex = componentArray.findIndex(
@@ -81,7 +103,9 @@ const makeComponent = (
     );
     const nextComponent = componentArray[nextIndex];
 
-    //Divide cases by conditional statement because App.js path to be stored is different from other components.
+    /**
+     * Divide cases by conditional statement because App.js path to be stored is different from other components.
+     */
     if (component.name == "App") {
       FileSystem(
         `${srcPath}/App.js`,
@@ -97,8 +121,10 @@ const makeComponent = (
     makeComponent(componentArray, nextId, generateComponentPath, srcPath);
   }
 
-  //When the import statement is written in the current component file, the default body is written in the current component file.
-  //Divide cases by conditional statement because App.js path to be stored is different from other components.
+  /**
+   * When the import statement is written in the current component file, the default body is written in the current component file.
+   * Divide cases by conditional statement because App.js path to be stored is different from other components.
+   */
   if (component.name == "App") {
     const tempStr: string = fs.readFileSync(`${srcPath}/temp.js`).toString();
     FileSystem(`${srcPath}/App.js`, tempStr); //temp.js에 저장된 App.js의 content를 의존성 처리가 다 된 App.js에 이어적기
@@ -112,22 +138,26 @@ const makeComponent = (
   }
 };
 
-//Create reacat project and make its components.
+/**
+ * Create reacat project and make its components.
+ */
 export const run = async (message: MessageData, dirPath: string) => {
   if (dirPath === "exit") {
     vscode.window.showInformationMessage("Cancelled");
     exit;
   } else {
-    const folder: string = dirPath; //Path where the project will be created
+    const folder: string = dirPath; // Path where the project will be created
     const generateComponentPath = path.join(
       folder,
       <string>message.directory,
       "src/components"
-    ); //Path where the component will be created
-    const projectPath = path.join(folder, <string>message.directory); //Path to the created project
-    const srcPath = path.join(folder, <string>message.directory, "src"); //src path for project
+    ); // Path where the component will be created
+    const projectPath = path.join(folder, <string>message.directory); // Path to the created project
+    const srcPath = path.join(folder, <string>message.directory, "src"); // src path for project
 
-    //Initialize child_terminal to create React poject and make its components
+    /**
+     * Initialize child_terminal to create React poject and make its components
+     */
     vscode.window.showInformationMessage("Starting");
     const child_terminal = vscode.window.createTerminal({
       name: "Show process",
@@ -135,7 +165,9 @@ export const run = async (message: MessageData, dirPath: string) => {
     });
     child_terminal.show();
 
-    //Check that the name of the component files to be created contains a space, and exit if there is a space.
+    /**
+     * Check that the name of the component files to be created contains a space, and exit if there is a space.
+     */
     const componentIndex = checkBlank(message.data);
     if (componentIndex != -1) {
       console.log(componentIndex);
@@ -148,7 +180,9 @@ export const run = async (message: MessageData, dirPath: string) => {
       );
     }
 
-    //Checks if another project with the same name exists in the directory in which the project will be created, and exit if another project with the same name exists
+    /**
+     * Checks if another project with the same name exists in the directory in which the project will be created, and exit if another project with the same name exists
+     */
     const sameProjectName = checkSameName(projectPath, child_terminal);
     if (sameProjectName) {
       child_terminal.sendText(`exit`);
@@ -157,17 +191,21 @@ export const run = async (message: MessageData, dirPath: string) => {
         `A project with the same name already exists!  (${message.directory})`
       );
     } else {
-      //Create React project
-      child_terminal.sendText(`npx create-react-app ${message.directory}`);
+      child_terminal.sendText(`npx create-react-app ${message.directory}`); // Create React project
 
-      //It is a conditional statements to ensure the sequence of operations in asynchronous.
+      /**
+       * It is a conditional statements to ensure the sequence of operations in asynchronous.
+       */
       const exists = await waitUntil(
         () => fs.existsSync(srcPath),
         WAIT_FOREVER
       );
-      //When a react project is created and its src folder is created, it executes the inside of the conditional statement.
+
+      /**
+       * When a react project is created and its src folder is created, it executes the inside of the conditional statement.
+       */
       if (exists) {
-        makeFolder(generateComponentPath); //
+        makeFolder(generateComponentPath);
         makeComponent(message.data, 0, generateComponentPath, srcPath);
         vscode.window.showInformationMessage("Generate Component Complete!");
       }
@@ -184,7 +222,10 @@ export const run = async (message: MessageData, dirPath: string) => {
         () => fs.existsSync(projectPath + "/Tree-acT.md"),
         WAIT_FOREVER
       );
-      //When Tree-acT.md is created, Tree-acT is complete, so execute the inside of the conditional statement.
+
+      /**
+       * When Tree-acT.md is created, Tree-acT is complete, so execute the inside of the conditional statement.
+       */
       if (committed) {
         setTimeout(() => {
           vscode.window.showInformationMessage("Tree-acT Complete!");
