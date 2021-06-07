@@ -6,17 +6,14 @@ import styled from "styled-components";
 import { NewTreeNode } from "../../../common/types";
 import { Name } from "../module/tree";
 
+// style of root node (app)
 const Root = styled.p`
   display: inline-block;
   margin: 0 auto;
   padding: 10px 20px;
   border-radius: 20%;
-  /* background: linear-gradient(
-    45deg,
-    rgb(205, 155, 71) 30%,
-    rgb(136, 0, 21) 90%
-  ); */
   border: 2px solid #ffffff;
+
   position: relative;
   color: white;
   font-size: 15px;
@@ -32,6 +29,7 @@ const Root = styled.p`
   }
 `;
 
+// style of non-leaf node.
 const NonLeaf = styled(ToggleButton)`
   display: inline-block;
   margin: 0 auto;
@@ -52,6 +50,7 @@ const NonLeaf = styled(ToggleButton)`
   }
 `;
 
+// style of leaf node.
 const Leaf = styled(ToggleButton)`
   display: inline-block;
   margin: 0 auto;
@@ -61,13 +60,13 @@ const Leaf = styled(ToggleButton)`
   border: 1.5px dashed #ffffff;
   position: relative;
   text-align: center;
-  /* text-transform: none; */
 `;
 
 const WhiteInput = styled(Input)`
   color: white;
 `;
 
+// postion and style of 'add node' button of root node
 const RootAddButton = styled.button`
   position: absolute;
   width: 50px;
@@ -98,6 +97,7 @@ const RootAddButton = styled.button`
   z-index: 1;
 `;
 
+// postion and style of 'add node' button
 const AddButton = styled.button`
   position: absolute;
   width: 50px;
@@ -128,6 +128,7 @@ const AddButton = styled.button`
   z-index: 1;
 `;
 
+// position and style of 'remove node' button
 const RemoveButton = styled(RemoveCircleOutlineSharp)`
   position: absolute;
   left: 48px;
@@ -136,6 +137,7 @@ const RemoveButton = styled(RemoveCircleOutlineSharp)`
   z-index: 1;
 `;
 
+// input parameter of node name
 const LabelText = styled.p`
   color: white;
   text-transform: none;

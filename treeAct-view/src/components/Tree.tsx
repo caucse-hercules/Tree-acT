@@ -4,6 +4,9 @@ import { NewTreeNode } from "../../../common/types";
 import { Name } from "../module/tree";
 import Node from "./Node";
 
+/**
+ * style of link line between nodes
+ */
 const RootUl = styled.ul`
   display: flex;
   list-style: none;

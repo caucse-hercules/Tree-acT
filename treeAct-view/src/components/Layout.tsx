@@ -11,6 +11,8 @@ const FlexRow = styled.div`
   display: flex;
   flex-direction: row;
 `;
+
+// Layout of Webview : Tree is located in this view.
 const TreeSpace = styled.div`
   display: flex;
   border-style: solid;
@@ -23,6 +25,7 @@ const TreeSpace = styled.div`
   overflow: auto;
 `;
 
+// Layout of right sidebar that will be filled with detail of Nodes.
 const Rside = styled.div`
   display: flex;
   font-size: 20px;
@@ -41,7 +44,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <FlexRow>
       <TreeSpace>{children}</TreeSpace>
-      {isBig && <Rside>사이드바</Rside>}
+      {isBig && <Rside></Rside>}
     </FlexRow>
   );
 };
