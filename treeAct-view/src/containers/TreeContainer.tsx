@@ -12,6 +12,10 @@ import Tree from "../components/Tree";
 import { MessageData } from "../../../common/types";
 import { debounce } from "lodash";
 
+/**
+ * Container to get state from redux store and dispatch actions of tree reducer
+ */
+
 declare const vscode: vscode;
 
 type vscode = {
@@ -48,10 +52,13 @@ const TreeContainer = () => {
     []
   );
 
+  // Get current state(tree data) from redux store
   const treeData = useSelector((state: RootState) => {
     sendStateToExtension(state);
     return state.treeReducer.treeData;
   });
+
+  // Dispatch actions created at tree module
   const dispatch = useDispatch();
   const onInsert = useCallback((id) => dispatch(insertNode(id)), [dispatch]);
   const onRemove = useCallback((id) => dispatch(removeNode(id)), [dispatch]);

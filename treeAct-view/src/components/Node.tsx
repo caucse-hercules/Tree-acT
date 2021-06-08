@@ -142,6 +142,10 @@ const LabelText = styled.p`
   margin: 0;
 `;
 
+/**
+ * View component of node
+ */
+
 interface nodeProps {
   node: NewTreeNode;
   onInsert: (id: number) => void;
@@ -152,9 +156,17 @@ interface nodeProps {
 
 const Node = (props: nodeProps) => {
   const { node, onInsert, onRemove, onChangeName, onExpand } = props;
+  //For activating name input. If true, activate.
   const [isEditable, setEditable] = useState<boolean>(false);
+
+  //Timer for handleClick
   let timer: ReturnType<typeof setTimeout>;
 
+  /**
+   * Handle double click and single click
+   * When double click, activate name input, when single click, collapse descendants
+   * @param e
+   */
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     clearTimeout(timer);
     if (e.detail === 1) {
@@ -164,23 +176,28 @@ const Node = (props: nodeProps) => {
     }
   };
 
+  //Disable name input by clicking anywhere except the node
   const handleClickAway = () => {
     setEditable(false);
   };
 
+  //Collapse/Expand the descendants by single click
   const handleSingleClick = () => {
     onExpand(node.id);
   };
 
+  //Activate name input by double click
   const handleDoubleClick = () => {
     setEditable(true);
   };
 
+  //Insert node
   const handleInsert = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
     onInsert(node.id);
   };
 
+  //Remove node
   const handleRemove = (e: React.MouseEvent<SVGElement>) => {
     e.stopPropagation();
     onRemove(node.id);
@@ -188,60 +205,66 @@ const Node = (props: nodeProps) => {
 
   return (
     <div>
-      {node.id === 0 ? (
-        <>
-          <Root onClick={handleSingleClick}>
-            <text>App</text>
-            {node.isExpanded && (
-              <RootAddButton onClick={handleInsert}>+</RootAddButton>
-            )}
-          </Root>
-        </>
-      ) : node.children.length !== 0 ? (
-        <ClickAwayListener onClickAway={handleClickAway}>
-          <NonLeaf onClick={handleClick}>
-            <RemoveButton onClick={handleRemove} />
-            {isEditable ? (
-              <WhiteInput
-                value={node.name}
-                autoFocus={true}
-                inputProps={{
-                  "aria-label": "description",
-                  autoCapitalize: "none",
-                }}
-                onChange={(e) =>
-                  onChangeName({ id: node.id, name: e.target.value })
-                }
-              />
-            ) : (
-              <LabelText>{node.name}</LabelText>
-            )}
-            {node.isExpanded && <AddButton onClick={handleInsert}>+</AddButton>}
-          </NonLeaf>
-        </ClickAwayListener>
-      ) : (
-        <ClickAwayListener onClickAway={handleClickAway}>
-          <Leaf onDoubleClick={handleDoubleClick}>
-            <RemoveButton onClick={handleRemove} />
-            {isEditable ? (
-              <WhiteInput
-                value={node.name}
-                autoFocus={true}
-                inputProps={{
-                  "aria-label": "description",
-                  autoCapitalize: "none",
-                }}
-                onChange={(e) =>
-                  onChangeName({ id: node.id, name: e.target.value })
-                }
-              />
-            ) : (
-              <LabelText>{node.name}</LabelText>
-            )}
-            <AddButton onClick={handleInsert}>+</AddButton>
-          </Leaf>
-        </ClickAwayListener>
-      )}
+      {
+        //Root or not
+        node.id === 0 ? (
+          <>
+            <Root onClick={handleSingleClick}>
+              <text>App</text>
+              {node.isExpanded && (
+                <RootAddButton onClick={handleInsert}>+</RootAddButton>
+              )}
+            </Root>
+          </>
+        ) : //Render non leaf node if the node has children. If not, leaf node
+        node.children.length !== 0 ? (
+          <ClickAwayListener onClickAway={handleClickAway}>
+            <NonLeaf onClick={handleClick}>
+              <RemoveButton onClick={handleRemove} />
+              {isEditable ? (
+                <WhiteInput
+                  value={node.name}
+                  autoFocus={true}
+                  inputProps={{
+                    "aria-label": "description",
+                    autoCapitalize: "none",
+                  }}
+                  onChange={(e) =>
+                    onChangeName({ id: node.id, name: e.target.value })
+                  }
+                />
+              ) : (
+                <LabelText>{node.name}</LabelText>
+              )}
+              {node.isExpanded && (
+                <AddButton onClick={handleInsert}>+</AddButton>
+              )}
+            </NonLeaf>
+          </ClickAwayListener>
+        ) : (
+          <ClickAwayListener onClickAway={handleClickAway}>
+            <Leaf onDoubleClick={handleDoubleClick}>
+              <RemoveButton onClick={handleRemove} />
+              {isEditable ? (
+                <WhiteInput
+                  value={node.name}
+                  autoFocus={true}
+                  inputProps={{
+                    "aria-label": "description",
+                    autoCapitalize: "none",
+                  }}
+                  onChange={(e) =>
+                    onChangeName({ id: node.id, name: e.target.value })
+                  }
+                />
+              ) : (
+                <LabelText>{node.name}</LabelText>
+              )}
+              <AddButton onClick={handleInsert}>+</AddButton>
+            </Leaf>
+          </ClickAwayListener>
+        )
+      }
     </div>
   );
 };

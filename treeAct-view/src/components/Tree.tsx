@@ -21,7 +21,6 @@ const ChildUl = styled.ul`
   padding-left: 0;
   text-align: center;
   margin-top: 59px;
-  position: relative;
 `;
 const ChildLi = styled.li`
   box-sizing: border-box;
@@ -78,6 +77,18 @@ const ChildLi = styled.li`
   }
 `;
 
+/**
+ * View component of tree layout
+ */
+
+/**
+ * Interface for props of the Tree component
+ *
+ * onInsert: Find the clicked node by id and insert default node
+ * onRemove: Find the clicked node by id and remove it
+ * onChangeName: Find the clicked node by id and change name by input value
+ * onExpand: Find the clicked node by id and flip isExpanded attribute
+ */
 interface treeProps {
   treeData: NewTreeNode[];
   onInsert: (id: number) => void;
@@ -89,6 +100,9 @@ interface treeProps {
 const Tree = (props: treeProps) => {
   const { treeData, onInsert, onRemove, onChangeName, onExpand } = props;
 
+  /**
+   * Create children nodes of root recursively
+   */
   const createNode = (childrenId: number[]) => {
     return (
       <ChildUl>
@@ -103,9 +117,12 @@ const Tree = (props: treeProps) => {
                 onChangeName={onChangeName}
                 onExpand={onExpand}
               />
-              {childNode!.children.length !== 0 &&
-                childNode!.isExpanded &&
-                createNode(childNode!.children)}
+              {
+                //If the node has children and is not collapsed render the children
+                childNode!.children.length !== 0 &&
+                  childNode!.isExpanded &&
+                  createNode(childNode!.children)
+              }
             </ChildLi>
           );
         })}
@@ -117,6 +134,7 @@ const Tree = (props: treeProps) => {
     <div>
       <RootUl>
         <RootLi>
+          {/* Root node rendering */}
           <Node
             node={treeData[0]}
             onInsert={onInsert}
@@ -124,9 +142,12 @@ const Tree = (props: treeProps) => {
             onChangeName={onChangeName}
             onExpand={onExpand}
           ></Node>
-          {treeData[0].children.length !== 0 &&
-            treeData[0].isExpanded &&
-            createNode(treeData[0].children)}
+          {
+            //If root node has children and is not collapsed render the children
+            treeData[0].children.length !== 0 &&
+              treeData[0].isExpanded &&
+              createNode(treeData[0].children)
+          }
         </RootLi>
       </RootUl>
     </div>
