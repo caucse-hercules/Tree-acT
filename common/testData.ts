@@ -1,5 +1,16 @@
+/**
+ * Sample Data for Testing
+ * You can see how Message Data and New Tree Node are composed in /common/types.ts.
+ */
 import { MessageData, NewTreeNode } from "./types";
 
+/**
+ * Information about each node's attributes
+ * id : integer type for node's index
+ * name : string type for node's name
+ * children : integer array type for storing node's children index
+ * isExpanded : boolean type for checking node is opened(not important for testing)
+ */
 export const testData: NewTreeNode[] = [
   {
     id: 0,
@@ -58,6 +69,13 @@ export const testData: NewTreeNode[] = [
   },
 ];
 
+/**
+ * Message Data for generating test application
+ * You can get this data for testing.
+ * command : Command for generating application(This is used in /src/webviewBridge.ts.)
+ * directory : Application name when you generate test application
+ * data : Test data used in generating test application(You can see this above.)
+ */
 export const testGenerateMessage: MessageData = {
   command: "generateApp",
   directory: "test-app",
