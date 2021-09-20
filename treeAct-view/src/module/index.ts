@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
-import treeReducer, { TreeState } from "./tree";
+import treeReducer from "./tree";
+import { TreeState } from "../types";
 
 export interface RootState {
   treeReducer: TreeState;

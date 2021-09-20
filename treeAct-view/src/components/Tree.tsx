@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { NewTreeNode } from "../../../common/types";
-import { Name } from "../module/tree";
+import { Name } from "../types";
 import Node from "./Node";
 
 /**
