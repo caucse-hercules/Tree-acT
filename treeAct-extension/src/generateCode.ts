@@ -5,11 +5,23 @@ import { MessageData } from "../../common/types";
 import waitUntil, { WAIT_FOREVER } from "async-wait-until";
 import { exit } from "process";
 
+
+const checkComponetNameDuplication=(componentArray: any) : number => {
+  for(let i=0; i<componentArray.length-1; i++){
+    for(let j=i+1; j<componentArray.length; j++){
+      if(componentArray[i].name==componentArray[j].name){
+        return Number(j);
+      }
+    }
+  }
+  return -1;
+};
+
 /**
  * Function that checks if the component file name contains spaces.
  */
 const checkBlank = (componentArray: any): number => {
-  for (const i in componentArray) {
+  for (let i=0; i<componentArray.length; i++) {
     /**
      * Returns the component's index if the component file name contains a space.
      */
@@ -96,7 +108,7 @@ const makeComponent = (
   /**
    * Get the child components that the current component will use and write import statement to current component file properly.
    */
-  for (const i in component.children) {
+  for (let i=0; i<component.children.length; i++) {
     const nextId: number = component.children[i];
     const nextIndex = componentArray.findIndex(
       (item: { id: number }) => item.id === nextId
@@ -168,7 +180,7 @@ export const run = async (message: MessageData, dirPath: string) => {
     /**
      * Check that the name of the component files to be created contains a space, and exit if there is a space.
      */
-    const componentIndex = checkBlank(message.data);
+    let componentIndex = checkBlank(message.data);
     if (componentIndex != -1) {
       console.log(componentIndex);
       const componentArray: any = message.data;
@@ -179,7 +191,18 @@ export const run = async (message: MessageData, dirPath: string) => {
         `Component file name contains spaces!  (${component.name}.js)`
       );
     }
-
+    componentIndex=checkComponetNameDuplication(message.data);
+    if(componentIndex!=-1){
+      console.log(componentIndex);
+      const componentArray:any=message.data;
+      const component=componentArray[componentIndex];
+      child_terminal.sendText(`exit`);
+      vscode.window.showInformationMessage("Canceled");
+      vscode.window.showErrorMessage(
+        `Component file name is duplicated!  (${component.name}.js)`
+      );
+    }
+    
     /**
      * Checks if another project with the same name exists in the directory in which the project will be created, and exit if another project with the same name exists
      */
@@ -190,7 +213,9 @@ export const run = async (message: MessageData, dirPath: string) => {
       vscode.window.showErrorMessage(
         `A project with the same name already exists!  (${message.directory})`
       );
-    } else {
+    } 
+    
+    if(componentIndex==-1&&!sameProjectName) {
       child_terminal.sendText(`npx create-react-app ${message.directory}`); // Create React project
 
       /**
