@@ -180,22 +180,23 @@ export const run = async (message: MessageData, dirPath: string) => {
     /**
      * Check that the name of the component files to be created contains a space, and exit if there is a space.
      */
-    let componentIndex = checkBlank(message.data);
-    if (componentIndex != -1) {
-      console.log(componentIndex);
+    let componentIndex1 = checkBlank(message.data);
+    if (componentIndex1 != -1) {
+      console.log(componentIndex1);
       const componentArray: any = message.data;
-      const component = componentArray[componentIndex];
+      const component = componentArray[componentIndex1];
       child_terminal.sendText(`exit`);
       vscode.window.showInformationMessage("Canceled");
       vscode.window.showErrorMessage(
         `Component file name contains spaces!  (${component.name}.js)`
       );
     }
-    componentIndex=checkComponetNameDuplication(message.data);
-    if(componentIndex!=-1){
-      console.log(componentIndex);
+    
+    let componentIndex2=checkComponetNameDuplication(message.data);
+    if(componentIndex2!=-1){
+      console.log(componentIndex2);
       const componentArray:any=message.data;
-      const component=componentArray[componentIndex];
+      const component=componentArray[componentIndex2];
       child_terminal.sendText(`exit`);
       vscode.window.showInformationMessage("Canceled");
       vscode.window.showErrorMessage(
@@ -215,7 +216,7 @@ export const run = async (message: MessageData, dirPath: string) => {
       );
     } 
     
-    if(componentIndex==-1&&!sameProjectName) {
+    if(componentIndex1==-1&&componentIndex2==-1&&!sameProjectName) {
       child_terminal.sendText(`npx create-react-app ${message.directory}`); // Create React project
 
       /**
