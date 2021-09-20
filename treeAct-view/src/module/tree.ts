@@ -1,6 +1,7 @@
 import { createAction, ActionType, createReducer } from "typesafe-actions";
 import produce from "immer";
 import { NewTreeNode } from "../../../common/types";
+import { TreeState, Name } from "../types";
 /**
  * Tree reducer module by Ducks pattern
  *
@@ -30,16 +31,7 @@ const actions = {
   expandNode,
 };
 
-// Type of changName Action props
-export type Name = {
-  id: number;
-  name: string;
-};
-
-export type TreeAction = ActionType<typeof actions>;
-
-// Type of whole tree data
-export type TreeState = { treeData: NewTreeNode[] };
+type TreeAction = ActionType<typeof actions>;
 
 // Initial state of tree reducer
 const treeData: TreeState = {
