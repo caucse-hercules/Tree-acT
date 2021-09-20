@@ -4,7 +4,7 @@ import ToggleButton from "@material-ui/lab/ToggleButton";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { NewTreeNode } from "../../../common/types";
-import { Name } from "../module/tree";
+import { Name } from "../types";
 
 // style of root node (app)
 const Root = styled.p`
