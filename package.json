@@ -1,5 +1,6 @@
 {
-  "name": "Tree-acT",
+  "name": "tree-act",
+  "displayName": "Tree-acT - Architect your React project with visualized tree",
   "version": "0.1.1",
   "description": "React code generator from Tree",
   "main": "out/extension",
