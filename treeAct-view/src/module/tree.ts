@@ -71,18 +71,12 @@ const treeReducer = createReducer<TreeState, TreeAction>(treeData)
   // Remove clicked node
   .handleAction(removeNode, (state, action) =>
     produce(state, (draft) => {
-      // const removeIndex = draft.treeData.findIndex(
-      //   (node) => node.id === action.payload
-      // );
       const removedNode = draft.treeData.find(
         (node) => node.id === action.payload
       );
       const removedNodeParent = draft.treeData.find(
         (node) => node.id === removedNode!.parentId
       );
-      // const indexInParent = removedNodeParent!.childrenId.findIndex(
-      //   (id) => id === action.payload
-      // ); // Index of the node in parent's children array
 
       // Update parent attribute of the node's children
       removedNode!.childrenId.map((childId) => {
@@ -91,17 +85,12 @@ const treeReducer = createReducer<TreeState, TreeAction>(treeData)
       });
 
       // Attach the node's children array to parent's
-      // const temp_arr1 = removedNodeParent!.childrenId.slice(0, indexInParent);
-      // const temp_arr2 = removedNodeParent!.childrenId.slice(indexInParent + 1);
-      // removedNodeParent!.childrenId = temp_arr1
-      //   .concat(removedNode!.childrenId)
-      //   .concat(temp_arr2);
       removedNodeParent!.childrenId = removedNodeParent!.childrenId.reduce<
         number[]
       >(
         (acc, v) =>
           v === action.payload
-            ? acc.concat(removedNode!.childrenId)
+            ? [...acc, ...removedNode!.childrenId]
             : [...acc, v],
         []
       );
