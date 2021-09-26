@@ -107,8 +107,8 @@ const makeComponent = (
   /**
    * Get the child components that the current component will use and write import statement to current component file properly.
    */
-  for (let i = 0; i < component.children.length; i++) {
-    const nextId: number = component.children[i];
+  for (let i = 0; i < component.childrenId.length; i++) {
+    const nextId: number = component.childrenId[i];
     const nextIndex = componentArray.findIndex(
       (item: { id: number }) => item.id === nextId
     );
