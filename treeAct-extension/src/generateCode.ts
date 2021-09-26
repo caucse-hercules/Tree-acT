@@ -35,7 +35,7 @@ const checkBlank = (componentArray: any): number => {
 /**
  * Function that checks if another project with the same name exists in the directory in which the project will be created.
  */
-const checkSameName = (projectPath: string, child_terminal: any): boolean => {
+const checkSameName = (projectPath: string): boolean => {
   /**
    * Returns true if another project with the same name exists.
    */
@@ -180,7 +180,7 @@ export const run = async (message: MessageData, dirPath: string) => {
     /**
      * Check that the name of the component files to be created contains a space, and exit if there is a space.
      */
-    let componentIndex1 = checkBlank(message.data);
+    const componentIndex1 = checkBlank(message.data);
     if (componentIndex1 != -1) {
       console.log(componentIndex1);
       const componentArray: any = message.data;
@@ -192,7 +192,7 @@ export const run = async (message: MessageData, dirPath: string) => {
       );
     }
     
-    let componentIndex2=checkComponetNameDuplication(message.data);
+    const componentIndex2=checkComponetNameDuplication(message.data);
     if(componentIndex2!=-1){
       console.log(componentIndex2);
       const componentArray:any=message.data;
@@ -207,7 +207,7 @@ export const run = async (message: MessageData, dirPath: string) => {
     /**
      * Checks if another project with the same name exists in the directory in which the project will be created, and exit if another project with the same name exists
      */
-    const sameProjectName = checkSameName(projectPath, child_terminal);
+    const sameProjectName = checkSameName(projectPath);
     if (sameProjectName) {
       child_terminal.sendText(`exit`);
       vscode.window.showInformationMessage("Canceled");
