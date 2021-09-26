@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { NewTreeNode, RequestData } from "../../common/types";
+import { TreeNode, RequestData } from "../../common/types";
 import { handlePost, setInitialState } from "./webviewBridge";
 
 /**
@@ -81,7 +81,7 @@ export class TreeActPanel {
     // Handle messages from the webview
     handlePost(context, this._panel, this._disposables);
 
-    // const prevState: NewTreeNode[] | undefined =
+    // const prevState: TreeNode[] | undefined =
     //   context.workspaceState.get("treeData");
     // if (prevState !== undefined) {
     //   const payload: RequestData = {

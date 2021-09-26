@@ -2,7 +2,7 @@
  * Sample Data for Testing
  * You can see how Message Data and New Tree Node are composed in /common/types.ts.
  */
-import { MessageData, NewTreeNode } from "./types";
+import { MessageData, TreeNode } from "./types";
 
 /**
  * Information about each node's attributes
@@ -11,7 +11,7 @@ import { MessageData, NewTreeNode } from "./types";
  * children : integer array type for storing node's children index
  * isExpanded : boolean type for checking node is opened(not important for testing)
  */
-export const testData: NewTreeNode[] = [
+export const testData: TreeNode[] = [
   {
     id: 0,
     name: "App",

@@ -3,8 +3,8 @@ import { RemoveCircleOutlineSharp } from "@material-ui/icons";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { NewTreeNode } from "../../../common/types";
-import { Name } from "../types";
+import { TreeNode } from "../../../common/types";
+import { Name } from "../../../common/types";
 
 // style of root node (app)
 const Root = styled.p`
@@ -149,7 +149,7 @@ const LabelText = styled.p`
  */
 
 interface nodeProps {
-  node: NewTreeNode;
+  node: TreeNode;
   onInsert: (id: number) => void;
   onRemove: (id: number) => void;
   onChangeName: ({ id, name }: Name) => void;

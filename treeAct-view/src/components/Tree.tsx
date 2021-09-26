@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { NewTreeNode } from "../../../common/types";
-import { Name } from "../types";
+import { TreeNode } from "../../../common/types";
+import { Name } from "../../../common/types";
 import Node from "./Node";
 
 /**
@@ -93,7 +93,7 @@ const ChildLi = styled.li`
  * onExpand: Find the clicked node by id and flip isExpanded attribute
  */
 interface treeProps {
-  treeData: NewTreeNode[];
+  treeData: TreeNode[];
   onInsert: (id: number) => void;
   onRemove: (id: number) => void;
   onChangeName: ({ id, name }: Name) => void;
