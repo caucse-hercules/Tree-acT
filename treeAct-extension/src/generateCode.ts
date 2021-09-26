@@ -188,12 +188,12 @@ export const run = async (message: MessageData, dirPath: string) => {
     /**
      * Check that the name of the component files to be created contains a space, and exit if there is a space.
      */
-    const componentIndex1 = checkBlank(message.data);
-    if (componentIndex1 != -1) {
-      console.log(componentIndex1);
+    const componentIndexWithBlank = checkBlank(message.data);
+    if (componentIndexWithBlank != -1) {
+      console.log(componentIndexWithBlank);
       const componentArray: TreeNode[] | undefined = message.data;
       if(componentArray!==undefined){
-        const component = componentArray[componentIndex1];
+        const component = componentArray[componentIndexWithBlank];
         child_terminal.sendText(`exit`);
         vscode.window.showInformationMessage("Canceled");
         vscode.window.showErrorMessage(
@@ -202,12 +202,12 @@ export const run = async (message: MessageData, dirPath: string) => {
       }
     }
     
-    const componentIndex2=checkComponetNameDuplication(message.data);
-    if(componentIndex2!=-1){
-      console.log(componentIndex2);
+    const componentIndexWithDuplicate=checkComponetNameDuplication(message.data);
+    if(componentIndexWithDuplicate!=-1){
+      console.log(componentIndexWithDuplicate);
       const componentArray : TreeNode[] | undefined=message.data;
       if(componentArray!==undefined){
-      const component=componentArray[componentIndex2];
+      const component=componentArray[componentIndexWithDuplicate];
         child_terminal.sendText(`exit`);
         vscode.window.showInformationMessage("Canceled");
         vscode.window.showErrorMessage(
@@ -228,7 +228,7 @@ export const run = async (message: MessageData, dirPath: string) => {
       );
     } 
     
-    if(componentIndex1==-1&&componentIndex2==-1&&!sameProjectName) {
+    if(componentIndexWithBlank==-1&&componentIndexWithDuplicate==-1&&!sameProjectName) {
       child_terminal.sendText(`npx create-react-app ${message.directory}`); // Create React project
 
       /**
