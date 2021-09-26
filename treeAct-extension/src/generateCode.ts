@@ -5,14 +5,10 @@ import { MessageData, TreeNode } from "../../common/types";
 import waitUntil, { WAIT_FOREVER } from "async-wait-until";
 import { exit } from "process";
 
-
-const checkComponetNameDuplication=(componentArray?: TreeNode[]) : number => {
-  if(componentArray===undefined)
-    return -1;
-
-  for(let i=0; i<componentArray.length-1; i++){
-    for(let j=i+1; j<componentArray.length; j++){
-      if(componentArray[i].name==componentArray[j].name){
+const checkComponetNameDuplication = (componentArray: TreeNode[]): number => {
+  for (let i = 0; i < componentArray.length - 1; i++) {
+    for (let j = i + 1; j < componentArray.length; j++) {
+      if (componentArray[i].name == componentArray[j].name) {
         return Number(j);
       }
     }
@@ -23,11 +19,8 @@ const checkComponetNameDuplication=(componentArray?: TreeNode[]) : number => {
 /**
  * Function that checks if the component file name contains spaces.
  */
-const checkBlank = (componentArray?: TreeNode[]): number => {
-  if(componentArray===undefined)
-    return -1;
-
-  for (let i=0; i<componentArray.length; i++) {
+const checkBlank = (componentArray: TreeNode[]): number => {
+  for (let i = 0; i < componentArray.length; i++) {
     /**
      * Returns the component's index if the component file name contains a space.
      */
@@ -82,10 +75,8 @@ const makeComponent = (
   id: number, // Component's id
   generateComponentPath: string, // Path of folder to store the components created by Tree-Act
   srcPath: string, // src directory path of the project.
-  componentArray?: TreeNode[] // JSONArray of Components to Create
+  componentArray: TreeNode[] // JSONArray of Components to Create
 ) => {
-  if(componentArray===undefined)
-    return -1;
   /**
    * Store index of component with id matching id values in 'index'.
    */
@@ -116,7 +107,7 @@ const makeComponent = (
   /**
    * Get the child components that the current component will use and write import statement to current component file properly.
    */
-  for (let i=0; i<component.children.length; i++) {
+  for (let i = 0; i < component.children.length; i++) {
     const nextId: number = component.children[i];
     const nextIndex = componentArray.findIndex(
       (item: { id: number }) => item.id === nextId
@@ -185,14 +176,16 @@ export const run = async (message: MessageData, dirPath: string) => {
     });
     child_terminal.show();
 
-    /**
-     * Check that the name of the component files to be created contains a space, and exit if there is a space.
-     */
-    const componentIndexWithBlank = checkBlank(message.data);
-    if (componentIndexWithBlank != -1) {
-      console.log(componentIndexWithBlank);
-      const componentArray: TreeNode[] | undefined = message.data;
-      if(componentArray!==undefined){
+    let componentIndexWithBlank = -1;
+    let componentIndexWithDuplicate = -1;
+    if (message.data !== undefined) {
+      /**
+       * Check that the name of the component files to be created contains a space, and exit if there is a space.
+       */
+      componentIndexWithBlank = checkBlank(message.data);
+      if (componentIndexWithBlank != -1) {
+        console.log(componentIndexWithBlank);
+        const componentArray: TreeNode[] = message.data;
         const component = componentArray[componentIndexWithBlank];
         child_terminal.sendText(`exit`);
         vscode.window.showInformationMessage("Canceled");
@@ -200,14 +193,12 @@ export const run = async (message: MessageData, dirPath: string) => {
           `Component file name contains spaces!  (${component.name}.js)`
         );
       }
-    }
-    
-    const componentIndexWithDuplicate=checkComponetNameDuplication(message.data);
-    if(componentIndexWithDuplicate!=-1){
-      console.log(componentIndexWithDuplicate);
-      const componentArray : TreeNode[] | undefined=message.data;
-      if(componentArray!==undefined){
-      const component=componentArray[componentIndexWithDuplicate];
+
+      componentIndexWithDuplicate = checkComponetNameDuplication(message.data);
+      if (componentIndexWithDuplicate != -1) {
+        console.log(componentIndexWithDuplicate);
+        const componentArray: TreeNode[] = message.data;
+        const component = componentArray[componentIndexWithDuplicate];
         child_terminal.sendText(`exit`);
         vscode.window.showInformationMessage("Canceled");
         vscode.window.showErrorMessage(
@@ -215,7 +206,7 @@ export const run = async (message: MessageData, dirPath: string) => {
         );
       }
     }
-    
+
     /**
      * Checks if another project with the same name exists in the directory in which the project will be created, and exit if another project with the same name exists
      */
@@ -226,9 +217,13 @@ export const run = async (message: MessageData, dirPath: string) => {
       vscode.window.showErrorMessage(
         `A project with the same name already exists!  (${message.directory})`
       );
-    } 
-    
-    if(componentIndexWithBlank==-1&&componentIndexWithDuplicate==-1&&!sameProjectName) {
+    }
+
+    if (
+      componentIndexWithBlank == -1 &&
+      componentIndexWithDuplicate == -1 &&
+      !sameProjectName
+    ) {
       child_terminal.sendText(`npx create-react-app ${message.directory}`); // Create React project
 
       /**
@@ -242,7 +237,7 @@ export const run = async (message: MessageData, dirPath: string) => {
       /**
        * When a react project is created and its src folder is created, it executes the inside of the conditional statement.
        */
-      if (exists) {
+      if (exists && message.data !== undefined) {
         makeFolder(generateComponentPath);
         makeComponent(0, generateComponentPath, srcPath, message.data);
         vscode.window.showInformationMessage("Generate Component Complete!");
