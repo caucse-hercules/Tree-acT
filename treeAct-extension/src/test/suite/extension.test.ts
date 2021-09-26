@@ -3,7 +3,7 @@ import { run } from "../../generateCode";
 import fs from "fs";
 import rimraf from "rimraf";
 import { testGenerateMessage } from "../../../../common/testData";
-import { NewTreeNode } from "../../../../common/types";
+import { TreeNode } from "../../../../common/types";
 
 suite("Extension d Test Suite", function () {
   // Set timeout for waiting execute
@@ -52,7 +52,7 @@ const checkComponent = (inputNameList: string[], createNameList: string[]) => {
 };
 
 // Function to get input component's name
-const getComponentName = async (data: NewTreeNode[]) => {
+const getComponentName = async (data: TreeNode[]) => {
   const nameList: string[] = [];
 
   for (const i in data) {

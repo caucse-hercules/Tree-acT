@@ -1,7 +1,6 @@
 import { createAction, ActionType, createReducer } from "typesafe-actions";
 import produce from "immer";
-import { NewTreeNode } from "../../../common/types";
-import { TreeState, Name } from "../types";
+import { TreeNode, TreeState, Name } from "../../../common/types";
 /**
  * Tree reducer module by Ducks pattern
  *
@@ -17,7 +16,7 @@ const EXPAND_NODE = "tree/EXPAND_NODE";
 // ID for new node
 let id = 0;
 
-export const initState = createAction(INIT_STATE)<NewTreeNode[]>();
+export const initState = createAction(INIT_STATE)<TreeNode[]>();
 export const insertNode = createAction(INSERT_NODE)<number>();
 export const removeNode = createAction(REMOVE_NODE)<number>();
 export const changeName = createAction(CHANGE_NAME)<Name>();
@@ -49,9 +48,9 @@ const treeData: TreeState = {
 const treeReducer = createReducer<TreeState, TreeAction>(treeData)
   .handleAction(initState, (state, action) =>
     produce(state, (draft) => {
-      const maxIdNode = action.payload.reduce((prev, curr) => {
-        return prev.id > curr.id ? prev : curr;
-      });
+      const maxIdNode = action.payload.reduce((prev, curr) =>
+        prev.id > curr.id ? prev : curr
+      );
       id = maxIdNode.id;
       draft.treeData = action.payload;
     })

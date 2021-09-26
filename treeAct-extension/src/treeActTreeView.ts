@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import * as vscode from "vscode";
-import { NewTreeNode } from "../../common/types";
+import { TreeNode } from "../../common/types";
 
 export class TreeActTreeView
   implements vscode.TreeDataProvider<TreeActTreeViewItem>
@@ -12,14 +12,14 @@ export class TreeActTreeView
     TreeActTreeViewItem | undefined | void
   > = this._onDidChangeTreeData.event;
 
-  private treeData: NewTreeNode[];
+  private treeData: TreeNode[];
 
   constructor(private context: vscode.ExtensionContext) {
-    this.treeData = this.context.globalState.get("treeData") as NewTreeNode[];
+    this.treeData = this.context.globalState.get("treeData") as TreeNode[];
   }
 
   refresh(): void {
-    this.treeData = this.context.globalState.get("treeData") as NewTreeNode[];
+    this.treeData = this.context.globalState.get("treeData") as TreeNode[];
     this._onDidChangeTreeData.fire();
   }
 

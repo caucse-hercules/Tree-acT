@@ -1,10 +1,10 @@
 export type MessageData = {
   command: string;
   directory?: string;
-  data?: NewTreeNode[];
+  data?: TreeNode[];
 };
 
-export type NewTreeNode = {
+export type TreeNode = {
   id: number;
   name: string;
   parent?: number;
@@ -12,8 +12,16 @@ export type NewTreeNode = {
   isExpanded: boolean;
 };
 
+export type Name = {
+  id: number;
+  name: string;
+};
+
+// Type of whole tree data
+export type TreeState = { treeData: TreeNode[] };
+
 export type RequestType = "add" | "delete" | "refresh" | "init";
 export type RequestData = {
   command: RequestType;
-  data?: NewTreeNode | NewTreeNode[];
+  data?: TreeNode | TreeNode[];
 };
