@@ -122,9 +122,9 @@ const Tree = (props: treeProps) => {
               />
               {
                 //If the node has children and is not collapsed render the children
-                childNode!.children.length !== 0 &&
+                childNode!.childrenId.length !== 0 &&
                   childNode!.isExpanded &&
-                  createNode(childNode!.children)
+                  createNode(childNode!.childrenId)
               }
             </ChildLi>
           );
@@ -147,9 +147,9 @@ const Tree = (props: treeProps) => {
           ></Node>
           {
             //If root node has children and is not collapsed render the children
-            treeData[0].children.length !== 0 &&
+            treeData[0].childrenId.length !== 0 &&
               treeData[0].isExpanded &&
-              createNode(treeData[0].children)
+              createNode(treeData[0].childrenId)
           }
         </RootLi>
       </RootUl>

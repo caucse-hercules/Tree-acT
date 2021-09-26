@@ -38,7 +38,7 @@ const treeData: TreeState = {
     {
       id: 0,
       name: "App",
-      children: [], // Contain id of children nodes as number type
+      childrenId: [], // Contain id of children nodes as number type
       isExpanded: true,
     },
   ],
@@ -48,10 +48,9 @@ const treeData: TreeState = {
 const treeReducer = createReducer<TreeState, TreeAction>(treeData)
   .handleAction(initState, (state, action) =>
     produce(state, (draft) => {
-      const maxIdNode = action.payload.reduce((prev, curr) =>
+      id = action.payload.reduce((prev, curr) =>
         prev.id > curr.id ? prev : curr
-      );
-      id = maxIdNode.id;
+      ).id;
       draft.treeData = action.payload;
     })
   )
@@ -61,40 +60,56 @@ const treeReducer = createReducer<TreeState, TreeAction>(treeData)
       draft.treeData.push({
         id: ++id,
         name: "",
-        parent: action.payload,
-        children: [],
+        parentId: action.payload,
+        childrenId: [],
         isExpanded: true,
       });
       const parent = draft.treeData.find((node) => node.id === action.payload);
-      parent!.children?.push(id);
+      parent!.childrenId?.push(id);
     })
   )
   // Remove clicked node
   .handleAction(removeNode, (state, action) =>
     produce(state, (draft) => {
-      const removeIndex = draft.treeData.findIndex(
+      // const removeIndex = draft.treeData.findIndex(
+      //   (node) => node.id === action.payload
+      // );
+      const removedNode = draft.treeData.find(
         (node) => node.id === action.payload
       );
-      const parentId = draft.treeData[removeIndex].parent;
-      const parent = draft.treeData.find((node) => node.id === parentId);
-      const indexInParent = parent!.children.findIndex(
-        (id) => id === action.payload
-      ); // Index of the node in parent's children array
-
-      // Attach the node's children array to parent's
-      const temp_arr1 = parent!.children.slice(0, indexInParent);
-      const temp_arr2 = parent!.children.slice(indexInParent + 1);
-      parent!.children = temp_arr1
-        .concat(draft.treeData[removeIndex].children)
-        .concat(temp_arr2);
+      const removedNodeParent = draft.treeData.find(
+        (node) => node.id === removedNode!.parentId
+      );
+      // const indexInParent = removedNodeParent!.childrenId.findIndex(
+      //   (id) => id === action.payload
+      // ); // Index of the node in parent's children array
 
       // Update parent attribute of the node's children
-      parent!.children.map((childId) => {
+      removedNode!.childrenId.map((childId) => {
         const child = draft.treeData.find((node) => node.id === childId);
-        child!.parent = parentId;
+        child!.parentId = removedNodeParent!.id;
       });
+
+      // Attach the node's children array to parent's
+      // const temp_arr1 = removedNodeParent!.childrenId.slice(0, indexInParent);
+      // const temp_arr2 = removedNodeParent!.childrenId.slice(indexInParent + 1);
+      // removedNodeParent!.childrenId = temp_arr1
+      //   .concat(removedNode!.childrenId)
+      //   .concat(temp_arr2);
+      removedNodeParent!.childrenId = removedNodeParent!.childrenId.reduce<
+        number[]
+      >(
+        (acc, v) =>
+          v === action.payload
+            ? acc.concat(removedNode!.childrenId)
+            : [...acc, v],
+        []
+      );
+
       // Remove the node from tree data
-      draft.treeData.splice(removeIndex, 1);
+      draft.treeData = draft.treeData.filter(
+        (node) => node.id !== action.payload
+      );
     })
   )
   // Change node's name

@@ -7,8 +7,8 @@ export type MessageData = {
 export type TreeNode = {
   id: number;
   name: string;
-  parent?: number;
-  children: number[];
+  parentId?: number;
+  childrenId: number[];
   isExpanded: boolean;
 };
 
