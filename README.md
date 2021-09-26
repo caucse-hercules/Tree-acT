@@ -2,33 +2,17 @@
 
 Build your react project with TREE!
 
-## How to Run ?
+## Progress
 
-### Prerequisites
+On develop
 
-- VSCode : Basically this is VSCode extension, for this reason you need VSCode to run this code.
-- Node.js : This is extension of VSCode which is built with electron powered by node, for this reason you need Node.js to build this extension.
-- npm & npx : npx is the utility of npm so you need npm, and our extension uses [create-react-app](https://github.com/facebook/create-react-app) internally so you need npx too.
-- yarn : You need yarn as package manager because we are using [yarn workspaces](https://classic.yarnpkg.com/en/docs/workspaces/) currently.
+# Documentation
 
-### Step 1. Clone this repository
+Please refer to https://treeact.cc/
 
-Clone this repository where you prefer.
+## Commit Lint
 
-### Step 2. Install dependencies
-
-Move to cloned repository and in the root directory execute below to install dependencies and initialize yarn workspaces.
-
-```sh
-yarn # install dependencies and initialize yarn workspaces
-```
-
-### Step 3. Execute VSCode extension
-
-Open this repository directory with VSCode.  
-And press `F5` or execute `Run - Start Debugging` at the VSCode menu.  
-That's it! You'll see build processes and after seconds, will be able to see `Extension Development Host`.  
-You can use our extension by clicking our `extension's activity menu icon` which is on the leftmost side of VSCode.
+We use husky and [commitlint](https://github.com/conventional-changelog/commitlint) for linting commit and our configuration for commitlint is [conventional commits](https://www.conventionalcommits.org/en/v1.0.0-beta.2/#why-use-conventional-commits). Please refer to [here](https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional#type-enum) for rules of commits.
 
 ## LICENSE
 
