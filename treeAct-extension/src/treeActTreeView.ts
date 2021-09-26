@@ -37,10 +37,10 @@ export class TreeActTreeView
       const node = this.treeData[0];
       const root = new TreeActTreeViewItem(
         node.name,
-        node.children && node.children.length !== 0
+        node.childrenId && node.childrenId.length !== 0
           ? vscode.TreeItemCollapsibleState.Expanded
           : vscode.TreeItemCollapsibleState.None,
-        node.children || []
+        node.childrenId || []
       );
       return Promise.resolve([root]);
     }
@@ -51,10 +51,10 @@ export class TreeActTreeView
       const node = this.treeData.find((item) => item.id === id);
       return new TreeActTreeViewItem(
         node!.name,
-        node!.children && node!.children.length !== 0
+        node!.childrenId && node!.childrenId.length !== 0
           ? vscode.TreeItemCollapsibleState.Expanded
           : vscode.TreeItemCollapsibleState.None,
-        node!.children || []
+        node!.childrenId || []
       );
     });
   }

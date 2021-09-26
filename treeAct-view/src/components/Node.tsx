@@ -219,7 +219,7 @@ const Node = (props: nodeProps) => {
             </Root>
           </>
         ) : //Render non leaf node if the node has children. If not, leaf node
-        node.children.length !== 0 ? (
+        node.childrenId.length !== 0 ? (
           <ClickAwayListener onClickAway={handleClickAway}>
             <NonLeaf onClick={handleClick}>
               <RemoveButton onClick={handleRemove} />

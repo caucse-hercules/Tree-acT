@@ -8,63 +8,63 @@ import { MessageData, TreeNode } from "./types";
  * Information about each node's attributes
  * id : integer type for node's index
  * name : string type for node's name
- * children : integer array type for storing node's children index
+ * childrenId : integer array type for storing node's childrenId index
  * isExpanded : boolean type for checking node is opened(not important for testing)
  */
 export const testData: TreeNode[] = [
   {
     id: 0,
     name: "App",
-    children: [1, 2, 4],
+    childrenId: [1, 2, 4],
     isExpanded: true,
   },
   {
     id: 1,
     name: "Header",
-    parent: 0,
-    children: [5, 8],
+    parentId: 0,
+    childrenId: [5, 8],
     isExpanded: true,
   },
   {
     id: 2,
     name: "Content",
-    parent: 0,
-    children: [],
+    parentId: 0,
+    childrenId: [],
     isExpanded: true,
   },
   {
     id: 4,
     name: "Footer",
-    parent: 0,
-    children: [],
+    parentId: 0,
+    childrenId: [],
     isExpanded: true,
   },
   {
     id: 5,
     name: "Navigator",
-    parent: 1,
-    children: [6, 7],
+    parentId: 1,
+    childrenId: [6, 7],
     isExpanded: true,
   },
   {
     id: 6,
     name: "JuniorNaver",
-    parent: 5,
-    children: [],
+    parentId: 5,
+    childrenId: [],
     isExpanded: true,
   },
   {
     id: 7,
     name: "HappyBin",
-    parent: 5,
-    children: [],
+    parentId: 5,
+    childrenId: [],
     isExpanded: true,
   },
   {
     id: 8,
     name: "SearchBar",
-    parent: 1,
-    children: [],
+    parentId: 1,
+    childrenId: [],
     isExpanded: true,
   },
 ];
