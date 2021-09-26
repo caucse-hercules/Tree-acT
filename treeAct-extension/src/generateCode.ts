@@ -1,12 +1,15 @@
 import fs from "fs";
 import path from "path";
 import * as vscode from "vscode";
-import { MessageData } from "../../common/types";
+import { MessageData, TreeNode } from "../../common/types";
 import waitUntil, { WAIT_FOREVER } from "async-wait-until";
 import { exit } from "process";
 
 
-const checkComponetNameDuplication=(componentArray: any) : number => {
+const checkComponetNameDuplication=(componentArray?: TreeNode[]) : number => {
+  if(componentArray===undefined)
+    return -1;
+
   for(let i=0; i<componentArray.length-1; i++){
     for(let j=i+1; j<componentArray.length; j++){
       if(componentArray[i].name==componentArray[j].name){
@@ -20,7 +23,10 @@ const checkComponetNameDuplication=(componentArray: any) : number => {
 /**
  * Function that checks if the component file name contains spaces.
  */
-const checkBlank = (componentArray: any): number => {
+const checkBlank = (componentArray?: TreeNode[]): number => {
+  if(componentArray===undefined)
+    return -1;
+
   for (let i=0; i<componentArray.length; i++) {
     /**
      * Returns the component's index if the component file name contains a space.
@@ -73,11 +79,13 @@ const FileSystem = (path: string, str: string) => {
  * Functions that consider the dependencies between components and generate import statements properly with DFS
  */
 const makeComponent = (
-  componentArray: any, // JSONArray of Components to Create
   id: number, // Component's id
   generateComponentPath: string, // Path of folder to store the components created by Tree-Act
-  srcPath: string // src directory path of the project.
+  srcPath: string, // src directory path of the project.
+  componentArray?: TreeNode[] // JSONArray of Components to Create
 ) => {
+  if(componentArray===undefined)
+    return -1;
   /**
    * Store index of component with id matching id values in 'index'.
    */
@@ -130,7 +138,7 @@ const makeComponent = (
       );
     }
 
-    makeComponent(componentArray, nextId, generateComponentPath, srcPath);
+    makeComponent(nextId, generateComponentPath, srcPath, componentArray);
   }
 
   /**
@@ -183,25 +191,29 @@ export const run = async (message: MessageData, dirPath: string) => {
     const componentIndex1 = checkBlank(message.data);
     if (componentIndex1 != -1) {
       console.log(componentIndex1);
-      const componentArray: any = message.data;
-      const component = componentArray[componentIndex1];
-      child_terminal.sendText(`exit`);
-      vscode.window.showInformationMessage("Canceled");
-      vscode.window.showErrorMessage(
-        `Component file name contains spaces!  (${component.name}.js)`
-      );
+      const componentArray: TreeNode[] | undefined = message.data;
+      if(componentArray!==undefined){
+        const component = componentArray[componentIndex1];
+        child_terminal.sendText(`exit`);
+        vscode.window.showInformationMessage("Canceled");
+        vscode.window.showErrorMessage(
+          `Component file name contains spaces!  (${component.name}.js)`
+        );
+      }
     }
     
     const componentIndex2=checkComponetNameDuplication(message.data);
     if(componentIndex2!=-1){
       console.log(componentIndex2);
-      const componentArray:any=message.data;
+      const componentArray : TreeNode[] | undefined=message.data;
+      if(componentArray!==undefined){
       const component=componentArray[componentIndex2];
-      child_terminal.sendText(`exit`);
-      vscode.window.showInformationMessage("Canceled");
-      vscode.window.showErrorMessage(
-        `Component file name is duplicated!  (${component.name}.js)`
-      );
+        child_terminal.sendText(`exit`);
+        vscode.window.showInformationMessage("Canceled");
+        vscode.window.showErrorMessage(
+          `Component file name is duplicated!  (${component.name}.js)`
+        );
+      }
     }
     
     /**
@@ -232,7 +244,7 @@ export const run = async (message: MessageData, dirPath: string) => {
        */
       if (exists) {
         makeFolder(generateComponentPath);
-        makeComponent(message.data, 0, generateComponentPath, srcPath);
+        makeComponent(0, generateComponentPath, srcPath, message.data);
         vscode.window.showInformationMessage("Generate Component Complete!");
       }
 
