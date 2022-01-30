@@ -24,10 +24,14 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.8.1",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
     "cross-env": "^7.0.3",
+    "framer-motion": "^5",
     "immer": "^9.0.2",
     "lodash": "^4.17.21",
     "markdown-to-jsx": "^7.1.3",
